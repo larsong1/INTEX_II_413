@@ -1,0 +1,25 @@
+﻿@using INTEX_II_413.Infrastructure
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model Product 
+
+<div class="card m-1 p-1">
+    <h4>
+        @Model.ProductName
+        <span class="badge rounded-pill bg-primary text-white float-end"><small>$@Model.ProductPrice</small></span>
+    </h4>
+    <ul>
+        <li>Product Name: @Model.ProductName</li>
+        <li>Description: @Model.ProductDescription</li>
+        <li>Category: @Model.ProductCategory</li>
+    </ul>
+    <form id="@Model.ProductId" method="post" asp-page="/Cart">
+        <input type="hidden" asp-for="ProductId"/>
+        <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+        <button type="submit" class="btn-outline-success btn-sm float-end">Add to cart</button>
+    </form>
+</div>
