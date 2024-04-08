@@ -9,13 +9,13 @@
 
 <div class="card m-1 p-1">
     <h4>
-        @Model.ProductName
-        <span class="badge rounded-pill bg-primary text-white float-end"><small>$@Model.ProductPrice</small></span>
+        @Model.Name
+        <span class="badge rounded-pill bg-primary text-white float-end"><small>$@Model.Price</small></span>
     </h4>
     <ul>
-        <li>Product Name: @Model.ProductName</li>
-        <li>Description: @Model.ProductDescription</li>
-        <li>Category: @Model.ProductCategory</li>
+        <li>Product Name: @Model.Name</li>
+        <li>Description: @Model.Description</li>
+        <li>Category: @Model.Category</li>
     </ul>
     <form id="@Model.ProductId" method="post" asp-page="/Cart">
         <input type="hidden" asp-for="ProductId"/>
