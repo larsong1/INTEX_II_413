@@ -36,6 +36,24 @@ namespace INTEX_II_413.Controllers
 
             return View(plvm);
         }
+        public IActionResult AboutUs()
+        {
+            return View("AboutUs");
+        }
 
+        public IActionResult Privacy()
+        {
+            return View("Privacy");
+        }
+
+        public IActionResult Products()
+        {
+            return View("Products");
+        }
+
+        public IActionResult Login()
+        {
+            return View("Login");
+        }
     }
 }
