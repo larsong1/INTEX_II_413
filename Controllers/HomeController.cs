@@ -19,8 +19,8 @@ namespace INTEX_II_413.Controllers
             int pageSize = 4;
 
             var productList = _repo.Products
-                .Where(x => x.ProductCategory == productCategory || productCategory == null)
-                .OrderBy(x => x.ProductCategory);
+                .Where(x => x.Category == productCategory || productCategory == null)
+                .OrderBy(x => x.Category);
 
 
             ProductsListViewModel plvm = new ProductsListViewModel

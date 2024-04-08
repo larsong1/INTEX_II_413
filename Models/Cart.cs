@@ -29,7 +29,7 @@
 
         public virtual void Clear() => Lines.Clear();
 
-        public decimal CalculateTotal() => Lines.Sum(x => x.Product.ProductPrice * x.Quantity);
+        public decimal CalculateTotal() => Lines.Sum(x => x.Product.Price * x.Quantity);
 
         public class CartLine
         {

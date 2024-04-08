@@ -8,13 +8,19 @@ namespace INTEX_II_413.Models
         [Key]
         public int ProductId { get; set; }
 
-        public string ProductName { get; set; }
+        public string Name { get; set; }
 
-        public string ProductDescription { get; set; }
+        public string Description { get; set; }
 
         [Column(TypeName = "decimal(8, 2)")]
-        public decimal ProductPrice { get; set; }
+        public decimal Price { get; set; }
 
-        public string ProductCategory { get; set; } = String.Empty;
+        public string Category { get; set; } = String.Empty;
+
+        public int Year { get; set; }
+        public int NumParts { get; set; }
+        public string ImgLink { get; set; }
+        public string PrimaryColor { get; set; }
+        public string SecondaryColor { get; set; }
     }
 }

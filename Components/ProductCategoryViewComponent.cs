@@ -14,7 +14,7 @@ namespace INTEX_II_413.Components
         {
             ViewBag.SelectedProductCategory = RouteData?.Values["productCategory"];
             var productCategorys = _repo.Products
-                .Select(x => x.ProductCategory)
+                .Select(x => x.Category)
                 .Distinct()
                 .OrderBy(x => x);
 
