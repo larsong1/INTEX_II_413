@@ -1,0 +1,45 @@
+﻿<h1>Admin Table for Customers</h1>
+
+<table class="table table-bordered table-striped">
+
+    <thead class="thead-dark fw-bold">
+        <tr>
+            <th style="text-align:center" class="bg-black text-white">CustomerId</th>
+            <th style="text-align:center" class="bg-black text-white">FirstName</th>
+            <th style="text-align:center" class="bg-black text-white">LastName</th>
+            <th style="text-align:center" class="bg-black text-white">BirthDate</th>
+            <th style="text-align:center" class="bg-black text-white">Country</th>
+            <th style="text-align:center" class="bg-black text-white">Gender</th>
+            <th style="text-align:center" class="bg-black text-white">Age</th>
+            <th style="text-align:center" class="bg-black text-white">Email</th>
+            <th style="text-align:center" class="bg-black text-white">UserName</th>
+            <th style="text-align:center" class="bg-black text-white">Password</th>
+            <th style="text-align:center" class="bg-black text-white">IsAdmin</th>
+            <th style="text-align:center" class="bg-black text-white">Edit</th>
+            <th style="text-align:center" class="bg-black text-white">Delete</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var x in Model)
+        {
+            <tr>
+                <td style="text-align:center">@x.CustomerId</td>
+                <td style="text-align:center">@x.FirstName</td>
+                <td style="text-align:center">@x.LastName</td>
+                <td style="text-align:center">@x.BirthDate</td>
+                <td style="text-align:center">@x.Country</td>
+                <td style="text-align:center">@x.Gender</td>
+                <td style="text-align:center">@x.Age</td>
+                <td style="text-align:center">@x.Email</td>
+                <td style="text-align:center">@x.UserName</td>
+                <td style="text-align:center">@x.Password</td>
+                <td style="text-align:center">@x.IsAdmin</td>
+
+                <td><a class="btn btn-info" asp-controller="Home" asp-action="EditProduct" asp-route-id="@x.ProductId">Edit</a></td>
+                <td><a class="btn btn-danger" asp-controller="Home" asp-action="DeleteProduct" asp-route-id="@x.ProductId">Delete</a></td>
+            </tr>
+        }
+    </tbody>
+
+</table>
