@@ -11,7 +11,7 @@
         <a href="@Model.ImgLink">
             <img src="@Model.ImgLink" style="max-width: 400px; height: auto;">
         </a><br />
-        <form asp-controller="Home" asp-action="Products" method="post">
+        <form asp-controller="Home" asp-action="SingleProduct" asp-route-returnUrl="@ViewContext.HttpContext.Request.PathAndQuery()" method="post">
             <button type="submit" name="id" value="@Model.ProductId" style="width: 150px;">See More Info</button>
         </form>
 
