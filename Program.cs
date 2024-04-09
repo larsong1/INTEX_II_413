@@ -1,7 +1,10 @@
 using INTEX_II_413.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
+var configuration = builder.Configuration;
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -17,6 +20,16 @@ builder.Services.AddSession();
 
 builder.Services.AddScoped<Cart>(sp => SessionCart.GetCart(sp));
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<IntexContext>();
+
+// third party
+services.AddAuthentication().AddMicrosoftAccount(microsoftOptions =>
+{
+    microsoftOptions.ClientId = configuration["Authentication:Microsoft:ClientId"];
+    microsoftOptions.ClientSecret = configuration["Authentication:Microsoft:ClientSecret"];
+});
 
 var app = builder.Build();
 
