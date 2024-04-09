@@ -20,8 +20,9 @@ namespace INTEX_II_413.Infrastructure
         [ViewContext]
         [HtmlAttributeNotBound]
         public ViewContext? ViewContext { get; set; }
-        public string? PageAction { get; set; }
-        public PaginationInfo PageModel { get; set; }
+        public string PageAction { get; set; } = "Index"; // Default to "Index" if not set in the view
+        public PaginationInfo PageModel { get; set; } // No need for ? to indicate nullable
+
         public bool PageClassEnabled { get; set; } = false;
         public string PageClass { get; set; } = String.Empty;
         public string PageClassNormal { get; set; } = String.Empty;

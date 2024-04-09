@@ -2,8 +2,7 @@
 
 @model Product 
 
-<div class="col-md-6">
-    <!-- Adjust the column size as needed -->
+<div class="col-md-6"> 
     <div class="card m-1 p-1">
         <h4>
             @Model.Name
@@ -11,13 +10,17 @@
         </h4>
         <a href="@Model.ImgLink">
             <img src="@Model.ImgLink" style="max-width: 400px; height: auto;">
-        </a>
+        </a><br />
+        <form asp-controller="Home" asp-action="Products" method="post">
+            <button type="submit" name="id" value="@Model.ProductId" style="width: 150px;">See More Info</button>
+        </form>
 
         <form id="@Model.ProductId" method="post" asp-page="/Cart">
-            <input type="hidden" asp-for="ProductId" />
+            <input type="hidden" asp-for="ProductId" value="@Model.ProductId" />
             <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
             <button type="submit" class="btn-outline-success btn-sm float-end">Add to cart</button>
         </form>
     </div>
 </div>
+
 

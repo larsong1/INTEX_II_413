@@ -44,5 +44,8 @@
 </table>
 
 <div class="text-center">
-    <a class="btn btn-primary" href="@Model.ReturnUrl">Continue Shopping</a>
+    <a class="btn btn-primary" href="@Model.ReturnUrl">Continue Shopping</a><br /><br />
+    <form asp-controller="Home" asp-action="Cart" method="post">
+        <button type="submit" style="width: 150px;">Checkout</button>
+    </form>
 </div>
