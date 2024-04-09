@@ -1,6 +1,7 @@
 using INTEX_II_413.Models;
 using INTEX_II_413.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace INTEX_II_413.Controllers
@@ -79,6 +80,21 @@ namespace INTEX_II_413.Controllers
         public IActionResult Orders()
         {
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult SingleProduct(int id)
+        {
+            var product = _repo.Products.Where(p => p.ProductId == id).FirstOrDefault();
+
+            return View(product);
+        }
+
+        [HttpPost]
+        public IActionResult Products(int id)
+        {
+            // Redirect to the AddObjective action method with the class ID as a route parameter
+            return RedirectToAction("SingleProduct", new { id = id });
         }
     }
 }
