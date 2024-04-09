@@ -83,8 +83,10 @@ namespace INTEX_II_413.Controllers
             return View();
         }
 
-        public IActionResult SingleProduct(int id)
+        public IActionResult SingleProduct(int id, string returnUrl)
         {
+            ViewBag.returnUrl = returnUrl;
+
             var product = _repo.Products.Where(p => p.ProductId == id).FirstOrDefault();
 
             return View(product);
@@ -92,12 +94,6 @@ namespace INTEX_II_413.Controllers
         public IActionResult NewUser()
         {
             return View();
-        }
-
-        [HttpPost]
-        public IActionResult Products(int id)
-        {
-            return RedirectToAction("SingleProduct", new { id = id });
         }
 
         [HttpPost]
