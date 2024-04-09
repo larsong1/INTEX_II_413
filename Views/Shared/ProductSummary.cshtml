@@ -1,25 +1,23 @@
 ﻿@using INTEX_II_413.Infrastructure
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
 
 @model Product 
 
-<div class="card m-1 p-1">
-    <h4>
-        @Model.Name
-        <span class="badge rounded-pill bg-primary text-white float-end"><small>$@Model.Price</small></span>
-    </h4>
-    <ul>
-        <li>Product Name: @Model.Name</li>
-        <li>Description: @Model.Description</li>
-        <li>Category: @Model.Category</li>
-    </ul>
-    <form id="@Model.ProductId" method="post" asp-page="/Cart">
-        <input type="hidden" asp-for="ProductId"/>
-        <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
-        <button type="submit" class="btn-outline-success btn-sm float-end">Add to cart</button>
-    </form>
+<div class="col-md-6">
+    <!-- Adjust the column size as needed -->
+    <div class="card m-1 p-1">
+        <h4>
+            @Model.Name
+            <span class="badge rounded-pill bg-primary text-white float-end"><small>$@Model.Price</small></span>
+        </h4>
+        <a href="@Model.ImgLink">
+            <img src="@Model.ImgLink" style="max-width: 400px; height: auto;">
+        </a>
+
+        <form id="@Model.ProductId" method="post" asp-page="/Cart">
+            <input type="hidden" asp-for="ProductId" />
+            <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+            <button type="submit" class="btn-outline-success btn-sm float-end">Add to cart</button>
+        </form>
+    </div>
 </div>
+
