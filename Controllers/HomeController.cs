@@ -1,3 +1,4 @@
+using Azure;
 using INTEX_II_413.Models;
 using INTEX_II_413.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -75,7 +76,8 @@ namespace INTEX_II_413.Controllers
 
         public IActionResult AdminProducts()
         {
-            return View("AdminProducts");
+            var products = _repo.Products.ToList();
+            return View(products);
         }
 
         public IActionResult Orders()
@@ -106,6 +108,18 @@ namespace INTEX_II_413.Controllers
             return View("NewUser");
         }
 
-        
+        [HttpPost]
+        public IActionResult AdminAddProduct()
+        {
+            return View("AddProduct");
+        }
+
+        [HttpPost]
+        public IActionResult AddProduct(Product response)
+        {
+            _repo.Products.Add(response);
+            _repo.SaveChanges();
+            return View("AdminProducts");
+        }
     }
 }

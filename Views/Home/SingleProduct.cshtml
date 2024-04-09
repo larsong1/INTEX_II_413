@@ -14,7 +14,7 @@
             <li>Made in @Model.Year</li>
             <li>@Model.Category</li>
             <li>@Model.Description</li>
-        </ul>
+        </ul><br />
 
         <form id="@Model.ProductId" method="post" asp-page="/Cart">
             <input type="hidden" asp-for="ProductId" value="@Model.ProductId" />
