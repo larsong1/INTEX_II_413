@@ -51,13 +51,12 @@ namespace INTEX_II_413.Controllers
         {
             return View("Privacy");
         }
-
-        
-
+        [HttpGet]
         public IActionResult Login()
         {
             return View("Login");
         }
+
         public IActionResult Confirmation()
         {
             Random rand = new Random();
@@ -68,6 +67,7 @@ namespace INTEX_II_413.Controllers
 
             return View();
         }
+
         public IActionResult FraudConfirmation()
         {
             return View("FraudConfirmation");
@@ -77,24 +77,35 @@ namespace INTEX_II_413.Controllers
         {
             return View("AdminProducts");
         }
+
         public IActionResult Orders()
         {
             return View();
         }
 
-        [HttpGet]
         public IActionResult SingleProduct(int id)
         {
             var product = _repo.Products.Where(p => p.ProductId == id).FirstOrDefault();
 
             return View(product);
         }
+        public IActionResult NewUser()
+        {
+            return View();
+        }
 
         [HttpPost]
         public IActionResult Products(int id)
         {
-            // Redirect to the AddObjective action method with the class ID as a route parameter
             return RedirectToAction("SingleProduct", new { id = id });
         }
+
+        [HttpPost]
+        public IActionResult CreateAccount()
+        {
+            return View("NewUser");
+        }
+
+        
     }
 }
