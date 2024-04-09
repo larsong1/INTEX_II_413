@@ -74,16 +74,7 @@ namespace INTEX_II_413.Controllers
             return View("FraudConfirmation");
         }
 
-        public IActionResult AdminProducts()
-        {
-            var products = _repo.Products.ToList();
-            return View(products);
-        }
 
-        public IActionResult Orders()
-        {
-            return View();
-        }
 
         public IActionResult SingleProduct(int id, string returnUrl)
         {
@@ -104,11 +95,7 @@ namespace INTEX_II_413.Controllers
             return View("NewUser");
         }
 
-        [HttpPost]
-        public IActionResult AdminAddProduct()
-        {
-            return View("AddProduct");
-        }
+        
 
         //[HttpPost]
         //public IActionResult AddProduct(Product response)
