@@ -110,12 +110,12 @@ namespace INTEX_II_413.Controllers
             return View("AddProduct");
         }
 
-        [HttpPost]
-        public IActionResult AddProduct(Product response)
-        {
-            _repo.Products.Add(response);
-            _repo.SaveChanges();
-            return View("AdminProducts");
-        }
+        //[HttpPost]
+        //public IActionResult AddProduct(Product response)
+        //{
+        //    _repo.Product.Add(response);
+        //    _repo.SaveChanges();
+        //    return View("AdminProducts");
+        //}
     }
 }
