@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace INTEX_II_413.Models
 {
-    public class IntexContext : DbContext
+    public class IntexContext : IdentityDbContext<IdentityUser>
     {
         public IntexContext(DbContextOptions<IntexContext> options) : base(options) { }
 
@@ -12,3 +14,4 @@ namespace INTEX_II_413.Models
         public DbSet<LineItem> LineItems { get; set; }
     }
 }
+
