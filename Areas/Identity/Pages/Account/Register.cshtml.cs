@@ -70,49 +70,34 @@ namespace AuthLab2.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
-            [Required(ErrorMessage = "First Name is required")]
-            [StringLength(50, ErrorMessage = "First Name must be less than {1} characters")]
-            public string FirstName { get; set; }
-
-            [Required(ErrorMessage = "Last Name is required")]
-            [StringLength(50, ErrorMessage = "Last Name must be less than {1} characters")]
-            public string LastName { get; set; }
-
-            [Required(ErrorMessage = "Birth Date is required")]
-            [DataType(DataType.Date)]
-            public DateTime BirthDate { get; set; }
-
-            [Required(ErrorMessage = "Country is required")]
-            [StringLength(50, ErrorMessage = "Country must be less than {1} characters")]
-            public string Country { get; set; }
-
-            [Required(ErrorMessage = "Gender is required")]
-            [StringLength(1, ErrorMessage = "Gender must be 1 character")]
-            public string Gender { get; set; }
-
-            [Required(ErrorMessage = "Age is required")]
-            [Range(0, 150, ErrorMessage = "Age must be between {1} and {2}")]
-            public int Age { get; set; }
-
-            [Required(ErrorMessage = "Email is required")]
-            [EmailAddress(ErrorMessage = "Invalid Email Address")]
+            /// <summary>
+            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+            ///     directly from your code. This API may change or be removed in future releases.
+            /// </summary>
+            [Required]
+            [EmailAddress]
+            [Display(Name = "Email")]
             public string Email { get; set; }
 
-            [Required(ErrorMessage = "Username is required")]
-            [StringLength(50, ErrorMessage = "Username must be less than {1} characters")]
-            public string UserName { get; set; }
-
-            [Required(ErrorMessage = "Password is required")]
-            [StringLength(100, ErrorMessage = "Password must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            /// <summary>
+            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+            ///     directly from your code. This API may change or be removed in future releases.
+            /// </summary>
+            [Required]
+            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
+            [Display(Name = "Password")]
             public string Password { get; set; }
 
+            /// <summary>
+            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+            ///     directly from your code. This API may change or be removed in future releases.
+            /// </summary>
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
         }
-
 
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -127,37 +112,17 @@ namespace AuthLab2.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = CreateUser();
-
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    var userId = await _userManager.GetUserIdAsync(user);
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
-                        protocol: Request.Scheme);
+                    // Add the user to the "Customer" role
+                    await _userManager.AddToRoleAsync(user, "Customer");
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
-                    }
-                    else
-                    {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
-                    }
+                    // Your existing code for email confirmation and sign-in
                 }
                 foreach (var error in result.Errors)
                 {
@@ -168,6 +133,7 @@ namespace AuthLab2.Areas.Identity.Pages.Account
             // If we got this far, something failed, redisplay form
             return Page();
         }
+
 
         private IdentityUser CreateUser()
         {
