@@ -14,7 +14,12 @@ namespace INTEX_II_413.Controllers
             _repo = temp;
         }
 
-        public IActionResult Index(int pageNum = 1, string? productCategory = null)
+        public IActionResult Index()
+        {
+            return View("Index");
+        }
+
+        public IActionResult Products(int pageNum = 1, string? productCategory = null)
         {
             int pageSize = 4;
 
@@ -46,14 +51,34 @@ namespace INTEX_II_413.Controllers
             return View("Privacy");
         }
 
-        public IActionResult Products()
-        {
-            return View("Products");
-        }
+        
 
         public IActionResult Login()
         {
             return View("Login");
+        }
+        public IActionResult Confirmation()
+        {
+            Random rand = new Random();
+            int orderNumber = rand.Next(1000000, 10000000);
+
+            // Pass the order number to the view
+            ViewBag.OrderNumber = orderNumber;
+
+            return View();
+        }
+        public IActionResult FraudConfirmation()
+        {
+            return View("FraudConfirmation");
+        }
+
+        public IActionResult AdminProducts()
+        {
+            return View("AdminProducts");
+        }
+        public IActionResult Orders()
+        {
+            return View();
         }
     }
 }
