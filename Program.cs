@@ -27,7 +27,7 @@ namespace INTEX_II_413
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             // add identity user and roles
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<IntexContext>();
 
