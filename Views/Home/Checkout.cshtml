@@ -1,0 +1,86 @@
+﻿@model INTEX_II_413.Models.Order
+
+<h1 style="margin-bottom: 16px;">Enter Payment Information</h1>
+<form asp-controller="Home" asp-action="TEMPORARY" method="post" style="width: 100%;">
+
+    <label for="bank" style="margin-bottom: 16px; display: block;">Bank:</label>
+    <select asp-for="Bank" id="bank" required style="width: calc(100% - 16px); padding: 8px; margin-bottom: 16px; box-sizing: border-box;">
+        <option value=""></option>
+        <option value="RBS">RBS</option>
+        <option value="Lloyds">Lloyds</option>
+        <option value="Barclays">Barclays</option>
+        <option value="Halifax">Halifax</option>
+        <option value="Monzo">Monzo</option>
+        <option value="HSBC">HSBC</option>
+        <option value="Metro">Metro</option>
+    </select>
+
+    <label style="margin-bottom: 16px; display: block;">Card Type:</label>
+    <div style="margin-bottom: 16px;">
+        <input asp-for="CardType" type="radio" id="visa" name="cardType" value="Visa" required checked>
+        <label for="visa" style="margin-right: 16px;">Visa</label>
+        <input asp-for="CardType" type="radio" id="mastercard" name="cardType" value="Mastercard" required>
+        <label for="mastercard">Mastercard</label>
+    </div>
+
+    <input asp-for="EntryMode" type="hidden" value="CVC" required>
+    <input asp-for="Type" type="hidden" value="Online" required>
+
+    <label for="address" style="margin-bottom: 16px; display: block;">Address:</label>
+    <input asp-for="Address" id="address" type="text" required style="width: calc(100% - 16px); padding: 8px; margin-bottom: 16px; box-sizing: border-box;">
+
+    <label for="country" style="margin-bottom: 16px; display: block;">Country:</label>
+    <select asp-for="Country" id="country" required style="width: calc(100% - 16px); padding: 8px; margin-bottom: 16px; box-sizing: border-box;">
+        <option value="USA">USA</option>
+        <option value="AFG">Afghanistan</option>
+        <option value="DZA">Algeria</option>
+        <option value="ARG">Argentina</option>
+        <option value="ARM">Armenia</option>
+        <option value="AUS">Australia</option>
+        <option value="AUT">Austria</option>
+        <option value="AZE">Azerbaijan</option>
+        <option value="BHR">Bahrain</option>
+        <option value="BGD">Bangladesh</option>
+        <option value="BEL">Belgium</option>
+        <option value="BRA">Brazil</option>
+        <option value="BGR">Bulgaria</option>
+        <option value="CAN">Canada</option>
+        <option value="CHL">Chile</option>
+        <option value="CHN">China</option>
+        <option value="COL">Colombia</option>
+        <option value="COD">Congo (DRC)</option>
+        <option value="CRI">Costa Rica</option>
+        <option value="HRV">Croatia</option>
+        <option value="EGY">Egypt</option>
+        <option value="ETH">Ethiopia</option>
+        <option value="FRA">France</option>
+        <option value="DEU">Germany</option>
+        <option value="GBR">UK</option>
+        <option value="IND">India</option>
+        <option value="IDN">Indonesia</option>
+        <option value="IRN">Iran</option>
+        <option value="IRQ">Iraq</option>
+        <option value="ITA">Italy</option>
+        <option value="JPN">Japan</option>
+        <option value="KEN">Kenya</option>
+        <option value="KOR">South Korea</option>
+        <option value="MEX">Mexico</option>
+        <option value="MMR">Myanmar</option>
+        <option value="MAR">Morocco</option>
+        <option value="NGA">Nigeria</option>
+        <option value="PAK">Pakistan</option>
+        <option value="PER">Peru</option>
+        <option value="PHL">Philippines</option>
+        <option value="RUS">Russia</option>
+        <option value="SAU">Saudi Arabia</option>
+        <option value="ZAF">South Africa</option>
+        <option value="ESP">Spain</option>
+        <option value="LKA">Sri Lanka</option>
+        <option value="THA">Thailand</option>
+        <option value="TUR">Turkey</option>
+        <option value="UGA">Uganda</option>
+        <option value="UKR">Ukraine</option>
+        <option value="VEN">Venezuela</option>
+        <option value="VNM">Vietnam</option>
+    </select>
+</form>

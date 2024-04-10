@@ -1,8 +1,15 @@
-﻿@model Product
-<h1 style="text-align:center">Add a new product to the list!</h1><br /><br />
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model Product
+<h1 style="text-align:center">Edit Product</h1>
+<br />
+<br />
 
 
-<form asp-controller="Home" asp-action="AddProduct" method="post" style="max-width: 400px; margin: auto;">
+<form asp-controller="Home" asp-action="EditProduct" method="post" style="max-width: 400px; margin: auto;">
     <input asp-for="ProductId" type="hidden" />
 
     <label asp-for="Name">Name:</label>
