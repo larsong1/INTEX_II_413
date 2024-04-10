@@ -30,9 +30,6 @@
                             <a class="nav-link text-dark" asp-controller="Home" asp-action="AboutUs">About Us</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Login">Login</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Home" asp-action="Confirmation">Confirmation</a>
                         </li>
                         <li class="nav-item">
@@ -42,6 +39,8 @@
                             <a class="nav-link text-dark" asp-controller="Admin" asp-action="AdminHomepage">AdminHomepage</a>
                         </li>
                     </ul>
+
+                    <partial name="_LoginPartial" />
                 </div>
                 <div class="col-auto navbar-text text-end">
                     <vc:cart-summary />
