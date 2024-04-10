@@ -22,9 +22,8 @@ namespace INTEX_II_413.Controllers
             return View("Index");
         }
 
-        public IActionResult Products(int pageNum = 1, string? productCategory = null)
+        public IActionResult Products(int pageNum = 1, string? productCategory = null, int pageSize = 6)
         {
-            int pageSize = 4;
 
             var productList = _repo.Products
                 .Where(x => x.Category == productCategory || productCategory == null)

@@ -13,14 +13,14 @@
             <img src="@Model.ImgLink" class="bd-placeholder-img card-img-top" style="max-width: auto; height: 500px;">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
-                        <form asp-controller="Home" asp-action="SingleProduct" asp-route-returnUrl="@ViewContext.HttpContext.Request.PathAndQuery()" method="post">
-                            <button type="submit" name="id" value="@Model.ProductId" style="width: 150px;">See More Info</button>
-                        </form><br /><br />
-                        <form id="@Model.ProductId" method="post" asp-page="/Cart">
-                            <input type="hidden" asp-for="ProductId" value="@Model.ProductId" />
-                            <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
-                            <button type="submit" class="btn-outline-success btn-sm float-end">Add to cart</button>
-                        </form>
+                    <form asp-controller="Home" asp-action="SingleProduct" asp-route-returnUrl="@ViewContext.HttpContext.Request.PathAndQuery()" method="post">
+                        <button type="submit" name="id" value="@Model.ProductId" style="width: 150px;">See More Info</button>
+                    </form>
+                    <form id="@Model.ProductId" method="post" asp-page="/Cart">
+                        <input type="hidden" asp-for="ProductId" value="@Model.ProductId" />
+                        <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+                        <button type="submit" class="btn-outline-success btn-sm float-end">Add to cart</button>
+                    </form>
                 </div>
             </div>
         </div>
