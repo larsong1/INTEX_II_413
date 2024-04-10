@@ -30,21 +30,17 @@
                             <a class="nav-link text-dark" asp-controller="Home" asp-action="AboutUs">About Us</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Login">Login</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Home" asp-action="Confirmation">Confirmation</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Home" asp-action="FraudConfirmation">Fraud</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Orders">Orders</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Home" asp-action="AdminProducts">AdminProducts</a>
+                            <a class="nav-link text-dark" asp-controller="Admin" asp-action="AdminHomepage">AdminHomepage</a>
                         </li>
                     </ul>
+
+                    <partial name="_LoginPartial" />
                 </div>
                 <div class="col-auto navbar-text text-end">
                     <vc:cart-summary />
@@ -55,13 +51,13 @@
 
 
 
-    <div class="row m-1 p-1">
-        <div class="container col-9">
-            <main role="main" class="pb-3">
-                @RenderBody()
-            </main>
-        </div>
+    <div class="container">
+        <partial name="_CookieConsentPartial" />
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
     </div>
+
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2024 - AuroraBricks -   <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>

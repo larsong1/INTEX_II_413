@@ -8,6 +8,9 @@ namespace INTEX_II_413.Models
         [Key]
         public int CustomerId { get; set; }
 
+        [ForeignKey(nameof(CustomerId))]
+        public int id { get; set; }
+
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime BirthDate { get; set; }
