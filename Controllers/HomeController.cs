@@ -1,10 +1,12 @@
 using Azure;
+using System;
 using INTEX_II_413.Models;
 using INTEX_II_413.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Formats.Tar;
+using System.Collections.Generic;
 
 //For Implementing the pipeline
 using Microsoft.ML;
@@ -37,25 +39,35 @@ namespace INTEX_II_413.Controllers
 
 
         [HttpPost]
-        public IActionResult PlaceOrder(OrderViewModel orderData) //Fix this to take in the correct data
+        public IActionResult PlaceOrder(OrderSubmissionViewModel submissionModel)
         {
+            var customer = _repo.Customers.FirstOrDefault(c => c.CustomerId == submissionModel.CustomerId);
+            if (customer == null)
+            {
+                // Handle the case where the customer is not found
+                return NotFound();
+            }
+
+            // Calculate the customer's age based on their birthdate
+            int age = DateTime.Now.Year - customer.BirthDate.Year;
+            if (DateTime.Now < customer.BirthDate.AddYears(age)) age--;
+
+            // Prepare the fraud prediction data
             FraudPredictionViewModel fraudPredictionData = new FraudPredictionViewModel
             {
-                // Map orderData and possibly query the database for additional data needed
-                Time = orderData.Time,
-                Amount = orderData.Amount,
-                Age = // Calculate based on customer's birthdate,
-                CountryOfTransaction = orderData.Country,
-                ShippingAddress = orderData.Address,
-                Bank = orderData.Bank,
-                TypeOfCard = orderData.CardType,
-                CountryOfResidence = // This might be the same as CountryOfTransaction or different based on logic,
-                Gender = // Get from Customer data,
+                Time = submissionModel.Order.Time,
+                Amount = submissionModel.Order.Amount,
+                Age = age,
+                CountryOfTransaction = submissionModel.Order.Country,
+                ShippingAddress = submissionModel.Order.Address,
+                Bank = submissionModel.Order.Bank,
+                TypeOfCard = submissionModel.Order.CardType,
+                CountryOfResidence = customer.Country, // Assuming this is where you store the customer's residence country
+                Gender = customer.Gender
+            };
 
-
-                };
-
-            bool isFraudulent = PredictFraud(orderData);
+            // Assuming PredictFraud now properly expects a FraudPredictionViewModel and returns a boolean
+            bool isFraudulent = PredictFraud(fraudPredictionData);
 
             if (isFraudulent)
             {
@@ -64,10 +76,22 @@ namespace INTEX_II_413.Controllers
             }
             else
             {
+                // Here, you would save the order to your database. Since you don't have _context,
+                // you should use whatever mechanism you have in place, such as a repository method.
+
+                // _repo.Orders.Add(submissionModel.Order); // Example repository call to save the order
+                // _repo.SaveChanges(); // Save changes to the database
+
                 // Process the order normally
                 return RedirectToAction("Confirmation");
             }
         }
+
+
+
+
+
+
         [HttpPost]
         public IActionResult PredictFraud(OrderViewModel orderData)
         {
@@ -179,10 +203,10 @@ namespace INTEX_II_413.Controllers
             return View();
         }
 
-        var product = _repo.Products.Where(p => p.ProductId == id).FirstOrDefault();
+        //var product = _repo.Products.Where(p => p.ProductId == id).FirstOrDefault();
 
-            return View(product);
-    }
+           // return View(product);
+    
     public IActionResult NewUser()
     {
         return View();

@@ -1,10 +1,16 @@
-﻿@model INTEX_II_413.Models.Order
+﻿@model INTEX_II_413.Models.ViewModels.OrderSubmissionViewModel
+
 
 <h1 style="margin-bottom: 16px;">Enter Payment Information</h1>
-<form asp-controller="Home" asp-action="TEMPORARY" method="post" style="width: 100%;">
+<form asp-controller="Home" asp-action="PlaceOrder" method="post" style="width: 100%;">
+
+    <!-- I need the CustomerId somehow. I will either bring it in this way, or through the session/cookies-->
+    <input type="hidden" asp-for="CustomerId" value="@Model.CustomerId"> 
+
+
 
     <label for="bank" style="margin-bottom: 16px; display: block;">Bank:</label>
-    <select asp-for="Bank" id="bank" required style="width: calc(100% - 16px); padding: 8px; margin-bottom: 16px; box-sizing: border-box;">
+    <select asp-for="Order.Bank" id="bank" required style="width: calc(100% - 16px); padding: 8px; margin-bottom: 16px; box-sizing: border-box;">
         <option value=""></option>
         <option value="RBS">RBS</option>
         <option value="Lloyds">Lloyds</option>
@@ -17,70 +23,127 @@
 
     <label style="margin-bottom: 16px; display: block;">Card Type:</label>
     <div style="margin-bottom: 16px;">
-        <input asp-for="CardType" type="radio" id="visa" name="cardType" value="Visa" required checked>
+        <input asp-for="Order.CardType" type="radio" id="visa" name="cardType" value="Visa" required checked>
         <label for="visa" style="margin-right: 16px;">Visa</label>
-        <input asp-for="CardType" type="radio" id="mastercard" name="cardType" value="Mastercard" required>
+        <input asp-for="Order.CardType" type="radio" id="mastercard" name="cardType" value="Mastercard" required>
         <label for="mastercard">Mastercard</label>
     </div>
 
-    <input asp-for="EntryMode" type="hidden" value="CVC" required>
-    <input asp-for="Type" type="hidden" value="Online" required>
+    <input asp-for="Order.EntryMode" type="hidden" value="CVC" required>
 
-    <label for="address" style="margin-bottom: 16px; display: block;">Address:</label>
-    <input asp-for="Address" id="address" type="text" required style="width: calc(100% - 16px); padding: 8px; margin-bottom: 16px; box-sizing: border-box;">
+    <input asp-for="Order.Type" type="hidden" value="Online" required>
+
+    <label for="address" style="margin-bottom: 16px; display: block;">Shipping Address:</label>
+    <select asp-for="Order.Address" id="address" required style="width: calc(100% - 16px); padding: 8px; margin-bottom: 16px; box-sizing: border-box;">
+        <option value="USA">USA</option>
+        <option value="Afghanistan">Afghanistan</option>
+        <option value="Algeria">Algeria</option>
+        <option value="Argentina">Argentina</option>
+        <option value="Armenia">Armenia</option>
+        <option value="Australia">Australia</option>
+        <option value="Austria">Austria</option>
+        <option value="Azerbaijan">Azerbaijan</option>
+        <option value="Bahrain">Bahrain</option>
+        <option value="Bangladesh">Bangladesh</option>
+        <option value="Belgium">Belgium</option>
+        <option value="Brazil">Brazil</option>
+        <option value="Bulgaria">Bulgaria</option>
+        <option value="Canada">Canada</option>
+        <option value="Chile">Chile</option>
+        <option value="China">China</option>
+        <option value="Colombia">Colombia</option>
+        <option value="Congo (DRC)">Congo (DRC)</option>
+        <option value="Costa Rica">Costa Rica</option>
+        <option value="Croatia">Croatia</option>
+        <option value="Egypt">Egypt</option>
+        <option value="Ethiopia">Ethiopia</option>
+        <option value="France">France</option>
+        <option value="Germany">Germany</option>
+        <option value="United Kingdom">UK</option>
+        <option value="India">India</option>
+        <option value="Indonesia">Indonesia</option>
+        <option value="Iran">Iran</option>
+        <option value="Iraq">Iraq</option>
+        <option value="Italy">Italy</option>
+        <option value="Japan">Japan</option>
+        <option value="Kenya">Kenya</option>
+        <option value="South Korea">South Korea</option>
+        <option value="Mexico">Mexico</option>
+        <option value="Myanmar">Myanmar</option>
+        <option value="Morocco">Morocco</option>
+        <option value="Nigeria">Nigeria</option>
+        <option value="Pakistan">Pakistan</option>
+        <option value="Peru">Peru</option>
+        <option value="Philippines">Philippines</option>
+        <option value="Russia">Russia</option>
+        <option value="Saudi Arabia">Saudi Arabia</option>
+        <option value="South Africa">South Africa</option>
+        <option value="Spain">Spain</option>
+        <option value="Sri Lanka">Sri Lanka</option>
+        <option value="Thailand">Thailand</option>
+        <option value="Turkey">Turkey</option>
+        <option value="Uganda">Uganda</option>
+        <option value="Ukraine">Ukraine</option>
+        <option value="Venezuela">Venezuela</option>
+        <option value="Vietnam">Vietnam</option>
+    </select>
 
     <label for="country" style="margin-bottom: 16px; display: block;">Country:</label>
-    <select asp-for="Country" id="country" required style="width: calc(100% - 16px); padding: 8px; margin-bottom: 16px; box-sizing: border-box;">
+    <select asp-for="Order.Country" id="country" required style="width: calc(100% - 16px); padding: 8px; margin-bottom: 16px; box-sizing: border-box;">
         <option value="USA">USA</option>
-        <option value="AFG">Afghanistan</option>
-        <option value="DZA">Algeria</option>
-        <option value="ARG">Argentina</option>
-        <option value="ARM">Armenia</option>
-        <option value="AUS">Australia</option>
-        <option value="AUT">Austria</option>
-        <option value="AZE">Azerbaijan</option>
-        <option value="BHR">Bahrain</option>
-        <option value="BGD">Bangladesh</option>
-        <option value="BEL">Belgium</option>
-        <option value="BRA">Brazil</option>
-        <option value="BGR">Bulgaria</option>
-        <option value="CAN">Canada</option>
-        <option value="CHL">Chile</option>
-        <option value="CHN">China</option>
-        <option value="COL">Colombia</option>
-        <option value="COD">Congo (DRC)</option>
-        <option value="CRI">Costa Rica</option>
-        <option value="HRV">Croatia</option>
-        <option value="EGY">Egypt</option>
-        <option value="ETH">Ethiopia</option>
-        <option value="FRA">France</option>
-        <option value="DEU">Germany</option>
-        <option value="GBR">UK</option>
-        <option value="IND">India</option>
-        <option value="IDN">Indonesia</option>
-        <option value="IRN">Iran</option>
-        <option value="IRQ">Iraq</option>
-        <option value="ITA">Italy</option>
-        <option value="JPN">Japan</option>
-        <option value="KEN">Kenya</option>
-        <option value="KOR">South Korea</option>
-        <option value="MEX">Mexico</option>
-        <option value="MMR">Myanmar</option>
-        <option value="MAR">Morocco</option>
-        <option value="NGA">Nigeria</option>
-        <option value="PAK">Pakistan</option>
-        <option value="PER">Peru</option>
-        <option value="PHL">Philippines</option>
-        <option value="RUS">Russia</option>
-        <option value="SAU">Saudi Arabia</option>
-        <option value="ZAF">South Africa</option>
-        <option value="ESP">Spain</option>
-        <option value="LKA">Sri Lanka</option>
-        <option value="THA">Thailand</option>
-        <option value="TUR">Turkey</option>
-        <option value="UGA">Uganda</option>
-        <option value="UKR">Ukraine</option>
-        <option value="VEN">Venezuela</option>
-        <option value="VNM">Vietnam</option>
+        <option value="Afghanistan">Afghanistan</option>
+        <option value="Algeria">Algeria</option>
+        <option value="Argentina">Argentina</option>
+        <option value="Armenia">Armenia</option>
+        <option value="Australia">Australia</option>
+        <option value="Austria">Austria</option>
+        <option value="Azerbaijan">Azerbaijan</option>
+        <option value="Bahrain">Bahrain</option>
+        <option value="Bangladesh">Bangladesh</option>
+        <option value="Belgium">Belgium</option>
+        <option value="Brazil">Brazil</option>
+        <option value="Bulgaria">Bulgaria</option>
+        <option value="Canada">Canada</option>
+        <option value="Chile">Chile</option>
+        <option value="China">China</option>
+        <option value="Colombia">Colombia</option>
+        <option value="Congo (DRC)">Congo (DRC)</option>
+        <option value="Costa Rica">Costa Rica</option>
+        <option value="Croatia">Croatia</option>
+        <option value="Egypt">Egypt</option>
+        <option value="Ethiopia">Ethiopia</option>
+        <option value="France">France</option>
+        <option value="Germany">Germany</option>
+        <option value="United Kingdom">UK</option>
+        <option value="India">India</option>
+        <option value="Indonesia">Indonesia</option>
+        <option value="Iran">Iran</option>
+        <option value="Iraq">Iraq</option>
+        <option value="Italy">Italy</option>
+        <option value="Japan">Japan</option>
+        <option value="Kenya">Kenya</option>
+        <option value="South Korea">South Korea</option>
+        <option value="Mexico">Mexico</option>
+        <option value="Myanmar">Myanmar</option>
+        <option value="Morocco">Morocco</option>
+        <option value="Nigeria">Nigeria</option>
+        <option value="Pakistan">Pakistan</option>
+        <option value="Peru">Peru</option>
+        <option value="Philippines">Philippines</option>
+        <option value="Russia">Russia</option>
+        <option value="Saudi Arabia">Saudi Arabia</option>
+        <option value="South Africa">South Africa</option>
+        <option value="Spain">Spain</option>
+        <option value="Sri Lanka">Sri Lanka</option>
+        <option value="Thailand">Thailand</option>
+        <option value="Turkey">Turkey</option>
+        <option value="Uganda">Uganda</option>
+        <option value="Ukraine">Ukraine</option>
+        <option value="Venezuela">Venezuela</option>
+        <option value="Vietnam">Vietnam</option>
     </select>
+
+    <!-- I need a button to push-->
+<button type="submit" style="width: 150px;">Place Order</button>
+
 </form>
