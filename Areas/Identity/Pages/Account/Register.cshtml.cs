@@ -70,49 +70,34 @@ namespace AuthLab2.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
-            [Required(ErrorMessage = "First Name is required")]
-            [StringLength(50, ErrorMessage = "First Name must be less than {1} characters")]
-            public string FirstName { get; set; }
-
-            [Required(ErrorMessage = "Last Name is required")]
-            [StringLength(50, ErrorMessage = "Last Name must be less than {1} characters")]
-            public string LastName { get; set; }
-
-            [Required(ErrorMessage = "Birth Date is required")]
-            [DataType(DataType.Date)]
-            public DateTime BirthDate { get; set; }
-
-            [Required(ErrorMessage = "Country is required")]
-            [StringLength(50, ErrorMessage = "Country must be less than {1} characters")]
-            public string Country { get; set; }
-
-            [Required(ErrorMessage = "Gender is required")]
-            [StringLength(1, ErrorMessage = "Gender must be 1 character")]
-            public string Gender { get; set; }
-
-            [Required(ErrorMessage = "Age is required")]
-            [Range(0, 150, ErrorMessage = "Age must be between {1} and {2}")]
-            public int Age { get; set; }
-
-            [Required(ErrorMessage = "Email is required")]
-            [EmailAddress(ErrorMessage = "Invalid Email Address")]
+            /// <summary>
+            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+            ///     directly from your code. This API may change or be removed in future releases.
+            /// </summary>
+            [Required]
+            [EmailAddress]
+            [Display(Name = "Email")]
             public string Email { get; set; }
 
-            [Required(ErrorMessage = "Username is required")]
-            [StringLength(50, ErrorMessage = "Username must be less than {1} characters")]
-            public string UserName { get; set; }
-
-            [Required(ErrorMessage = "Password is required")]
-            [StringLength(100, ErrorMessage = "Password must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            /// <summary>
+            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+            ///     directly from your code. This API may change or be removed in future releases.
+            /// </summary>
+            [Required]
+            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 12)]
             [DataType(DataType.Password)]
+            [Display(Name = "Password")]
             public string Password { get; set; }
 
+            /// <summary>
+            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+            ///     directly from your code. This API may change or be removed in future releases.
+            /// </summary>
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
         }
-
 
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -136,6 +121,9 @@ namespace AuthLab2.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    // Add the "Customer" role to the user
+                    await _userManager.AddToRoleAsync(user, "Customer");
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
