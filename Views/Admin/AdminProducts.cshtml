@@ -1,0 +1,60 @@
+﻿<h1 class="text-center">Table of All Products</h1>
+
+<div style="text-align:right">
+    <form asp-controller="Home" asp-action="AdminAddProduct" method="post">
+        <button type="submit" style="width: 150px;">Add Product</button>
+    </form>
+</div>
+
+<table class="table table-bordered table-striped">
+
+    <thead class="thead-dark fw-bold">
+        <tr>
+            <th style="text-align:center" class="bg-black text-white">ProductId</th>
+            <th style="text-align:center" class="bg-black text-white">Name</th>
+            <th style="text-align:center" class="bg-black text-white">Price</th>
+            <th style="text-align:center; width: 1000px;" class="bg-black text-white">Description of Product</th>
+            <th style="text-align:center" class="bg-black text-white">Category</th>
+            <th style="text-align:center" class="bg-black text-white">Year</th>
+            <th style="text-align:center" class="bg-black text-white">NumParts</th>
+            <th style="text-align:center" class="bg-black text-white">ImgLink</th>
+            <th style="text-align:center" class="bg-black text-white">PrimaryColor</th>
+            <th style="text-align:center" class="bg-black text-white">SecondaryColor</th>
+            <th style="text-align:center" class="bg-black text-white">Edit</th>
+            <th style="text-align:center" class="bg-black text-white">Delete</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var x in Model)
+        {
+            <tr>
+                <td style="text-align:center">@x.ProductId</td>
+                <td style="text-align:center">@x.Name</td>
+                <td style="text-align:center">@x.Price</td>
+                <td style="text-align:center">
+                    @{
+                        string shortDescription = x.Description.Length > 50 ? $"{x.Description.Substring(0, 50)}..." : x.Description;
+                        string fullDescription = x.Description;
+                    }
+                    <span class="description-short">@Html.Raw(shortDescription)</span>
+                    <span class="description-full" style="display: none;">@Html.Raw(fullDescription)</span>
+                    @if (x.Description.Length > 50)
+                    {
+                        <button class="btn btn-link show-more">Show more</button>
+                    }
+                </td>
+                <td style="text-align:center">@x.Category</td>
+                <td style="text-align:center">@x.Year</td>
+                <td style="text-align:center">@x.NumParts</td>
+                <td style="text-align:center">@x.ImgLink</td>
+                <td style="text-align:center">@x.PrimaryColor</td>
+                <td style="text-align:center">@x.SecondaryColor</td>
+
+                <td><a class="btn btn-info" asp-controller="Home" asp-action="EditCustomer" asp-route-id="@x.ProductId">Edit</a></td>
+                <td><a class="btn btn-danger" asp-controller="Home" asp-action="DeleteCustomer" asp-route-id="@x.ProductId">Delete</a></td>
+            </tr>
+        }
+    </tbody>
+
+</table>

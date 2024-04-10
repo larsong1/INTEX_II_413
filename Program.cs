@@ -84,6 +84,7 @@ namespace INTEX_II_413
             });
 
 
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -132,8 +133,6 @@ namespace INTEX_II_413
             app.MapControllerRoute("pagination", "{pageNum}", new { Controller = "Home", Action = "Products", pageNum = 1 });
             app.MapControllerRoute("projecttype", "{projectType}", new { Controller = "Home", Action = "Products", pageNum = 1 });
 
-
-
             app.MapDefaultControllerRoute();
 
             app.MapRazorPages();
@@ -153,10 +152,6 @@ namespace INTEX_II_413
             }
 
             app.Run();
-
-            
-
         }
     }
 }
-
