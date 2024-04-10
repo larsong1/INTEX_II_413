@@ -1,4 +1,5 @@
 ﻿using INTEX_II_413.Models;
+using System.Linq;
 
 public class EFIntexRepository : IIntexRepository
 {
@@ -17,6 +18,21 @@ public class EFIntexRepository : IIntexRepository
     public void AddProduct(Product p)
     {
         _context.Products.Add(p);
+        _context.SaveChanges(); 
+
+    }
+
+    public void EditProduct(Product updatedProduct)
+    {
+        _context.Products.Update(updatedProduct);
+    }
+
+    public void DeleteProduct(Product product)
+    {
+        _context.Products.Remove(product);
+    }
+    public void SaveChanges()
+    {
         _context.SaveChanges();
     }
 }
