@@ -107,8 +107,6 @@ namespace INTEX_II_413
 
             app.UseRouting();
 
-            app.UseAuthorization();
-
             SecretClientOptions options = new SecretClientOptions()
             {
                 Retry =
@@ -120,6 +118,8 @@ namespace INTEX_II_413
          }
             };
             var client = new SecretClient(new Uri("https://intex-ii-keys.vault.azure.net/"), new DefaultAzureCredential(), options);
+
+            app.UseAuthorization();
 
             KeyVaultSecret secret = client.GetSecret("secret");
 
