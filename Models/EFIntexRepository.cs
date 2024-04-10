@@ -25,11 +25,14 @@ public class EFIntexRepository : IIntexRepository
     public void EditProduct(Product updatedProduct)
     {
         _context.Products.Update(updatedProduct);
+        _context.SaveChanges();
+
     }
 
     public void DeleteProduct(Product product)
     {
         _context.Products.Remove(product);
+        _context.SaveChanges();
     }
     public void SaveChanges()
     {

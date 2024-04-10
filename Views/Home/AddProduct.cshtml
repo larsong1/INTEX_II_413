@@ -1,0 +1,38 @@
+﻿@model Product
+<h1 style="text-align:center">Add a new product to the list!</h1><br /><br />
+
+
+<form asp-controller="Home" asp-action="AddProduct" method="post" style="max-width: 400px; margin: auto;">
+    <input asp-for="ProductId" type="hidden" />
+
+    <label asp-for="Name">Name:</label>
+    <input asp-for="Name" type="text" required style="width: 100%; padding: 8px; margin-bottom: 16px; box-sizing: border-box;"><br /><br />
+
+    <label asp-for="Description">Description:</label>
+    <input asp-for="Description" type="text" required style="width: 100%; padding: 8px; margin-bottom: 16px; box-sizing: border-box;"><br /><br />
+
+    <label asp-for="Price">Price:</label>
+    <input asp-for="Price" type="decimal" required style="width: 100%; padding: 8px; margin-bottom: 16px; box-sizing: border-box;"><br /><br />
+
+    <label asp-for="Category">Category:</label>
+    <input asp-for="Category" type="text" required style="width: 100%; padding: 8px; margin-bottom: 16px; box-sizing: border-box;"><br /><br />
+
+    <label asp-for="Year">Year:</label>
+    <input asp-for="Year" type="text" required style="width: 100%; padding: 8px; margin-bottom: 16px; box-sizing: border-box;"><br /><br />
+
+    <label asp-for="NumParts">NumParts:</label>
+    <input asp-for="NumParts" type="text" required style="width: 100%; padding: 8px; margin-bottom: 16px; box-sizing: border-box;"><br /><br />
+
+    <label asp-for="ImgLink">ImgLink:</label>
+    <input asp-for="ImgLink" type="text" style="width: 100%; padding: 8px; margin-bottom: 16px; box-sizing: border-box;"><br /><br />
+
+    <label asp-for="PrimaryColor">PrimaryColor:</label>
+    <input asp-for="PrimaryColor" type="text" style="width: 100%; padding: 8px; margin-bottom: 16px; box-sizing: border-box;"><br /><br />
+
+
+    <label asp-for="SecondaryColor">SecondaryColor:</label>
+    <input asp-for="SecondaryColor" type="text" style="width: 100%; padding: 8px; margin-bottom: 16px; box-sizing: border-box;"><br /><br />
+
+    <button type="submit" style="background-color: #007bff; color: #fff; padding: 10px; border: none; border-radius: 4px; cursor: pointer; margin: auto; display: block;">Submit</button>
+
+</form>

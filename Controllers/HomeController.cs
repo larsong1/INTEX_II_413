@@ -4,6 +4,7 @@ using INTEX_II_413.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using System.Formats.Tar;
 
 namespace INTEX_II_413.Controllers
 {
@@ -110,6 +111,68 @@ namespace INTEX_II_413.Controllers
             _repo.AddProduct(response);
             _repo.SaveChanges();
             return RedirectToAction("AdminProducts"); 
+        }
+
+        [HttpGet]
+        public IActionResult DeleteProduct(int id)
+        {
+            var recordToDelete = _repo.Products
+                .Single(x => x.ProductId == id);
+
+            return View("DeleteProduct",recordToDelete);
+        }
+        [HttpPost]
+
+        public IActionResult DeleteProduct(Product record)
+        {
+            _repo.DeleteProduct(record);
+
+            return RedirectToAction("AdminProduct");
+        }
+
+        public IActionResult EditProduct(int id)
+        {
+            var recordToEdit = _repo.Products
+                .Single(x => x.ProductId == id);
+
+            return View("EditProduct", recordToEdit);
+
+        }
+        [HttpPost]
+        public IActionResult EditProduct(Product updatedInfo)
+        {
+            _repo.EditProduct(updatedInfo);
+            _repo.SaveChanges();
+
+            return RedirectToAction("AdminProduct");
+        }
+
+        public IActionResult AdminProducts()
+        {
+            var products = _repo.Products.ToList();
+            return View(products);
+        }
+        public IActionResult AdminCustomers()
+        {
+            var customers = _repo.Customers.ToList();
+            return View(customers);
+        }
+
+        public IActionResult AdminOrders()
+        {
+            var orders = _repo.Orders.ToList();
+            return View(orders);
+        }
+
+        public IActionResult AdminHomepage()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AdminAddProduct()
+        {
+            return View("AddProduct");
         }
     }
 }
