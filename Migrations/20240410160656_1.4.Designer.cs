@@ -4,6 +4,7 @@ using INTEX_II_413.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace INTEX_II_413.Migrations
 {
     [DbContext(typeof(IntexContext))]
-    partial class IntexContextModelSnapshot : ModelSnapshot
+    [Migration("20240410160656_1.4")]
+    partial class _14
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,6 +43,9 @@ namespace INTEX_II_413.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -48,8 +54,17 @@ namespace INTEX_II_413.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(1)");
 
+                    b.Property<bool?>("IsAdmin")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LastName")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("id")

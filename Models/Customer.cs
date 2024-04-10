@@ -17,9 +17,5 @@ namespace INTEX_II_413.Models
         public string Country {  get; set; }
         public char Gender { get; set; }
         public int Age { get; set; }
-        public string? Email {  get; set; }
-        public string? UserName { get; set; }
-        public string? Password { get; set; }
-        public bool? IsAdmin { get; set; }
     }
 }
