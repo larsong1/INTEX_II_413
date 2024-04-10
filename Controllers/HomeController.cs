@@ -74,7 +74,10 @@ namespace INTEX_II_413.Controllers
             return View("FraudConfirmation");
         }
 
-
+        public IActionResult Checkout()
+        {
+            return View("Checkout");
+        }
 
         public IActionResult SingleProduct(int id, string returnUrl)
         {
@@ -93,6 +96,12 @@ namespace INTEX_II_413.Controllers
         public IActionResult CreateAccount()
         {
             return View("NewUser");
+        }
+
+        [HttpPost]
+        public IActionResult Cart() 
+        {
+            return View("Checkout");
         }
 
 

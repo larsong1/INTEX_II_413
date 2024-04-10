@@ -22,7 +22,6 @@ namespace INTEX_II_413.Controllers
             return View(customers);
         }
 
-
         public IActionResult AdminOrders()
         {
             var orders = _repo.Orders.ToList();

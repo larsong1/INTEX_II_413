@@ -34,12 +34,12 @@
                 <td style="text-align:center">@x.Price</td>
                 <td style="text-align:center">
                     @{
-                        string shortDescription = x.Description.Length > 50 ? $"{x.Description.Substring(0, 50)}..." : x.Description;
+                        string shortDescription = x.Description.Length > 75 ? $"{x.Description.Substring(0, 75)}..." : x.Description;
                         string fullDescription = x.Description;
                     }
                     <span class="description-short">@Html.Raw(shortDescription)</span>
                     <span class="description-full" style="display: none;">@Html.Raw(fullDescription)</span>
-                    @if (x.Description.Length > 50)
+                    @if (x.Description.Length > 75)
                     {
                         <button class="btn btn-link show-more">Show more</button>
                     }
