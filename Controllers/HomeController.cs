@@ -135,6 +135,16 @@ namespace INTEX_II_413.Controllers
         {
             // This is where the admin will see all the orders that have been placed
             // Specifically they will see orders that have been flagged as fraudulent
+
+            // I will need to get the orders from the database
+            // var orders = _repo.Orders.Where(o => o.FraudulentFlag == true).ToList();
+
+            //foreach (var order in orders)
+            {
+                // I will need to display the order number, the customer's name, the date the order was placed, and the total amount of the order
+                // I will also need to display the products that were ordered
+            }
+            
             return View();
         }
 
