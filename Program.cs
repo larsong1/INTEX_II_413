@@ -1,6 +1,10 @@
 using INTEX_II_413.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
+using Azure.Core;
+using Microsoft.Extensions.Configuration;
 
 namespace INTEX_II_413
 {
@@ -11,6 +15,21 @@ namespace INTEX_II_413
             var builder = WebApplication.CreateBuilder(args);
             var services = builder.Services;
             var configuration = builder.Configuration;
+
+            // Retrieve client ID and secret from Azure Key Vault
+            var keyVaultUri = new Uri("https://intex-ii-keys.vault.azure.net/");
+            var secretClient = new SecretClient(keyVaultUri, new DefaultAzureCredential());
+
+            // Retrieve client ID and secret from Azure Key Vault
+            var clientIdSecret = await secretClient.GetSecretAsync("client-id");
+            var clientSecretSecret = await secretClient.GetSecretAsync("secret");
+
+            // Add authentication using retrieved client ID and secret
+            services.AddAuthentication().AddMicrosoftAccount(microsoftOptions =>
+            {
+                microsoftOptions.ClientId = clientIdSecret.Value.Value;
+                microsoftOptions.ClientSecret = clientSecretSecret.Value.Value;
+            });
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
@@ -26,6 +45,18 @@ namespace INTEX_II_413
 
             builder.Services.AddScoped<Cart>(sp => SessionCart.GetCart(sp));
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            // add cookie notifications
+            builder.Services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential 
+                // cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+
+                options.ConsentCookieValue = "true";
+            });
 
             // add identity user and roles
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -48,16 +79,10 @@ namespace INTEX_II_413
                 options.Password.RequireLowercase = true;
                 options.Password.RequireNonAlphanumeric = true;
                 options.Password.RequireUppercase = true;
-                options.Password.RequiredLength = 14;
-                options.Password.RequiredUniqueChars = 6;
+                options.Password.RequiredLength = 12;
+                options.Password.RequiredUniqueChars = 4;
             });
 
-            // third party auth
-            services.AddAuthentication().AddMicrosoftAccount(microsoftOptions =>
-            {
-                microsoftOptions.ClientId = Environment.GetEnvironmentVariable("auth_client");
-                microsoftOptions.ClientSecret = Environment.GetEnvironmentVariable("auth_secret");
-            });
 
 
             var app = builder.Build();
@@ -76,11 +101,29 @@ namespace INTEX_II_413
 
             app.UseStaticFiles();
 
+            app.UseCookiePolicy();
+
             app.UseSession();
 
             app.UseRouting();
 
             app.UseAuthorization();
+
+            SecretClientOptions options = new SecretClientOptions()
+            {
+                Retry =
+        {
+            Delay= TimeSpan.FromSeconds(2),
+            MaxDelay = TimeSpan.FromSeconds(16),
+            MaxRetries = 5,
+            Mode = RetryMode.Exponential
+         }
+            };
+            var client = new SecretClient(new Uri("https://intex-ii-keys.vault.azure.net/"), new DefaultAzureCredential(), options);
+
+            KeyVaultSecret secret = client.GetSecret("secret");
+
+            string secretValue = secret.Value;
 
             app.MapControllerRoute(
                 name: "default",
