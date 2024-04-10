@@ -1,3 +1,4 @@
+using Azure;
 using INTEX_II_413.Models;
 using INTEX_II_413.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -73,18 +74,12 @@ namespace INTEX_II_413.Controllers
             return View("FraudConfirmation");
         }
 
-        public IActionResult AdminProducts()
-        {
-            return View("AdminProducts");
-        }
 
-        public IActionResult Orders()
-        {
-            return View();
-        }
 
-        public IActionResult SingleProduct(int id)
+        public IActionResult SingleProduct(int id, string returnUrl)
         {
+            ViewBag.returnUrl = returnUrl;
+
             var product = _repo.Products.Where(p => p.ProductId == id).FirstOrDefault();
 
             return View(product);
@@ -95,17 +90,19 @@ namespace INTEX_II_413.Controllers
         }
 
         [HttpPost]
-        public IActionResult Products(int id)
-        {
-            return RedirectToAction("SingleProduct", new { id = id });
-        }
-
-        [HttpPost]
         public IActionResult CreateAccount()
         {
             return View("NewUser");
         }
 
         
+
+        //[HttpPost]
+        //public IActionResult AddProduct(Product response)
+        //{
+        //    _repo.Product.Add(response);
+        //    _repo.SaveChanges();
+        //    return View("AdminProducts");
+        //}
     }
 }

@@ -1,6 +1,7 @@
 using INTEX_II_413.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
 namespace INTEX_II_413
 {
     public class Program
@@ -54,9 +55,10 @@ namespace INTEX_II_413
             // third party auth
             services.AddAuthentication().AddMicrosoftAccount(microsoftOptions =>
             {
-                microsoftOptions.ClientId = configuration["Authentication:Microsoft:ClientId"];
-                microsoftOptions.ClientSecret = configuration["Authentication:Microsoft:ClientSecret"];
+                microsoftOptions.ClientId = Environment.GetEnvironmentVariable("auth_client");
+                microsoftOptions.ClientSecret = Environment.GetEnvironmentVariable("auth_secret");
             });
+
 
             var app = builder.Build();
 
@@ -88,8 +90,6 @@ namespace INTEX_II_413
             app.MapControllerRoute("pagination", "{pageNum}", new { Controller = "Home", Action = "Products", pageNum = 1 });
             app.MapControllerRoute("projecttype", "{projectType}", new { Controller = "Home", Action = "Products", pageNum = 1 });
 
-
-
             app.MapDefaultControllerRoute();
 
             app.MapRazorPages();
@@ -109,10 +109,6 @@ namespace INTEX_II_413
             }
 
             app.Run();
-
-            
-
         }
     }
 }
-
