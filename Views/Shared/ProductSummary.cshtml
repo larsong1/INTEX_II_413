@@ -2,39 +2,37 @@
 
 @model Product
 
-<div class="col-md-6">
-    <div class="col">
-        <div class="card shadow-sm">
-            <h4>
-                <div style="color: black; padding: 20px; text-align: center; font-size: 24px; font-family: 'Arial Black', sans-serif;" class="text-center">@Model.Name</div>
+<div class="col">
+    <div class="card shadow-sm">
+        <h4>
+            <div style="height: 40px; color: black; padding: 20px; text-align: center; font-size: 24px; font-family: 'Arial Black', sans-serif;" class="text-center">@Model.Name</div>
 
-                <span class="badge rounded-pill text-white float-end" style="background-color: #e8040c;border-color:black; margin-right: 10px;"><small>$@Model.Price</small></span>
-            </h4>
-            <div class="text-center">
-                <img src="@Model.ImgLink" class="bd-placeholder-img card-img-top text-center" style="width: auto; height: 400px; max-width: 100%; max-height: 100%;">
-            </div>
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <form asp-controller="Home" asp-action="SingleProduct" asp-route-returnUrl="@ViewContext.HttpContext.Request.PathAndQuery()" method="post">
-                        <button type="submit" name="id" value="@Model.ProductId"
-                                style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px; width: 150px;
-                                padding: 0 13px; color: white; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #e8040c;
-                                border-color: black; font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px;">
-                            <b>See More Info</b>
-                        </button>
-                    </form>
-                    <br /><br />
-                    <form id="@Model.ProductId" method="post" asp-page="/Cart">
-                        <input type="hidden" asp-for="ProductId" value="@Model.ProductId" />
-                        <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
-                        <button type="submit" class="btn-outline-success btn-sm float-end"
-                                style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px;
-                                padding: 0 13px; color: white; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #e8040c;
-                                border-color: black; font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px; margin-right: 10px;">
-                            <b>Add to Cart</b>
-                        </button>
-                    </form>
-                </div>
+            <span class="badge rounded-pill text-white float-end" style="background-color: #e8040c;border-color:black; margin-right: 10px;"><small>$@Model.Price</small></span>
+        </h4>
+        <div class="text-center">
+            <img src="@Model.ImgLink" class="bd-placeholder-img card-img-top text-center" style="width: auto; height: 400px; max-width: 100%; max-height: 100%;">
+        </div>
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                <form asp-controller="Home" asp-action="SingleProduct" asp-route-returnUrl="@ViewContext.HttpContext.Request.PathAndQuery()" method="post">
+                    <button type="submit" name="id" value="@Model.ProductId"
+                            style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px; width: 150px;
+                            padding: 0 13px; color: white; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #e8040c;
+                            border-color: black; font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px;">
+                        <b>See More Info</b>
+                    </button>
+                </form>
+                <br /><br />
+                <form id="@Model.ProductId" method="post" asp-page="/Cart">
+                    <input type="hidden" asp-for="ProductId" value="@Model.ProductId" />
+                    <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+                    <button type="submit" class="btn-outline-success btn-sm float-end"
+                            style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px;
+                            padding: 0 13px; color: white; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #e8040c;
+                            border-color: black; font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px; margin-right: 10px;">
+                        <b>Add to Cart</b>
+                    </button>
+                </form>
             </div>
         </div>
     </div>
