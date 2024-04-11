@@ -62,14 +62,11 @@ namespace INTEX_II_413.Migrations
 
             modelBuilder.Entity("INTEX_II_413.Models.Item_Based_Recs", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ProductId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
 
                     b.Property<int>("Recommendation1")
                         .HasColumnType("int");
@@ -101,7 +98,7 @@ namespace INTEX_II_413.Migrations
                     b.Property<int>("Recommendation9")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("ProductId");
 
                     b.ToTable("ItemBasedRecs");
                 });
@@ -196,7 +193,6 @@ namespace INTEX_II_413.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImgLink")
@@ -231,14 +227,11 @@ namespace INTEX_II_413.Migrations
 
             modelBuilder.Entity("INTEX_II_413.Models.User_Based_Recs", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ProductId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
 
                     b.Property<int>("Recommendation1")
                         .HasColumnType("int");
@@ -252,7 +245,7 @@ namespace INTEX_II_413.Migrations
                     b.Property<int>("Recommendation4")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("ProductId");
 
                     b.ToTable("UserBasedRecs");
                 });
