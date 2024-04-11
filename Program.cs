@@ -105,8 +105,6 @@ namespace INTEX_II_413
 
             app.UseRouting();
 
-            app.UseAuthorization();
-
             // Set CSP policy
             app.Use(async (context, next) =>
             {
