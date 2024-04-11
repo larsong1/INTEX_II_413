@@ -43,6 +43,7 @@ namespace INTEX_II_413.Controllers
         [HttpPost]
         public IActionResult PlaceOrder(OrderSubmissionViewModel submissionModel)
         {
+            var blah = 5;
             var customer = _repo.Customers.FirstOrDefault(c => c.CustomerId == submissionModel.CustomerId);
             if (customer == null)
             {
@@ -213,6 +214,7 @@ namespace INTEX_II_413.Controllers
 
         public IActionResult Checkout()
         {
+            OrderSubmissionViewModel model = new OrderSubmissionViewModel();
             return View("Checkout");
         }
 

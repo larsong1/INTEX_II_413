@@ -1,11 +1,16 @@
 ﻿@model INTEX_II_413.Models.ViewModels.OrderSubmissionViewModel
 
+@if (Model != null)
+{
+    <input type="hidden" asp-for="CustomerId" value="@Model.CustomerId">
+}
+
 
 <h1 style="margin-bottom: 16px;">Enter Payment Information</h1>
 <form asp-controller="Home" asp-action="PlaceOrder" method="post" style="width: 100%;">
 
     <!-- I need the CustomerId somehow. I will either bring it in this way, or through the session/cookies-->
-    <input type="hidden" asp-for="CustomerId" value="@Model.CustomerId"> 
+    <input type="hidden" asp-for="CustomerId" value="5"> 
 
 
 
