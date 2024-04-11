@@ -272,6 +272,7 @@ namespace INTEX_II_413.Controllers
             return View("NewUser");
         }
 
+
         [HttpPost]
         public IActionResult Cart(decimal total)
         {
