@@ -1,6 +1,8 @@
 using Azure;
 using INTEX_II_413.Models;
 using INTEX_II_413.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
@@ -76,6 +78,7 @@ namespace INTEX_II_413.Controllers
             return View("Login");
         }
 
+        [Authorize(Roles = "Admin,Customer")]
         public IActionResult Confirmation()
         {
             Random rand = new Random();
@@ -87,11 +90,13 @@ namespace INTEX_II_413.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin,Customer")]
         public IActionResult FraudConfirmation()
         {
             return View("FraudConfirmation");
         }
 
+        [Authorize(Roles = "Admin,Customer")]
         public IActionResult Checkout()
         {
             return View("Checkout");
@@ -105,6 +110,8 @@ namespace INTEX_II_413.Controllers
 
             return View(product);
         }
+
+        [Authorize(Roles = "Admin,Customer")]
         public IActionResult NewUser()
         {
             return View();
@@ -116,12 +123,14 @@ namespace INTEX_II_413.Controllers
             return View("NewUser");
         }
 
+        [Authorize(Roles = "Admin,Customer")]
         [HttpPost]
         public IActionResult Cart() 
         {
             return View("Checkout");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult AddProduct(Product response)
         {
@@ -130,6 +139,7 @@ namespace INTEX_II_413.Controllers
             return RedirectToAction("AdminProducts"); 
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult DeleteProduct(int id)
         {
@@ -138,8 +148,9 @@ namespace INTEX_II_413.Controllers
 
             return View("DeleteProduct",recordToDelete);
         }
-        [HttpPost]
 
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
         public IActionResult DeleteProduct(Product record)
         {
             _repo.DeleteProduct(record);
@@ -147,6 +158,7 @@ namespace INTEX_II_413.Controllers
             return RedirectToAction("AdminProduct");
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult EditProduct(int id)
         {
             var recordToEdit = _repo.Products
@@ -155,6 +167,8 @@ namespace INTEX_II_413.Controllers
             return View("EditProduct", recordToEdit);
 
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult EditProduct(Product updatedInfo)
         {
@@ -164,6 +178,7 @@ namespace INTEX_II_413.Controllers
             return RedirectToAction("AdminProduct");
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult AdminProducts(int pageNum = 1, string? productCategory = null, int pageSize = 1)
         {
             //var products = _repo.Products.ToList();
@@ -205,23 +220,28 @@ namespace INTEX_II_413.Controllers
 
             return View(plvm);
         }
+
+        [Authorize(Roles = "Admin")]
         public IActionResult AdminCustomers()
         {
             var customers = _repo.Customers.ToList();
             return View(customers);
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult AdminOrders()
         {
             var orders = _repo.Orders.ToList();
             return View(orders);
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult AdminHomepage()
         {
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult AdminAddProduct()
         {
