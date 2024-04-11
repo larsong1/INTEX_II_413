@@ -6,13 +6,14 @@
 
     <div class="row">
         <!-- Filter and category selection on the left -->
-        <div class="col-md-3">
+        <div class="col-md-2">
             <vc:product-category />
+            <div></div>
             <vc:product-color />
 
             <!-- New dropdown for selecting page size -->
             <div class="dropdown mt-3">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="pageSizeDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="pageSizeDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100%;">
                     Page Size
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="pageSizeDropdown">
@@ -36,8 +37,8 @@
         </div>
 
         <!-- Products list on the right -->
-        <div class="col-md-9">
-            <div class="row">
+        <div class="col-md-10">
+            <div class="row row row-cols-1 row-cols-md-1 row-cols-lg-2 g-3">
                 @foreach (Product p in Model.Products)
                 {
                     <partial name="ProductSummary" model="@p" />
