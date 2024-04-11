@@ -30,7 +30,7 @@ namespace INTEX_II_413.Controllers
         {
             _repo = temp;
 
-            _sessionFraud = new InferenceSession("C:/Users/Hammo/source/repos/INTEX_II_413/Fraud_Identification_model_2.onnx");
+            _sessionFraud = new InferenceSession("C:\\Users\\Hammo\\source\\repos\\INTEX_II_413\\Fraud_Identification_model_2.onnx");
 
         }
 
@@ -83,7 +83,7 @@ namespace INTEX_II_413.Controllers
                 // Here, you would save the order to your database. Since you don't have _context,
                 // you should use whatever mechanism you have in place, such as a repository method.
 
-        
+                
 
                 // Process the order normally
                 return RedirectToAction("Confirmation");

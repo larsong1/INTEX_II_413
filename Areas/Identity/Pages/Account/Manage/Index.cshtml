@@ -13,28 +13,28 @@
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
 
             <div class="form-floating mb-3">
-                <input asp-for="Username" class="form-control" placeholder="Please choose your username." disabled />
+                <input asp-for="Username" class="form-control" placeholder="Please choose your username."  />
                 <label asp-for="Username" class="form-label"></label>
             </div>
 
             @*
             <div class="form-floating mb-3">
-                <input asp-for="FirstName" class="form-control" placeholder="First Name" />
-                <label asp-for="FirstName">First Name</label>
+                <input asp-for="Input.FirstName" class="form-control" placeholder="First Name" />
+                <label asp-for="Input.FirstName">First Name</label>
             </div>
 
             <div class="form-floating mb-3">
-                <input asp-for="LastName" class="form-control" placeholder="Last Name" />
-                <label asp-for="LastName">Last Name</label>
+                <input asp-for="Input.LastName" class="form-control" placeholder="Last Name" />
+                <label asp-for="Input.LastName">Last Name</label>
             </div>
 
             <div class="form-floating mb-3">
-                <input asp-for="BirthDate" type="date" class="form-control" placeholder="Birth Date" />
-                <label asp-for="BirthDate">Birth Date</label>
+                <input asp-for="Input.BirthDate" type="date" class="form-control" placeholder="Birth Date" />
+                <label asp-for="Input.BirthDate">Birth Date</label>
             </div>
 
             <div class="form-floating mb-3">
-                <select asp-for="Country" class="form-select">
+                <select asp-for="Input.Country" class="form-select">
                     <option value="">Select a Country</option>
                     <option value="USA">USA</option>
                     <option value="Afghanistan">Afghanistan</option>
@@ -88,17 +88,17 @@
                     <option value="Venezuela">Venezuela</option>
                     <option value="Vietnam">Vietnam</option>
                 </select>
-                <label asp-for="Country">Country</label>
+                <label asp-for="Input.Country">Country</label>
             </div>
 
             <div class="form-floating mb-3">
-                <select asp-for="Gender" class="form-select">
+                <select asp-for="Input.Gender" class="form-select">
                     <option value="">Select a Gender</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                     
                 </select>
-                <label asp-for="Gender">Gender</label>
+                <label asp-for="Input.Gender">Gender</label>
             </div>
             *@
             <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
