@@ -1,13 +1,13 @@
 ﻿
 @model Product
 
-<div class="col-md-6">
+<div class="col-md-12">
     <div class="card m-1 p-1">
-        <h4>
+        <h4 class="text-center">
             @Model.Name
-            <span class="badge rounded-pill bg-primary text-white float-end"><small>$@Model.Price</small></span>
+            <span class="badge rounded-pill text-white float-end" style="background-color: #92b6f0;border-color:black;"><small>$@Model.Price</small></span>
         </h4>
-        <a href="@Model.ImgLink">
+        <a class="text-center" href="@Model.ImgLink">
             <img src="@Model.ImgLink" style="max-width: 400px; height: auto;">
         </a>
         <ul>
@@ -16,13 +16,30 @@
             <li>@Model.Category</li>
             <li>@Model.Description</li>
         </ul>
-        <div>
-            <a class="btn btn-primary" href="@ViewBag.returnUrl">Continue Shopping</a>
+        <div style="display: flex; justify-content: center;">
+            <div style="margin-right: 10px;">
+                <a class="btn btn-primary"
+                   href="@ViewBag.returnUrl"
+                   style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px; padding: 0 13px;
+                  color: #fff; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #92b6f0; border-color: black;
+                  font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px;">
+                    Continue Shopping
+                </a>
+            </div>
+
+            <div style="margin-left: 10px;">
+                <form id="@Model.ProductId" method="post" asp-page="/Cart">
+                    <input type="hidden" asp-for="ProductId" value="@Model.ProductId" />
+                    <input type="hidden" name="returnUrl" value="@ViewBag.returnUrl" />
+                    <button type="submit" class="btn-outline-success btn-sm"
+                            style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px;
+                    padding: 0 13px; color: #fff; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #92b6f0;
+                    border-color: black; font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px;">
+                        Add to Cart
+                    </button>
+                </form>
+            </div>
         </div>
-        <form id="@Model.ProductId" method="post" asp-page="/Cart">
-            <input type="hidden" asp-for="ProductId" value="@Model.ProductId" />
-            <input type="hidden" name="returnUrl" value="@ViewBag.returnUrl" />
-            <button type="submit" class="btn-outline-success btn-sm float-end">Add to cart</button>
-        </form>
+
     </div>
 </div>

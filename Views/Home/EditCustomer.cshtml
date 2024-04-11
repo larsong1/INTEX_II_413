@@ -1,0 +1,37 @@
+﻿@model Customer
+
+<h1 style="text-align:center">Edit Customer</h1>
+<br />
+<br />
+
+
+<form asp-controller="Home" asp-action="EditCustomer" method="post" style="max-width: 400px; margin: auto;">
+    <input asp-for="CustomerId" type="hidden" />
+
+    <label asp-for="FirstName">FirstName:</label>
+    <input asp-for="FirstName" type="text" required style="width: 100%; padding: 8px; margin-bottom: 16px; box-sizing: border-box;"><br /><br />
+
+    <label asp-for="LastName">LastName:</label>
+    <input asp-for="LastName" type="text" required style="width: 100%; padding: 8px; margin-bottom: 16px; box-sizing: border-box;"><br /><br />
+
+    <label asp-for="BirthDate">BirthDate:</label>
+    <input asp-for="BirthDate" type="datetime" required style="width: 100%; padding: 8px; margin-bottom: 16px; box-sizing: border-box;"><br /><br />
+
+    <label asp-for="Country">Country:</label>
+    <input asp-for="Country" type="text" required style="width: 100%; padding: 8px; margin-bottom: 16px; box-sizing: border-box;"><br /><br />
+
+    <label asp-for="Gender">Gender:</label>
+    <input asp-for="Gender" type="text" required style="width: 100%; padding: 8px; margin-bottom: 16px; box-sizing: border-box;"><br /><br />
+
+    <label asp-for="Age">Age:</label>
+    <input asp-for="Age" type="text" required style="width: 100%; padding: 8px; margin-bottom: 16px; box-sizing: border-box;"><br /><br />
+
+    <button type="submit"
+            class="btn btn-info"
+            style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px; padding: 0 13px;
+               color: #fff; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #92b6f0; border-color: black;
+               font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px;">
+        Submit
+    </button>
+
+</form>
