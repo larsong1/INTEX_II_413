@@ -85,6 +85,13 @@ namespace INTEX_II_413
 
             var app = builder.Build();
 
+            // Set CSP policy
+            app.Use(async (context, next) =>
+            {
+                context.Response.Headers.Add("Content-Security-Policy", "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https://www.thesun.co.uk https://www.lego.com https://images.brickset.com data: https://m.media-amazon.com https://www.brickeconomy.com; font-src 'self'; connect-src 'self' http://localhost:23148 https://localhost:44337 ws: wss:; frame-src 'self';");
+                await next();
+            });
+
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
@@ -93,7 +100,6 @@ namespace INTEX_II_413
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
 
             // redirect http to https
             app.UseHttpsRedirection();
