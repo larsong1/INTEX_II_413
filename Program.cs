@@ -123,9 +123,9 @@ namespace INTEX_II_413
 
             app.UseAuthorization();
 
-            KeyVaultSecret secret = client.GetSecret("secret");
+            //KeyVaultSecret secret = client.GetSecret("secret");
 
-            string secretValue = secret.Value;
+            //string secretValue = secret.Value;
 
             // Set CSP policy
             //app.Use(async (context, next) =>
