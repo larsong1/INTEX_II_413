@@ -50,16 +50,31 @@ namespace INTEX_II_413.Infrastructure
             {
                 IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
                 TagBuilder result = new TagBuilder("div");
+
+                // Merge existing query parameters with PageUrlValues
+                var mergedUrlValues = new Dictionary<string, object>();
+                foreach (var queryParam in ViewContext.HttpContext.Request.Query)
+                {
+                    if (!PageUrlValues.ContainsKey(queryParam.Key))
+                    {
+                        mergedUrlValues[queryParam.Key] = queryParam.Value;
+                    }
+                }
+                foreach (var kvp in PageUrlValues)
+                {
+                    mergedUrlValues[kvp.Key] = kvp.Value;
+                }
+
                 for (int i = 1; i <= PageModel.TotalPages; i++)
                 {
                     // build tag
                     TagBuilder tag = new TagBuilder("a");
 
-                    // get valyes from page url and set page number to it
-                    PageUrlValues["pageNum"] = i;
+                    // get values from page url and set page number to it
+                    mergedUrlValues["pageNum"] = i;
 
                     // set href for tag
-                    tag.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
+                    tag.Attributes["href"] = urlHelper.Action(PageAction, mergedUrlValues);
 
                     if (PageClassesEnabled)
                     {
@@ -78,8 +93,9 @@ namespace INTEX_II_413.Infrastructure
 
                 // append result to screen
                 output.Content.AppendHtml(result.InnerHtml);
-
             }
         }
+
     }
 }
+

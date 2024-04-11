@@ -1,18 +1,24 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-
-@model IEnumerable<string>
+﻿@model IEnumerable<string>
 
 <div class="d-grid gap-2">
-    <a class="btn btn-outline-secondary" asp-action="Product" asp-controller="Home" asp-route-productCategory="" asp-route-pageNum="">Reset Filters</a>
-
-    @foreach (string pt in Model ?? Enumerable.Empty<string>())
-    {
-        <a class="btn @(pt == ViewBag.SelectedProductCategory ? "btn-primary" : "btn-outline-secondary")" asp-controller="Home" asp-action="Product" asp-route-productCategory="@pt" asp-route-pageNum="1">
-            @pt
-        </a>
-    }
+    <div class="dropdown">
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+            Filter by Category
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <li>
+                <a class="dropdown-item @(string.IsNullOrEmpty(ViewBag.SelectedProductCategory) ? "active" : "")" asp-action="Product" asp-controller="Home" asp-route-productCategory="" asp-route-pageNum="1">
+                    All Categories
+                </a>
+            </li>
+            @foreach (string pt in Model ?? Enumerable.Empty<string>())
+            {
+                <li>
+                    <a class="dropdown-item @(pt == ViewBag.SelectedProductCategory ? "active" : "")" asp-action="Product" asp-controller="Home" asp-route-productCategory="@pt" asp-route-pageNum="1">
+                        @pt
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
 </div>

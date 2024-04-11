@@ -2,13 +2,37 @@
 @model ProductsListViewModel
 
 <div class="container mt-4">
-    <h1 class=>Products</h1>
+    <h1 class="mb-4">Products</h1>
 
     <div class="row">
         <!-- Filter and category selection on the left -->
         <div class="col-md-3">
             <vc:product-category />
             <vc:product-color />
+
+            <!-- New dropdown for selecting page size -->
+            <div class="dropdown mt-3">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="pageSizeDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    Page Size
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="pageSizeDropdown">
+                    <li>
+                        <a class="dropdown-item" asp-action="Products" asp-controller="Home" asp-route-pageNum="1" asp-route-pageSize="5">
+                            5
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" asp-action="Products" asp-controller="Home" asp-route-pageNum="1" asp-route-pageSize="10">
+                            10
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" asp-action="Products" asp-controller="Home" asp-route-pageNum="1" asp-route-pageSize="20">
+                            20
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
 
         <!-- Products list on the right -->
@@ -16,15 +40,14 @@
             <div class="row">
                 @foreach (Product p in Model.Products)
                 {
-                        <partial name="ProductSummary" model="@p" />
+                    <partial name="ProductSummary" model="@p" />
                 }
             </div>
 
             <!-- Pagination at the bottom of the products list -->
-            <div class="d-flex justify-content-end mt-4">
+            <div class="row">
                 <div page-model="@Model.PaginationInfo" page-action="Products"
                      page-class-enabled="true" page-class="btn" page-class-normal="btn-outline-dark" page-class-selected="btn-primary"
-                     page-url-projectType="@Model.CurrentProductCategory" page-url-projectColor="@Model.CurrentProductColor"
                      class="btn-group">
                 </div>
             </div>

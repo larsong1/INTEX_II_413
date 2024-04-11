@@ -12,7 +12,7 @@ namespace INTEX_II_413.Components
 
         public IViewComponentResult Invoke()
         {
-            ViewBag.SelectedProductCategory = RouteData?.Values["productColor"];
+            ViewBag.SelectedProductColor = RouteData?.Values["productColor"];
             var productColors = _repo.Products
                 .Select(x => x.PrimaryColor)
                 .Distinct()

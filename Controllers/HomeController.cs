@@ -30,7 +30,7 @@ namespace INTEX_II_413.Controllers
         {
             _repo = temp;
 
-            _sessionFraud = new InferenceSession("C:\\Users\\Hammo\\source\\repos\\INTEX_II_413\\Fraud_Identification_model_2.onnx");
+            _sessionFraud = new InferenceSession("Fraud_Identification_model_2.onnx");
 
         }
 
@@ -41,6 +41,8 @@ namespace INTEX_II_413.Controllers
             return View("Index");
         }
 
+
+        [Authorize(Roles = "Admin,Customer")]
         [HttpPost]
         public IActionResult PlaceOrder(OrderSubmissionViewModel submissionModel)
         {
@@ -155,11 +157,11 @@ namespace INTEX_II_413.Controllers
             }
         }
 
-        public IActionResult Products(int pageNum = 1, string productCategory = null, string primaryColor = null, int pageSize = 5)
+        public IActionResult Products(int pageNum = 1, string productCategory = null, string productColor = null, int pageSize = 5)
         {
             var query = _repo.Products
-                .Where(x => (productCategory == null || x.Category == productCategory) &&
-                            (primaryColor == null || x.PrimaryColor == primaryColor))
+                .Where(x => productCategory == null || x.CatalogCategory == productCategory)
+                .Where(x => productColor == null || x.PrimaryColor == productColor)
                 .OrderBy(x => x.Name);
 
             var totalItems = query.Count();
@@ -177,7 +179,7 @@ namespace INTEX_II_413.Controllers
                 },
 
                 CurrentProductCategory = productCategory,
-                CurrentProductColor = primaryColor
+                CurrentProductColor = productColor
             };
 
             return View(products);
@@ -259,7 +261,6 @@ namespace INTEX_II_413.Controllers
             return View("NewUser");
         }
 
-        [Authorize(Roles = "Admin,Customer")]
         [HttpPost]
         public IActionResult Cart() 
         {
