@@ -46,18 +46,6 @@ namespace INTEX_II_413
             builder.Services.AddScoped<Cart>(sp => SessionCart.GetCart(sp));
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            // add cookie notifications
-            builder.Services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential 
-                // cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-
-                options.ConsentCookieValue = "true";
-            });
-
             // add identity user and roles
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
@@ -83,6 +71,18 @@ namespace INTEX_II_413
                 options.Password.RequiredUniqueChars = 6;
             });
 
+            // add cookie notifications
+            builder.Services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential 
+                // cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+
+                options.ConsentCookieValue = "true";
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -94,6 +94,13 @@ namespace INTEX_II_413
                 app.UseHsts();
             }
 
+            // Set CSP policy
+            app.Use(async (context, next) =>
+            {
+                context.Response.Headers.Add("Content-Security-Policy", "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https://www.thesun.co.uk https://www.lego.com https://images.brickset.com data: https://m.media-amazon.com https://www.brickeconomy.com; font-src 'self'; connect-src 'self' http://localhost:23148 https://localhost:44337 ws: wss:; frame-src 'self';");
+                await next();
+            });
+
             // redirect http to https
             app.UseHttpsRedirection();
 
@@ -104,13 +111,6 @@ namespace INTEX_II_413
             app.UseSession();
 
             app.UseRouting();
-
-            // Set CSP policy
-            app.Use(async (context, next) =>
-            {
-                context.Response.Headers.Add("Content-Security-Policy", "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https://www.thesun.co.uk https://www.lego.com https://images.brickset.com data: https://m.media-amazon.com https://www.brickeconomy.com; font-src 'self'; connect-src 'self' http://localhost:23148 https://localhost:44337 ws: wss:; frame-src 'self';");
-                await next();
-            });
 
             app.UseAuthorization();
 
