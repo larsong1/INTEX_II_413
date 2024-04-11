@@ -44,12 +44,12 @@
 </table>
 
 <div class="text-center">
-    <a class="btn btn-primary" href="@Model.ReturnUrl" style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px; padding: 0 13px; color: black; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #e8040c; border-color: black; font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px;">
+    <a class="btn btn-primary" href="@Model.ReturnUrl" style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px; padding: 0 13px; color: white; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #e8040c; border-color: black; font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px;">
         <b>Continue Shopping</b>
     </a>
     <form asp-controller="Home" asp-action="Cart" method="post" style="display: inline-block;">
         <input type="hidden" name="total" value="@Model.Cart.Total" />
-        <button type="submit" class="btn btn-primary" style="width: 150px; height: 34px; padding: 0 13px; color: #fff; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #92b6f0; border-color: black; font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px;">
+        <button type="submit" class="btn btn-primary" style="width: 150px; height: 34px; padding: 0 13px; color: #fff; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #92b6f0; border-color: #e8040c; font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px;">
             Checkout
         </button>
     </form>
