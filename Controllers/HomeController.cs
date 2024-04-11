@@ -26,7 +26,7 @@ namespace INTEX_II_413.Controllers
         {
             _repo = temp;
 
-            _sessionFraud = new InferenceSession("C:/Users/Hammo/source/repos/INTEX_II_413/Fraud_Identification_model.onnx");
+            _sessionFraud = new InferenceSession("C:/Users/Hammo/source/repos/INTEX_II_413/Fraud_Identification_model_2.onnx");
 
         }
 
@@ -93,37 +93,65 @@ namespace INTEX_II_413.Controllers
 
 
         [HttpPost]
-        public IActionResult PredictFraud(OrderViewModel orderData)
+        public bool PredictFraud(FraudPredictionViewModel fraudPredictionData)
         {
+            int hourOfDay = fraudPredictionData.Time.Hour;
 
-            // A Tensor is a multi-dimensional array. In this case, we are creating a 1D tensor with 30 elements
-            var inputList = new List<float>();
+            List<float> inputList = new List<float>
+                {
+                    hourOfDay,
+                    fraudPredictionData.Age,
+                    fraudPredictionData.Year,
+                    fraudPredictionData.Month,
+                    fraudPredictionData.Day,
+                    fraudPredictionData.DayOfWeekNumeric,
+                    // One-hot encoding for 'country_of_transaction'
+                    fraudPredictionData.CountryOfTransaction == "India" ? 1f : 0f,
+                    fraudPredictionData.CountryOfTransaction == "Russia" ? 1f : 0f,
+                    fraudPredictionData.CountryOfTransaction == "USA" ? 1f : 0f,
+                    fraudPredictionData.CountryOfTransaction == "United Kingdom" ? 1f : 0f,
+                    // One-hot encoding for 'shipping_address'
+                    fraudPredictionData.ShippingAddress == "India" ? 1f : 0f, // Assumes contains is an acceptable check
+                    fraudPredictionData.ShippingAddress == "Russia" ? 1f : 0f,
+                    fraudPredictionData.ShippingAddress == "USA" ? 1f : 0f,
+                    fraudPredictionData.ShippingAddress == "United Kingdom" ? 1f : 0f,
+                    // One-hot encoding for 'bank'
+                    fraudPredictionData.Bank == "HSBC" ? 1f : 0f,
+                    fraudPredictionData.Bank == "Halifax" ? 1f : 0f,
+                    fraudPredictionData.Bank == "Lloyds" ? 1f : 0f,
+                    fraudPredictionData.Bank == "Metro" ? 1f : 0f,
+                    fraudPredictionData.Bank == "Monzo" ? 1f : 0f,
+                    fraudPredictionData.Bank == "RBS" ? 1f : 0f,
+                    // One-hot encoding for 'type_of_card'
+                    fraudPredictionData.TypeOfCard == "Visa" ? 1f : 0f,
+                    // One-hot encoding for 'country_of_residence'
+                    fraudPredictionData.CountryOfResidence == "India" ? 1f : 0f,
+                    fraudPredictionData.CountryOfResidence == "Russia" ? 1f : 0f,
+                    fraudPredictionData.CountryOfResidence == "USA" ? 1f : 0f,
+                    fraudPredictionData.CountryOfResidence == "United Kingdom" ? 1f : 0f,
+                    // One-hot encoding for 'gender'
+                    fraudPredictionData.Gender == 'M' ? 1f : 0f,
 
-            // Add logic to fill inputList based on orderData
+                };
 
-            // Example dummy coding - adjust according to actual orderData structure
-            inputList.Add(orderData.TransactionId);
-            // Add more inputs based on the expected columns
+                        // Convert inputList to Tensor
+                        var inputTensor = new DenseTensor<float>(inputList.ToArray(), new[] { 1, inputList.Count });
 
-            // Considering 'entry_mode_CVC' as not present, hence 'entry_mode_PIN' and 'entry_mode_Tap' will be 0
-            // Since the type of transaction is always 'Online', set 'type_of_transaction_Online' to 1 and 'type_of_transaction_POS' to 0
-            inputList.AddRange(new float[] { 0, 0, 1, 0 }); // Adjust indices based on actual input requirements
+                        // Prepare input for ONNX model
+                        var inputs = new List<NamedOnnxValue>
+                {
+                    NamedOnnxValue.CreateFromTensor("input", inputTensor)
+                };
 
-
-
-            var inputTensor = new DenseTensor<float>(inputList.ToArray(), new[] { 1, inputList.Count });
-
-            var inputs = new List<NamedOnnxValue>
+            // Run the model
+            using (var results = _sessionFraud.Run(inputs))
             {
-                NamedOnnxValue.CreateFromTensor("input", inputTensor)
-            };
-
-            using (var result = _sessionFraud.Run(inputs)) // This is where the prediction is made
-            {
-                var output = result.First().AsTensor<bool>().ToArray();
-                return output[0]; // Return the prediction result
+                // Extract and return the prediction result
+                var output = results.First().AsTensor<bool>().ToArray();
+                return output[0];
             }
         }
+
 
 
 
