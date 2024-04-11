@@ -7,7 +7,7 @@
 <div style="text-align:right">
     <form asp-controller="Home" asp-action="AdminAddProduct" method="post">
         <button type="submit" class="btn" style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px; padding: 0 13px;
-           color: #fff; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #b2cbf2; border-color: #92b6f0;
+           color: #fff; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #92b6f0; border-color: black;
            font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px; width: 150px;">
            Add Product
         </button>
@@ -39,7 +39,7 @@
             <tr>
                 <td style="text-align:center">@x.ProductId</td>
                 <td style="text-align:center">@x.Name</td>
-                <td style="text-align:center">@x.Price</td>
+                <td style="text-align:center">$@x.Price</td>
                 <td style="text-align:center">
                     @{
                         string shortDescription = x.Description.Length > 75 ? $"{x.Description.Substring(0, 75)}..." : x.Description;
@@ -62,7 +62,7 @@
                 <td style="text-align:center;">
                     <button class="btn btn-info" asp-controller="Home" asp-action="EditProduct" asp-route-id="@x.ProductId"
                             style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px; padding: 0 13px;
-                            color: #fff; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #b2cbf2; border-color: #92b6f0;
+                            color: #fff; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #92b6f0; border-color: black;
                             font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px;">
                             Edit
                     </button>
@@ -71,7 +71,7 @@
                 <td style="text-align:center;">
                     <button class="btn btn-danger" asp-controller="Home" asp-action="DeleteProduct" asp-route-id="@x.ProductId"
                             style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px; padding: 0 13px;
-                            color: #fff; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #b2cbf2; border-color: #92b6f0;
+                            color: #fff; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #92b6f0; border-color: black;
                             font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px;">
                             Delete
                     </button>

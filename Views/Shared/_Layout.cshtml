@@ -8,47 +8,45 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/INTEX_II_413.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib//font-awesome/css/all.min.css" />
+
 </head>
 <body>
+
     <header>
-        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #6c757d
-;">
+        <nav class="navbar navbar-expand-lg navbar-light">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><b>Aurora's Bricks</b></a>
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                    <img class="img-fluid" src="img/logo2.png" alt="..." width="100px" height="100px" />
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse d-sm-inline-flex justify-content-between">
+                <div class="navbar-collapse d-sm-inline-flex justify-content-between align-items-start">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Home</a>
+                            <a style="color: black; padding: 20px; text-align: center; font-size: 20px; font-family: 'Arial Black', sans-serif;" class="nav-link text-dark" asp-controller="Home" asp-action="Index"><b>Home</b></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Products">Products</a>
+                            <a <a style="color: black; padding: 20px; text-align: center; font-size: 20px; font-family: 'Arial Black', sans-serif;" class="nav-link text-dark" asp-controller="Home" asp-action="Products"><b>Products</b></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Home" asp-action="AboutUs">About Us</a>
+                            <a <a style="color: black; padding: 20px; text-align: center; font-size: 20px; font-family: 'Arial Black', sans-serif;" class="nav-link text-dark" asp-controller="Home" asp-action="AboutUs"><b>About Us</b></a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Confirmation">Confirmation</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Home" asp-action="FraudConfirmation">Fraud</a>
-                        </li>
-
                     </ul>
 
-                    <partial name="_LoginPartial" />
                 </div>
-                <div class="col-auto navbar-text text-end">
+
+                <div class="col-auto navbar-text" style="display: flex; justify-content: flex-end; align-items: center;">
+                    <partial name="_LoginPartial" />
                     <vc:cart-summary />
                 </div>
+
+
+
             </div>
         </nav>
     </header>
-
-
 
     <div class="container">
         <partial name="_CookieConsentPartial" />
@@ -59,7 +57,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2024 - Algorithnic Allies -   <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2024 - Algorithmic Allies -   <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
