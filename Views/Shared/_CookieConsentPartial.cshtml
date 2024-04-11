@@ -2,7 +2,7 @@
 
 @{
     // Retrieve the nonce value passed from middleware
-    var nonce = Context.Items["CspNonce"] as string;
+    var nonce = Context.Items["CookieCspNonce"] as string;
     var consentFeature = Context.Features.Get<ITrackingConsentFeature>();
     var showBanner = !consentFeature?.CanTrack ?? false;
     var cookieString = consentFeature?.CreateConsentCookie();

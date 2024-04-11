@@ -89,17 +89,18 @@ namespace INTEX_II_413
             app.Use(async (context, next) =>
             {
                 // Generate a nonce
-                string nonce = Guid.NewGuid().ToString("N");
+                string cookieNonce = Guid.NewGuid().ToString("N");
+                string filterNonce = Guid.NewGuid().ToString("N");
 
                 // Add nonce to CSP header
-                context.Response.Headers.Add("Content-Security-Policy", $"default-src 'self'; script-src 'self' 'nonce-{nonce}'; style-src 'self' 'unsafe-inline'; img-src 'self' https://www.thesun.co.uk https://www.lego.com https://images.brickset.com data: https://m.media-amazon.com https://www.brickeconomy.com; font-src 'self'; connect-src 'self' https://localhost:44337 ws: wss:; frame-src 'self';");
+                context.Response.Headers.Add("Content-Security-Policy", $"default-src 'self'; script-src 'self' 'nonce-{cookieNonce}' 'nonce-{filterNonce}'; style-src 'self' 'unsafe-inline'; img-src 'self' https://www.thesun.co.uk https://www.lego.com https://images.brickset.com data: https://m.media-amazon.com https://www.brickeconomy.com https://localhost:7094; font-src 'self'; connect-src 'self' https://localhost:44337 http://localhost:40904 ws: wss:; frame-src 'self';");
 
                 // Pass the nonce value to your view
-                context.Items["CspNonce"] = nonce;
+                context.Items["CookieCspNonce"] = cookieNonce;
+                context.Items["FilterCspNonce"] = filterNonce;
 
                 await next();
             });
-
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
