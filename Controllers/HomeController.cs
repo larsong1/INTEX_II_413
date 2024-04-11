@@ -83,9 +83,7 @@ namespace INTEX_II_413.Controllers
                 // Here, you would save the order to your database. Since you don't have _context,
                 // you should use whatever mechanism you have in place, such as a repository method.
 
-        public IActionResult Products(int pageNum = 1, string? productCategory = null, int pageSize = 1)
-                // _repo.Orders.Add(submissionModel.Order); // Example repository call to save the order
-                // _repo.SaveChanges(); // Save changes to the database
+        
 
                 // Process the order normally
                 return RedirectToAction("Confirmation");
@@ -163,6 +161,9 @@ namespace INTEX_II_413.Controllers
 
         public IActionResult Products(int pageNum = 1, string? productCategory = null)
         {
+            //just for now
+            int pageSize = 6;
+
             int pgSize = pageSize;
             int defaultPageSize = 6;
 
@@ -242,7 +243,7 @@ namespace INTEX_II_413.Controllers
         public IActionResult Checkout()
         {
             OrderSubmissionViewModel model = new OrderSubmissionViewModel();
-            return View("Checkout");
+            return View("Checkout", model);
         }
 
         public IActionResult SingleProduct(int id, string returnUrl)
