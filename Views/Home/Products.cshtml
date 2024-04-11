@@ -6,9 +6,8 @@
 
     <div class="row">
         <!-- Filter and category selection on the left -->
-        <div class="col-md-2">
+        <div class="col-md-2 col-sm-12">
             <vc:product-category />
-            <div></div>
             <vc:product-color />
 
             <!-- New dropdown for selecting page size -->
@@ -37,7 +36,7 @@
         </div>
 
         <!-- Products list on the right -->
-        <div class="col-md-10">
+        <div class="col-md-10 col-sm-12">
             <div class="row row row-cols-1 row-cols-md-1 row-cols-lg-2 g-3">
                 @foreach (Product p in Model.Products)
                 {
