@@ -6,20 +6,21 @@
 
 <table class="table table-bordered table-striped">
 
-    <thead class="thead-dark fw-bold">
+    <thead class="thead-dark">
         <tr>
-            <th style="text-align:center; background-color: #92b6f0;" class="text-white">CustomerId</th>
-            <th style="text-align:center; background-color: #92b6f0;" class="text-white">FirstName</th>
-            <th style="text-align:center; background-color: #92b6f0;" class="text-white">LastName</th>
-            <th style="text-align:center; background-color: #92b6f0;" class="text-white">BirthDate</th>
-            <th style="text-align:center; background-color: #92b6f0;" class="text-white">Country</th>
-            <th style="text-align:center; background-color: #92b6f0;" class="text-white">Gender</th>
-            <th style="text-align:center; background-color: #92b6f0;" class="text-white">Age</th>
+            <th style="text-align:center; background-color: #e8040c; font-weight: bold; color: white;">CustomerId</th>
+            <th style="text-align:center; background-color: #e8040c; font-weight: bold; color: white;">FirstName</th>
+            <th style="text-align:center; background-color: #e8040c; font-weight: bold; color: white;">LastName</th>
+            <th style="text-align:center; background-color: #e8040c; font-weight: bold; color: white;">BirthDate</th>
+            <th style="text-align:center; background-color: #e8040c; font-weight: bold; color: white;">Country</th>
+            <th style="text-align:center; background-color: #e8040c; font-weight: bold; color: white;">Gender</th>
+            <th style="text-align:center; background-color: #e8040c; font-weight: bold; color: white;">Age</th>
 
-            <th style="text-align:center; background-color: #92b6f0;" class="text-white"></th>
-            <th style="text-align:center; background-color: #92b6f0;" class="text-white"></th>
+            <th style="text-align:center; background-color: #e8040c; font-weight: bold; color: white;"></th>
+            <th style="text-align:center; background-color: #e8040c; font-weight: bold; color: white;"></th>
         </tr>
     </thead>
+
 
     <tbody>
         @foreach (var x in Model)
@@ -37,18 +38,18 @@
                     <a class="btn btn-info"
                        asp-controller="Home" asp-action="EditCustomer" asp-route-id="@x.CustomerId"
                        style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px; padding: 0 13px;
-                       color: #fff; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #92b6f0; border-color: black;
+                       color: white; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #e8040c; border-color: black;
                        font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px;">
-                        Edit
+                        <b>Edit</b>
                     </a>
                 </td>
                 <td style="text-align:center">
                     <a class="btn btn-danger"
                        asp-controller="Home" asp-action="DeleteCustomer" asp-route-id="@x.CustomerId"
                        style="display: inline-flex; justify-content: center;align-items: center;outline: 0;cursor: pointer;height: 34px;padding: 0 13px;
-                       color: #fff;border-radius: 3px;border: 1px solid transparent;transition: all .3s ease;background:	#92b6f0;border-color:black;
+                       color: white;border-radius: 3px;border: 1px solid transparent;transition: all .3s ease;background:	#e8040c;border-color:black;
                        font-weight: 600;text-transform: uppercase;line-height: 16px;font-size: 14px;">
-                        Delete
+                        <b>Delete</b>
                     </a>
                 </td>
 

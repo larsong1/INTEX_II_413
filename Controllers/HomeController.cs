@@ -237,8 +237,9 @@ namespace INTEX_II_413.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult AdminOrders()
         {
-            var orders = _repo.Orders.ToList();
+            var orders = _repo.Orders.OrderByDescending(o => o.Date).ToList();
             return View(orders);
+
         }
 
         [Authorize(Roles = "Admin")]
