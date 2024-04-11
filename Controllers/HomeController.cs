@@ -80,10 +80,8 @@ namespace INTEX_II_413.Controllers
             }
             else
             {
-                // Here, you would save the order to your database. Since you don't have _context,
-                // you should use whatever mechanism you have in place, such as a repository method.
-                // _repo.Orders.Add(submissionModel.Order); // Example repository call to save the order
-                // _repo.SaveChanges(); // Save changes to the database
+                //Need to make what is passed to it what we need.
+                //FinalOrderSubmission(submissionModel); 
 
                 // Process the order normally
                 return RedirectToAction("Confirmation");
@@ -92,10 +90,19 @@ namespace INTEX_II_413.Controllers
                
     }
 
+        [Authorize(Roles = "Admin,Customer")]
+        [HttpPost]
+        public IActionResult FinalOrderSubmission(OrderSubmissionViewModel model)
+        {
+            model.Order.CustomerId = model.CustomerId;
+
+            _repo.AddOrder(model.Order);
+            _repo.SaveChanges();
+            return RedirectToAction("Confirmation");
+        }
 
 
-
-    [HttpPost]
+        [HttpPost]
         public bool PredictFraud(FraudPredictionViewModel fraudPredictionData)
         {
             int hourOfDay = fraudPredictionData.Time.Hour;
@@ -162,7 +169,7 @@ namespace INTEX_II_413.Controllers
         public IActionResult Products(int pageNum = 1, string? productCategory = null, int pageSize=1)
         {
             //just for now
-            int pageSize = 6;
+            //int pageSize = 6;
 
             int pgSize = pageSize;
             int defaultPageSize = 6;
@@ -221,16 +228,7 @@ namespace INTEX_II_413.Controllers
             return View("Login");
         }
 
-        [Authorize(Roles = "Admin,Customer")]
-        [HttpPost]
-        public IActionResult FinalOrderSubmission(OrderSubmissionViewModel model)
-        {
-            model.Order.CustomerId = model.CustomerId;
-
-            _repo.AddOrder(model.Order);
-            _repo.SaveChanges();
-            return RedirectToAction("Confirmation");
-        }
+        
 
 
         [Authorize(Roles = "Admin,Customer")]
@@ -250,10 +248,6 @@ namespace INTEX_II_413.Controllers
         {
             return View("FraudConfirmation");
         }
-
-        
-
-
 
         public IActionResult SingleProduct(int id, string returnUrl)
         {
