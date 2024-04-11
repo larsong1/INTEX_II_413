@@ -1,9 +1,11 @@
 using INTEX_II_413.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace INTEX_II_413.Pages
 {
+    [Authorize(Roles = "Admin,Customer")]
     public class CartModel : PageModel
     {
         private IIntexRepository _repo;
