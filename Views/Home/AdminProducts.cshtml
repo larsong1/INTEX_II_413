@@ -1,6 +1,10 @@
-﻿@{
+@{
     Layout = "_AdminLayout";
 }
+
+@using INTEX_II_413.Models.ViewModels
+
+@model ProductsListViewModel
 
 <h1 class="text-center">Table of All Products</h1>
 
@@ -34,7 +38,7 @@
     </thead>
 
     <tbody>
-        @foreach (var x in Model)
+        @foreach (var x in Model.Products)
         {
             <tr>
                 <td style="text-align:center">@x.ProductId</td>
@@ -81,3 +85,22 @@
     </tbody>
 
 </table>
+
+<div class="row">
+    <div class="col">
+        <div page-model="@Model.PaginationInfo" page-action="AdminProducts"
+             page-class-enabled="true" page-class="btn" page-class-normal="btn-outline-dark" page-class-selected="btn-primary"
+             class="btn-group pull-right m-1">
+        </div>
+    </div>
+    <div class="col">
+        <form class="float-end" id="psForm" asp-controller="Home" asp-action="AdminProducts" method="get">
+            <label for="pageSize">Number of records per page</label>
+            <select name='pageSize' id='pageSize' onchange="document.getElementById('psForm').submit();">
+                <!option value=6 @(ViewContext.HttpContext.Session.GetInt32("pageSize") == 6 ? "selected" : "")>6</!option>
+                <!option value=10 @(ViewContext.HttpContext.Session.GetInt32("pageSize") == 10 ? "selected" : "")>10</!option>
+                <!option value=20 @(ViewContext.HttpContext.Session.GetInt32("pageSize") == 20 ? "selected" : "")>20</!option>
+            </select>
+        </form>
+    </div>
+</div>

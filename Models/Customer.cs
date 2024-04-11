@@ -8,7 +8,7 @@ namespace INTEX_II_413.Models
         [Key]
         public int CustomerId { get; set; }
 
-        [ForeignKey(nameof(CustomerId))]
+        [ForeignKey("id")]
         public int id { get; set; }
 
         public string FirstName { get; set; }
