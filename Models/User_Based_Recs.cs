@@ -6,9 +6,6 @@ namespace INTEX_II_413.Models
     public class User_Based_Recs
     {
         [Key]
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-
         [Required]
         public int ProductId { get; set; }
 
