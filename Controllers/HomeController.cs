@@ -23,15 +23,18 @@ namespace INTEX_II_413.Controllers
             return View("Index");
         }
 
-        public IActionResult Products(int pageNum = 1, string? productCategory = null, int pageSize = )
+        public IActionResult Products(int pageNum = 1, string? productCategory = null, int pageSize = 1)
         {
-            string pgSize = pageSize;
+            int pgSize = pageSize;
+            int defaultPageSize = 6;
 
-            if(pgSize == "default")
+            if(pgSize == 1)
             {
-                if (HttpContext.Session.TryGetValue("pageSize", out byte[] pageSizeBytes))
+                pgSize = defaultPageSize;
+
+                if (HttpContext.Session.GetInt32("pageSize") != null)
                 {
-                    pgSize = BitConverter.ToInt32(pageSizeBytes, 0);
+                    pgSize = (int)HttpContext.Session.GetInt32("pageSize");
                 }
             }
 

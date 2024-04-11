@@ -21,9 +21,9 @@
         <form class="float-end" id="psForm" asp-controller="Home" asp-action="Products" method="get">
             <label for="pageSize">Number of records per page</label>
             <select name='pageSize' id='pageSize' onchange="document.getElementById('psForm').submit();">
-                <!option value="six" @(ViewContext.HttpContext.Session.GetInt32("pageSize") == 6 ? "selected" : "")>6</!option>
-                <!option value="ten" @(ViewContext.HttpContext.Session.GetInt32("pageSize") == 10 ? "selected" : "")>10</!option>
-                <!option value="twenty" @(ViewContext.HttpContext.Session.GetInt32("pageSize") == 20 ? "selected" : "")>20</!option>
+                <!option value=6 @(ViewContext.HttpContext.Session.GetInt32("pageSize") == 6 ? "selected" : "")>6</!option>
+                <!option value=10 @(ViewContext.HttpContext.Session.GetInt32("pageSize") == 10 ? "selected" : "")>10</!option>
+                <!option value=20 @(ViewContext.HttpContext.Session.GetInt32("pageSize") == 20 ? "selected" : "")>20</!option>
             </select>
         </form>
     </div>
