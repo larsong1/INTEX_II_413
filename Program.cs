@@ -79,8 +79,8 @@ namespace INTEX_II_413
                 options.Password.RequireLowercase = true;
                 options.Password.RequireNonAlphanumeric = true;
                 options.Password.RequireUppercase = true;
-                options.Password.RequiredLength = 12;
-                options.Password.RequiredUniqueChars = 4;
+                options.Password.RequiredLength = 16;
+                options.Password.RequiredUniqueChars = 6;
             });
 
 
@@ -107,8 +107,6 @@ namespace INTEX_II_413
 
             app.UseRouting();
 
-            app.UseAuthorization();
-
             SecretClientOptions options = new SecretClientOptions()
             {
                 Retry =
@@ -121,9 +119,19 @@ namespace INTEX_II_413
             };
             var client = new SecretClient(new Uri("https://intex-ii-keys.vault.azure.net/"), new DefaultAzureCredential(), options);
 
+            app.UseAuthorization();
+
             KeyVaultSecret secret = client.GetSecret("secret");
 
             string secretValue = secret.Value;
+
+            // Set CSP policy
+            app.Use(async (context, next) =>
+            {
+                context.Response.Headers.Add("Content-Security-Policy", "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https://www.thesun.co.uk https://www.lego.com https://images.brickset.com data: https://m.media-amazon.com https://www.brickeconomy.com; font-src 'self'; connect-src 'self' http://localhost:23148 https://localhost:44337 ws: wss:; frame-src 'self';");
+                await next();
+            });
+
 
             app.MapControllerRoute(
                 name: "default",

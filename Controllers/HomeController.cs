@@ -2,6 +2,8 @@ using Azure;
 using System;
 using INTEX_II_413.Models;
 using INTEX_II_413.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
@@ -311,6 +313,7 @@ namespace INTEX_II_413.Controllers
             return View(orders);
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult AdminHomepage()
         {
             return View();

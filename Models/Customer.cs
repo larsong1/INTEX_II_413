@@ -17,6 +17,5 @@ namespace INTEX_II_413.Models
         public string Country {  get; set; }
         public char Gender { get; set; }
         public int Age { get; set; }
-
     }
 }
