@@ -38,7 +38,7 @@
     <tfoot>
         <tr>
             <td colspan="3" class="text-right">Total:</td>
-            <td class="text-right">@Model.Cart?.CalculateTotal().ToString("c")</td>
+            <td class="text-right">@Model.Cart.Total.ToString("c")</td>
         </tr>
     </tfoot>
 </table>
@@ -47,9 +47,11 @@
     <a class="btn btn-primary" href="@Model.ReturnUrl" style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px; padding: 0 13px; color: #fff; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #92b6f0; border-color: black; font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px;">
         Continue Shopping
     </a>
-    <form asp-controller="Home" asp-action="Checkout" method="post" style="display: inline-block;">
+    <form asp-controller="Home" asp-action="Cart" method="post" style="display: inline-block;">
+        <input type="hidden" name="total" value="@Model.Cart.Total" />
         <button type="submit" class="btn btn-primary" style="width: 150px; height: 34px; padding: 0 13px; color: #fff; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #92b6f0; border-color: black; font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px;">
             Checkout
         </button>
     </form>
+
 </div>
