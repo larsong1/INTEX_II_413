@@ -83,8 +83,6 @@ namespace INTEX_II_413
                 options.Password.RequiredUniqueChars = 6;
             });
 
-
-
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -107,23 +105,7 @@ namespace INTEX_II_413
 
             app.UseRouting();
 
-            SecretClientOptions options = new SecretClientOptions()
-            {
-                Retry =
-        {
-            Delay= TimeSpan.FromSeconds(2),
-            MaxDelay = TimeSpan.FromSeconds(16),
-            MaxRetries = 5,
-            Mode = RetryMode.Exponential
-         }
-            };
-            var client = new SecretClient(new Uri("https://intex-ii-keys.vault.azure.net/"), new DefaultAzureCredential(), options);
-
             app.UseAuthorization();
-
-            KeyVaultSecret secret = client.GetSecret("secret");
-
-            string secretValue = secret.Value;
 
             // Set CSP policy
             app.Use(async (context, next) =>
@@ -132,6 +114,7 @@ namespace INTEX_II_413
                 await next();
             });
 
+            app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",
