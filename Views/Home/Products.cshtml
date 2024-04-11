@@ -2,6 +2,12 @@
 
 @model ProductsListViewModel
 
+<script>
+    function submit_form() {
+        document.getElementById('psForm').submit();
+    }
+</script>
+
 <h1>Here is where we'll show a full list of products</h1>
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
     @foreach (Product p in Model.Products)
@@ -20,7 +26,7 @@
     <div class="col">
         <form class="float-end" id="psForm" asp-controller="Home" asp-action="Products" method="get">
             <label for="pageSize">Number of records per page</label>
-            <select name='pageSize' id='pageSize' onchange="document.getElementById('psForm').submit();">
+            <select name="pageSize" id="pageSize" onchange="submit_form();">
                 <!option value=6 @(ViewContext.HttpContext.Session.GetInt32("pageSize") == 6 ? "selected" : "")>6</!option>
                 <!option value=10 @(ViewContext.HttpContext.Session.GetInt32("pageSize") == 10 ? "selected" : "")>10</!option>
                 <!option value=20 @(ViewContext.HttpContext.Session.GetInt32("pageSize") == 20 ? "selected" : "")>20</!option>

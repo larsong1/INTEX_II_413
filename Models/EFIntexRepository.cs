@@ -15,6 +15,10 @@ public class EFIntexRepository : IIntexRepository
     public IQueryable<Order> Orders => _context.Orders;
     public IQueryable<LineItem> LineItems => _context.LineItems;
 
+    public IQueryable<Item_Based_Recs> ItemBasedRecs => _context.ItemBasedRecs;
+
+    public IQueryable<User_Based_Recs> UserBasedRecs => _context.UserBasedRecs;
+
     public void AddProduct(Product p)
     {
         _context.Products.Add(p);
@@ -46,6 +50,13 @@ public class EFIntexRepository : IIntexRepository
     public void DeleteCustomer(Customer customer)
     {
         _context.Customers.Remove(customer);
+        _context.SaveChanges();
+
+    }
+
+    public void AddOrder(Order o)
+    {
+        _context.Orders.Add(o);
         _context.SaveChanges();
 
     }

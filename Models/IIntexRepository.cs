@@ -16,6 +16,12 @@ namespace INTEX_II_413.Models
         // get line items
         IQueryable<LineItem> LineItems { get; }
 
+        // get item based recommendations
+        IQueryable<Item_Based_Recs> ItemBasedRecs { get; }
+
+        // get user based recommendations
+        IQueryable<User_Based_Recs> UserBasedRecs { get; }
+
         // add product
         void AddProduct(Product p);
 
@@ -30,6 +36,9 @@ namespace INTEX_II_413.Models
 
         // delete customer
         void DeleteCustomer(Customer customer);
+
+        // add order
+        void AddOrder(Order o);
 
         // save changes
         void SaveChanges();

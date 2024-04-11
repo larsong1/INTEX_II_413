@@ -95,9 +95,9 @@
         </div>
     </div>
     <div class="col">
-        <form class="float-end" id="psForm" asp-controller="Home" asp-action="AdminProducts" method="get">
+        <form class="float-end" id="psForm1" asp-controller="Home" asp-action="AdminProducts" method="get">
             <label for="pageSize">Number of records per page</label>
-            <select name='pageSize' id='pageSize' onchange="document.getElementById('psForm').submit();">
+            <select name='pageSize' id='pageSize' onchange="document.getElementById('psForm1').submit();">
                 <!option value=6 @(ViewContext.HttpContext.Session.GetInt32("pageSize") == 6 ? "selected" : "")>6</!option>
                 <!option value=10 @(ViewContext.HttpContext.Session.GetInt32("pageSize") == 10 ? "selected" : "")>10</!option>
                 <!option value=20 @(ViewContext.HttpContext.Session.GetInt32("pageSize") == 20 ? "selected" : "")>20</!option>

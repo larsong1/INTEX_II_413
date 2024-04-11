@@ -31,6 +31,9 @@
 
         public decimal CalculateTotal() => Lines.Sum(x => x.Product.Price * x.Quantity);
 
+        public decimal Total => CalculateTotal(); // Property to get the total
+
+
         public class CartLine
         {
             public int CartLineId { get; set; }
