@@ -1,37 +1,49 @@
-﻿<h1 class="text-center">Table of All Products</h1>
+@{
+    Layout = "_AdminLayout";
+}
+
+@using INTEX_II_413.Models.ViewModels
+
+@model ProductsListViewModel
+
+<h1 class="text-center">Table of All Products</h1>
 
 <div style="text-align:right">
     <form asp-controller="Home" asp-action="AdminAddProduct" method="post">
-        <button type="submit" style="width: 150px;">Add Product</button>
+        <button type="submit" class="btn" style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px; padding: 0 13px;
+           color: #fff; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #92b6f0; border-color: black;
+           font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px; width: 150px;">
+           Add Product
+        </button>
     </form>
 </div>
 
 <table class="table table-bordered table-striped">
 
-    <thead class="thead-dark fw-bold">
+    <thead class="thead-dark fw-bold" style="background-color: #92b6f0;">
         <tr>
-            <th style="text-align:center" class="bg-black text-white">ProductId</th>
-            <th style="text-align:center" class="bg-black text-white">Name</th>
-            <th style="text-align:center" class="bg-black text-white">Price</th>
-            <th style="text-align:center; width: 1000px;" class="bg-black text-white">Description of Product</th>
-            <th style="text-align:center" class="bg-black text-white">Category</th>
-            <th style="text-align:center" class="bg-black text-white">Year</th>
-            <th style="text-align:center" class="bg-black text-white">NumParts</th>
-            <th style="text-align:center" class="bg-black text-white">ImgLink</th>
-            <th style="text-align:center" class="bg-black text-white">PrimaryColor</th>
-            <th style="text-align:center" class="bg-black text-white">SecondaryColor</th>
-            <th style="text-align:center" class="bg-black text-white">Edit</th>
-            <th style="text-align:center" class="bg-black text-white">Delete</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">ProductId</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">Name</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">Price</th>
+            <th style="text-align:center; background-color: #92b6f0; width: 1000px;" class="text-white">Description of Product</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">Category</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">Year</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">NumParts</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">ImgLink</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">PrimaryColor</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">SecondaryColor</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">Edit</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">Delete</th>
         </tr>
     </thead>
 
     <tbody>
-        @foreach (var x in Model)
+        @foreach (var x in Model.Products)
         {
             <tr>
                 <td style="text-align:center">@x.ProductId</td>
                 <td style="text-align:center">@x.Name</td>
-                <td style="text-align:center">@x.Price</td>
+                <td style="text-align:center">$@x.Price</td>
                 <td style="text-align:center">
                     @{
                         string shortDescription = x.Description.Length > 75 ? $"{x.Description.Substring(0, 75)}..." : x.Description;
@@ -51,10 +63,44 @@
                 <td style="text-align:center">@x.PrimaryColor</td>
                 <td style="text-align:center">@x.SecondaryColor</td>
 
-                <td><a class="btn btn-info" asp-controller="Home" asp-action="EditProduct" asp-route-id="@x.ProductId">Edit</a></td>
-                <td><a class="btn btn-danger" asp-controller="Home" asp-action="DeleteProduct" asp-route-id="@x.ProductId">Delete</a></td>
+                <td style="text-align:center;">
+                    <button class="btn btn-info" asp-controller="Home" asp-action="EditProduct" asp-route-id="@x.ProductId"
+                            style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px; padding: 0 13px;
+                            color: #fff; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #92b6f0; border-color: black;
+                            font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px;">
+                            Edit
+                    </button>
+                </td>
+
+                <td style="text-align:center;">
+                    <button class="btn btn-danger" asp-controller="Home" asp-action="DeleteProduct" asp-route-id="@x.ProductId"
+                            style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px; padding: 0 13px;
+                            color: #fff; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #92b6f0; border-color: black;
+                            font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px;">
+                            Delete
+                    </button>
+                </td>
             </tr>
         }
     </tbody>
 
 </table>
+
+<div class="row">
+    <div class="col">
+        <div page-model="@Model.PaginationInfo" page-action="AdminProducts"
+             page-class-enabled="true" page-class="btn" page-class-normal="btn-outline-dark" page-class-selected="btn-primary"
+             class="btn-group pull-right m-1">
+        </div>
+    </div>
+    <div class="col">
+        <form class="float-end" id="psForm1" asp-controller="Home" asp-action="AdminProducts" method="get">
+            <label for="pageSize">Number of records per page</label>
+            <select name='pageSize' id='pageSize' onchange="document.getElementById('psForm1').submit();">
+                <!option value=6 @(ViewContext.HttpContext.Session.GetInt32("pageSize") == 6 ? "selected" : "")>6</!option>
+                <!option value=10 @(ViewContext.HttpContext.Session.GetInt32("pageSize") == 10 ? "selected" : "")>10</!option>
+                <!option value=20 @(ViewContext.HttpContext.Session.GetInt32("pageSize") == 20 ? "selected" : "")>20</!option>
+            </select>
+        </form>
+    </div>
+</div>

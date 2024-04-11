@@ -30,6 +30,14 @@ namespace INTEX_II_413.Models
 
         // delete product
         void DeleteProduct(Product product);
+
+        // edit customer
+        void EditCustomer(Customer updatedCustomer);
+
+        // delete customer
+        void DeleteCustomer(Customer customer);
+
+        // save changes
         void SaveChanges();
     }
 }

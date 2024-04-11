@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using System.Drawing.Printing;
 using System.Formats.Tar;
 using System.Collections.Generic;
 
@@ -82,6 +83,7 @@ namespace INTEX_II_413.Controllers
                 // Here, you would save the order to your database. Since you don't have _context,
                 // you should use whatever mechanism you have in place, such as a repository method.
 
+        public IActionResult Products(int pageNum = 1, string? productCategory = null, int pageSize = 1)
                 // _repo.Orders.Add(submissionModel.Order); // Example repository call to save the order
                 // _repo.SaveChanges(); // Save changes to the database
 
@@ -161,7 +163,23 @@ namespace INTEX_II_413.Controllers
 
         public IActionResult Products(int pageNum = 1, string? productCategory = null)
         {
-            int pageSize = 4;
+            int pgSize = pageSize;
+            int defaultPageSize = 6;
+
+            if(pgSize == 1)
+            {
+                pgSize = defaultPageSize;
+
+                if (HttpContext.Session.GetInt32("pageSize") != null)
+                {
+                    pgSize = (int)HttpContext.Session.GetInt32("pageSize");
+                }
+            }
+
+            if(HttpContext.Session.GetInt32("pageSize") != pgSize)
+            {
+                HttpContext.Session.SetInt32("pageSize", pgSize);
+            }
 
             var productList = _repo.Products
                 .Where(x => x.Category == productCategory || productCategory == null)
@@ -170,11 +188,11 @@ namespace INTEX_II_413.Controllers
 
             ProductsListViewModel plvm = new ProductsListViewModel
             {
-                Products = productList.Skip((pageNum - 1) * pageSize).Take(pageSize),
+                Products = productList.Skip((pageNum - 1) * pgSize).Take(pgSize),
                 PaginationInfo = new PaginationInfo
                 {
                     CurrentPage = pageNum,
-                    ItemsPerPage = pageSize,
+                    ItemsPerPage = pgSize,
                     TotalItems = productList.Count()
                 }
             };
@@ -190,12 +208,19 @@ namespace INTEX_II_413.Controllers
         {
             return View("Privacy");
         }
+
+        public IActionResult Help()
+        {
+            return View("Help");
+        }
+
         [HttpGet]
         public IActionResult Login()
         {
             return View("Login");
         }
 
+        [Authorize(Roles = "Admin,Customer")]
         public IActionResult Confirmation()
         {
             Random rand = new Random();
@@ -207,11 +232,13 @@ namespace INTEX_II_413.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin,Customer")]
         public IActionResult FraudConfirmation()
         {
             return View("FraudConfirmation");
         }
 
+        [Authorize(Roles = "Admin,Customer")]
         public IActionResult Checkout()
         {
             OrderSubmissionViewModel model = new OrderSubmissionViewModel();
@@ -235,14 +262,11 @@ namespace INTEX_II_413.Controllers
             return View();
         }
 
-        //var product = _repo.Products.Where(p => p.ProductId == id).FirstOrDefault();
-
-           // return View(product);
-    
-    public IActionResult NewUser()
-    {
-        return View();
-    }
+        [Authorize(Roles = "Admin,Customer")]
+        public IActionResult NewUser()
+        {
+            return View();
+        }
 
         [HttpPost]
         public IActionResult CreateAccount()
@@ -250,12 +274,14 @@ namespace INTEX_II_413.Controllers
             return View("NewUser");
         }
 
+        [Authorize(Roles = "Admin,Customer")]
         [HttpPost]
         public IActionResult Cart() 
         {
             return View("Checkout");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult AddProduct(Product response)
         {
@@ -264,6 +290,7 @@ namespace INTEX_II_413.Controllers
             return RedirectToAction("AdminProducts"); 
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult DeleteProduct(int id)
         {
@@ -272,8 +299,9 @@ namespace INTEX_II_413.Controllers
 
             return View("DeleteProduct",recordToDelete);
         }
-        [HttpPost]
 
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
         public IActionResult DeleteProduct(Product record)
         {
             _repo.DeleteProduct(record);
@@ -281,6 +309,7 @@ namespace INTEX_II_413.Controllers
             return RedirectToAction("AdminProduct");
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult EditProduct(int id)
         {
             var recordToEdit = _repo.Products
@@ -289,6 +318,8 @@ namespace INTEX_II_413.Controllers
             return View("EditProduct", recordToEdit);
 
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult EditProduct(Product updatedInfo)
         {
@@ -298,17 +329,57 @@ namespace INTEX_II_413.Controllers
             return RedirectToAction("AdminProduct");
         }
 
-        public IActionResult AdminProducts()
+        [Authorize(Roles = "Admin")]
+        public IActionResult AdminProducts(int pageNum = 1, string? productCategory = null, int pageSize = 1)
         {
-            var products = _repo.Products.ToList();
-            return View(products);
+            //var products = _repo.Products.ToList();
+            //return View(products);
+
+            int pgSize = pageSize;
+            int defaultPageSize = 6;
+
+            if (pgSize == 1)
+            {
+                pgSize = defaultPageSize;
+
+                if (HttpContext.Session.GetInt32("pageSize") != null)
+                {
+                    pgSize = (int)HttpContext.Session.GetInt32("pageSize");
+                }
+            }
+
+            if (HttpContext.Session.GetInt32("pageSize") != pgSize)
+            {
+                HttpContext.Session.SetInt32("pageSize", pgSize);
+            }
+
+            var productList = _repo.Products
+                .Where(x => x.Category == productCategory || productCategory == null)
+                .OrderBy(x => x.Category);
+
+
+            ProductsListViewModel plvm = new ProductsListViewModel
+            {
+                Products = productList.Skip((pageNum - 1) * pgSize).Take(pgSize),
+                PaginationInfo = new PaginationInfo
+                {
+                    CurrentPage = pageNum,
+                    ItemsPerPage = pgSize,
+                    TotalItems = productList.Count()
+                }
+            };
+
+            return View(plvm);
         }
+
+        [Authorize(Roles = "Admin")]
         public IActionResult AdminCustomers()
         {
             var customers = _repo.Customers.ToList();
             return View(customers);
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult AdminOrders()
         {
             var orders = _repo.Orders.ToList();
@@ -321,6 +392,7 @@ namespace INTEX_II_413.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult AdminAddProduct()
         {
