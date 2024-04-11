@@ -18,7 +18,7 @@ public class EFIntexRepository : IIntexRepository
     public void AddProduct(Product p)
     {
         _context.Products.Add(p);
-        _context.SaveChanges(); 
+        _context.SaveChanges();
 
     }
 
@@ -33,7 +33,23 @@ public class EFIntexRepository : IIntexRepository
     {
         _context.Products.Remove(product);
         _context.SaveChanges();
+
     }
+
+    public void EditCustomer(Customer updatedCustomer)
+    {
+        _context.Customers.Update(updatedCustomer);
+        _context.SaveChanges();
+
+    }
+
+    public void DeleteCustomer(Customer customer)
+    {
+        _context.Customers.Remove(customer);
+        _context.SaveChanges();
+
+    }
+
     public void SaveChanges()
     {
         _context.SaveChanges();

@@ -8,16 +8,16 @@
 
     <thead class="thead-dark fw-bold">
         <tr>
-            <th style="text-align:center" class="bg-black text-white">CustomerId</th>
-            <th style="text-align:center" class="bg-black text-white">FirstName</th>
-            <th style="text-align:center" class="bg-black text-white">LastName</th>
-            <th style="text-align:center" class="bg-black text-white">BirthDate</th>
-            <th style="text-align:center" class="bg-black text-white">Country</th>
-            <th style="text-align:center" class="bg-black text-white">Gender</th>
-            <th style="text-align:center" class="bg-black text-white">Age</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">CustomerId</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">FirstName</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">LastName</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">BirthDate</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">Country</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">Gender</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">Age</th>
 
-            <th style="text-align:center" class="bg-black text-white">Edit</th>
-            <th style="text-align:center" class="bg-black text-white">Delete</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white"></th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white"></th>
         </tr>
     </thead>
 
@@ -28,13 +28,30 @@
                 <td style="text-align:center">@x.CustomerId</td>
                 <td style="text-align:center">@x.FirstName</td>
                 <td style="text-align:center">@x.LastName</td>
-                <td style="text-align:center">@x.BirthDate</td>
+                <td style="text-align:center">@x.BirthDate.Date.ToString("MM/dd/yyyy")</td>
                 <td style="text-align:center">@x.Country</td>
                 <td style="text-align:center">@x.Gender</td>
                 <td style="text-align:center">@x.Age</td>
 
-                <td><a class="btn btn-info" asp-controller="Home" asp-action="EditProduct" asp-route-id="@x.CustomerId">Edit</a></td>
-                <td><a class="btn btn-danger" asp-controller="Home" asp-action="DeleteProduct" asp-route-id="@x.CustomerId">Delete</a></td>
+                <td style="text-align:center">
+                    <a class="btn btn-info"
+                       asp-controller="Home" asp-action="EditCustomer" asp-route-id="@x.CustomerId"
+                       style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px; padding: 0 13px;
+                       color: #fff; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #92b6f0; border-color: black;
+                       font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px;">
+                        Edit
+                    </a>
+                </td>
+                <td style="text-align:center">
+                    <a class="btn btn-danger"
+                       asp-controller="Home" asp-action="DeleteCustomer" asp-route-id="@x.CustomerId"
+                       style="display: inline-flex; justify-content: center;align-items: center;outline: 0;cursor: pointer;height: 34px;padding: 0 13px;
+                       color: #fff;border-radius: 3px;border: 1px solid transparent;transition: all .3s ease;background:	#92b6f0;border-color:black;
+                       font-weight: 600;text-transform: uppercase;line-height: 16px;font-size: 14px;">
+                        Delete
+                    </a>
+                </td>
+
             </tr>
         }
     </tbody>

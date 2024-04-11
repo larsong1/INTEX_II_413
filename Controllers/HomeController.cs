@@ -72,6 +72,12 @@ namespace INTEX_II_413.Controllers
         {
             return View("Privacy");
         }
+
+        public IActionResult Help()
+        {
+            return View("Help");
+        }
+
         [HttpGet]
         public IActionResult Login()
         {

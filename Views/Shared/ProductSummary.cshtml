@@ -1,51 +1,41 @@
 ﻿@using INTEX_II_413.Infrastructure
 
-@model Product 
+@model Product
 
 <div class="col-md-6">
-    <!-- Adjust the column size as needed -->
     <div class="col">
         <div class="card shadow-sm">
             <h4>
-                @Model.Name
-                <span class="badge rounded-pill bg-primary text-white float-end"><small>$@Model.Price</small></span>
+                <div style="color: black; padding: 20px; text-align: center; font-size: 24px; font-family: 'Arial Black', sans-serif;" class="text-center">@Model.Name</div>
+
+                <span class="badge rounded-pill text-white float-end" style="background-color: #92b6f0;border-color:black; margin-right: 10px;"><small>$@Model.Price</small></span>
             </h4>
-            <img src="@Model.ImgLink" class="bd-placeholder-img card-img-top" style="max-width: auto; height: 500px;">
+            <div class="text-center">
+                <img src="@Model.ImgLink" class="bd-placeholder-img card-img-top text-center" style="width: 400px; height: 400px;">
+            </div>
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
                     <form asp-controller="Home" asp-action="SingleProduct" asp-route-returnUrl="@ViewContext.HttpContext.Request.PathAndQuery()" method="post">
-                        <button type="submit" name="id" value="@Model.ProductId" style="width: 150px;">See More Info</button>
+                        <button type="submit" name="id" value="@Model.ProductId"
+                                style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px; width: 150px;
+                                padding: 0 13px; color: #fff; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #92b6f0;
+                                border-color: black; font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px;">
+                            See More Info
+                        </button>
                     </form>
+                    <br /><br />
                     <form id="@Model.ProductId" method="post" asp-page="/Cart">
                         <input type="hidden" asp-for="ProductId" value="@Model.ProductId" />
                         <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
-                        <button type="submit" class="btn-outline-success btn-sm float-end">Add to cart</button>
+                        <button type="submit" class="btn-outline-success btn-sm float-end"
+                                style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px;
+                                padding: 0 13px; color: #fff; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #92b6f0;
+                                border-color: black; font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px; margin-right: 10px;">
+                            Add to Cart
+                        </button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-
-
-    @* <div class="col-md-6">
-        <h4>
-            @Model.Name
-            <span class="badge rounded-pill bg-primary text-white float-end"><small>$@Model.Price</small></span>
-        </h4>
-        <a href="@Model.ImgLink">
-            <img src="@Model.ImgLink" style="max-width: 400px; height: auto;">
-        </a><br />
-        <form asp-controller="Home" asp-action="SingleProduct" asp-route-returnUrl="@ViewContext.HttpContext.Request.PathAndQuery()" method="post">
-            <button type="submit" name="id" value="@Model.ProductId" style="width: 150px;">See More Info</button>
-        </form>
-
-        <form id="@Model.ProductId" method="post" asp-page="/Cart">
-            <input type="hidden" asp-for="ProductId" value="@Model.ProductId" />
-            <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
-            <button type="submit" class="btn-outline-success btn-sm float-end">Add to cart</button>
-        </form>
-    </div> *@
-
 </div>
-
-
