@@ -2,23 +2,21 @@
 
 <table class="table table-bordered table-striped">
 
-    <thead class="thead-dark fw-bold">
+    <thead class="thead-dark fw-bold" style="background-color: #92b6f0;">
         <tr>
-            <th style="text-align:center" class="bg-black text-white">TransactionId</th>
-            <th style="text-align:center" class="bg-black text-white">CustomerId</th>
-            <th style="text-align:center" class="bg-black text-white">Date</th>
-            <th style="text-align:center" class="bg-black text-white">DayOfWeek</th>
-            <th style="text-align:center" class="bg-black text-white">Time</th>
-            <th style="text-align:center" class="bg-black text-white">CardType</th>
-            <th style="text-align:center" class="bg-black text-white">EntryMode</th>
-            <th style="text-align:center" class="bg-black text-white">Amount</th>
-            <th style="text-align:center" class="bg-black text-white">Type</th>
-            <th style="text-align:center" class="bg-black text-white">Country</th>
-            <th style="text-align:center" class="bg-black text-white">Address</th>
-            <th style="text-align:center" class="bg-black text-white">Bank</th>
-            <th style="text-align:center" class="bg-black text-white">Fraud?</th>
-            <th style="text-align:center" class="bg-black text-white">Edit</th>
-            <th style="text-align:center" class="bg-black text-white">Delete</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">TransactionId</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">CustomerId</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">Date</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">DayOfWeek</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">Time</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">CardType</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">EntryMode</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">Amount</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">Type</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">Country</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">Address</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">Bank</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">Fraud?</th>
         </tr>
     </thead>
 
@@ -39,9 +37,6 @@
                 <td style="text-align:center">@x.Address</td>
                 <td style="text-align:center">@x.Bank</td>
                 <td style="text-align:center">@x.Fraud</td>
-
-                <td><a class="btn btn-info" asp-controller="Home" asp-action="EditProduct" asp-route-id="@x.TransactionId">Edit</a></td>
-                <td><a class="btn btn-danger" asp-controller="Home" asp-action="DeleteProduct" asp-route-id="@x.TransactionId">Delete</a></td>
             </tr>
         }
     </tbody>

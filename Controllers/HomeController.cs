@@ -147,6 +147,40 @@ namespace INTEX_II_413.Controllers
             return RedirectToAction("AdminProduct");
         }
 
+        public IActionResult EditCustomer(int id)
+        {
+            var recordToEdit = _repo.Customers
+                .Single(x => x.CustomerId == id);
+
+            return View("EditCustomer", recordToEdit);
+
+        }
+        [HttpPost]
+        public IActionResult EditCustomer(Customer updatedInfo)
+        {
+            _repo.EditCustomer(updatedInfo);
+            _repo.SaveChanges();
+
+            return RedirectToAction("AdminCustomer");
+        }
+
+        [HttpGet]
+        public IActionResult DeleteCustomer(int id)
+        {
+            var recordToDelete = _repo.Customers
+                .Single(x => x.CustomerId == id);
+
+            return View("DeleteCustomer", recordToDelete);
+        }
+        [HttpPost]
+
+        public IActionResult DeleteCustomer(Customer customer)
+        {
+            _repo.DeleteCustomer(customer);
+
+            return RedirectToAction("AdminProduct");
+        }
+
         public IActionResult AdminProducts()
         {
             var products = _repo.Products.ToList();

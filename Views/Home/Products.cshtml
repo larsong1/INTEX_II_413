@@ -2,15 +2,17 @@
 
 @model ProductsListViewModel
 
-<h1>Here is where we'll show a full list of products</h1>
-<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-    @foreach (Product p in Model.Products)
-    {
-        <partial name="ProductSummary" model="@p" />
-    }
-</div>
+<body style="background-color: #92B6F0;">
+    <h1>Here is where we'll show a full list of products</h1>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        @foreach (Product p in Model.Products)
+        {
+            <partial name="ProductSummary" model="@p" />
+        }
+    </div>
 
-<div page-model="@Model.PaginationInfo" page-action="Products"
-      page-class-enabled="true" page-class="btn" page-class-normal="btn-outline-dark" page-class-selected="btn-primary"
-      class="btn-group pull-right m-1">
-</div>
+    <div page-model="@Model.PaginationInfo" page-action="Products"
+         page-class-enabled="true" page-class="btn" page-class-normal="btn-outline-dark" page-class-selected="btn-primary"
+         class="btn-group pull-right m-1">
+    </div>
+</body>

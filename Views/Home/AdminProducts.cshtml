@@ -2,26 +2,30 @@
 
 <div style="text-align:right">
     <form asp-controller="Home" asp-action="AdminAddProduct" method="post">
-        <button type="submit" style="width: 150px;">Add Product</button>
+        <button type="submit" class="btn" style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px; padding: 0 13px;
+           color: #fff; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #b2cbf2; border-color: #92b6f0;
+           font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px; width: 150px;">
+           Add Product
+        </button>
     </form>
 </div>
 
 <table class="table table-bordered table-striped">
 
-    <thead class="thead-dark fw-bold">
+    <thead class="thead-dark fw-bold" style="background-color: #92b6f0;">
         <tr>
-            <th style="text-align:center" class="bg-black text-white">ProductId</th>
-            <th style="text-align:center" class="bg-black text-white">Name</th>
-            <th style="text-align:center" class="bg-black text-white">Price</th>
-            <th style="text-align:center; width: 1000px;" class="bg-black text-white">Description of Product</th>
-            <th style="text-align:center" class="bg-black text-white">Category</th>
-            <th style="text-align:center" class="bg-black text-white">Year</th>
-            <th style="text-align:center" class="bg-black text-white">NumParts</th>
-            <th style="text-align:center" class="bg-black text-white">ImgLink</th>
-            <th style="text-align:center" class="bg-black text-white">PrimaryColor</th>
-            <th style="text-align:center" class="bg-black text-white">SecondaryColor</th>
-            <th style="text-align:center" class="bg-black text-white">Edit</th>
-            <th style="text-align:center" class="bg-black text-white">Delete</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">ProductId</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">Name</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">Price</th>
+            <th style="text-align:center; background-color: #92b6f0; width: 1000px;" class="text-white">Description of Product</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">Category</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">Year</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">NumParts</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">ImgLink</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">PrimaryColor</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">SecondaryColor</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">Edit</th>
+            <th style="text-align:center; background-color: #92b6f0;" class="text-white">Delete</th>
         </tr>
     </thead>
 
@@ -51,8 +55,23 @@
                 <td style="text-align:center">@x.PrimaryColor</td>
                 <td style="text-align:center">@x.SecondaryColor</td>
 
-                <td><a class="btn btn-info" asp-controller="Home" asp-action="EditProduct" asp-route-id="@x.ProductId">Edit</a></td>
-                <td><a class="btn btn-danger" asp-controller="Home" asp-action="DeleteProduct" asp-route-id="@x.ProductId">Delete</a></td>
+                <td style="text-align:center;">
+                    <button class="btn btn-info" asp-controller="Home" asp-action="EditProduct" asp-route-id="@x.ProductId"
+                            style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px; padding: 0 13px;
+                            color: #fff; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #b2cbf2; border-color: #92b6f0;
+                            font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px;">
+                            Edit
+                    </button>
+                </td>
+
+                <td style="text-align:center;">
+                    <button class="btn btn-danger" asp-controller="Home" asp-action="DeleteProduct" asp-route-id="@x.ProductId"
+                            style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px; padding: 0 13px;
+                            color: #fff; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #b2cbf2; border-color: #92b6f0;
+                            font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px;">
+                            Delete
+                    </button>
+                </td>
             </tr>
         }
     </tbody>
