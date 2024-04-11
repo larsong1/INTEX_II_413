@@ -19,7 +19,7 @@ namespace INTEX_II_413.Models
         public decimal Amount { get; set; }
         public string Type { get; set; }
         public string Country { get; set; }
-        public string Address { get; set; }
+        public string? Address { get; set; }
         public string Bank { get; set; }
         public bool Fraud { get; set; }
 

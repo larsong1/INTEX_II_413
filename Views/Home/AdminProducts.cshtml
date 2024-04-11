@@ -12,91 +12,83 @@
         width: 100%;
     }
 
-    th, td {
-        word-wrap: break-word;
-        width: fit-content;
-    }
-</style>
-
-<div class="row">
-    <div class="col">
-        <h1 class="text-center text-center">Manage Store Products</h1>
-        <form asp-controller="Home" asp-action="AdminAddProduct" method="post">
-            <button type="submit" class="btn float-end" style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px; padding: 0 13px;
-           color: #fff; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #92b6f0; border-color: black;
+<div style="text-align:right">
+    <form asp-controller="Home" asp-action="AdminAddProduct" method="post">
+        <button type="submit" class="btn" style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px; padding: 0 13px;
+           color: white; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #e8040c; border-color: black;
            font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px; width: 150px;">
-                Add Product
-            </button>
-        </form>
-    </div>
+           <b>Add Product</b>
+        </button>
+    </form>
 </div>
 
 <div class="row" width="100%">
     <table class="table table-bordered table-striped">
 
-        <thead class="thead-dark fw-bold" style="background-color: #92b6f0;">
+    <thead class="thead-dark" style="background-color: #e8040c;">
+        <tr>
+            <th style="text-align:center; background-color: #e8040c; color: white; font-weight: bold;">ProductId</th>
+            <th style="text-align:center; background-color: #e8040c; color: white; font-weight: bold;">Name</th>
+            <th style="text-align:center; background-color: #e8040c; color: white; font-weight: bold;">Price</th>
+            <th style="text-align:center; background-color: #e8040c; color: white; font-weight: bold; width: 1000px;">Description</th>
+            <th style="text-align:center; background-color: #e8040c; color: white; font-weight: bold;">Category</th>
+            <th style="text-align:center; background-color: #e8040c; color: white; font-weight: bold;">Year</th>
+            <th style="text-align:center; background-color: #e8040c; color: white; font-weight: bold;">NumParts</th>
+            <th style="text-align:center; background-color: #e8040c; color: white; font-weight: bold;">ImgLink</th>
+            <th style="text-align:center; background-color: #e8040c; color: white; font-weight: bold;">PrimaryColor</th>
+            <th style="text-align:center; background-color: #e8040c; color: white; font-weight: bold;">SecondaryColor</th>
+            <th style="text-align:center; background-color: #e8040c; color: white; font-weight: bold;">Edit</th>
+            <th style="text-align:center; background-color: #e8040c; color: white; font-weight: bold;">Delete</th>
+        </tr>
+    </thead>
+
+
+    <tbody>
+        @foreach (var x in Model.Products)
+        {
             <tr>
-                <th style="text-align:center; background-color: #92b6f0;" class="text-white">ProductId</th>
-                <th style="text-align:center; background-color: #92b6f0;" class="text-white">Name</th>
-                <th style="text-align:center; background-color: #92b6f0;" class="text-white">Price</th>
-                <th style="text-align:center; background-color: #92b6f0;" class="text-white">Description of Product</th>
-                <th style="text-align:center; background-color: #92b6f0;" class="text-white">Category</th>
-                <th style="text-align:center; background-color: #92b6f0;" class="text-white">Year</th>
-                <th style="text-align:center; background-color: #92b6f0;" class="text-white">NumParts</th>
-                <th style="text-align:center; background-color: #92b6f0;" class="text-white">ImgLink</th>
-                <th style="text-align:center; background-color: #92b6f0;" class="text-white">PrimaryColor</th>
-                <th style="text-align:center; background-color: #92b6f0;" class="text-white">SecondaryColor</th>
-                <th style="text-align:center; background-color: #92b6f0;" class="text-white">Edit</th>
-                <th style="text-align:center; background-color: #92b6f0;" class="text-white">Delete</th>
+                <td style="text-align:center">@x.ProductId</td>
+                <td style="text-align:center">@x.Name</td>
+                <td style="text-align:center">$@x.Price</td>
+                <td style="text-align:center">
+                    @{
+                        string shortDescription = x.Description.Length > 75 ? $"{x.Description.Substring(0, 75)}..." : x.Description;
+                        string fullDescription = x.Description;
+                    }
+                    <span class="description-short">@Html.Raw(shortDescription)</span>
+                    <span class="description-full" style="display: none;">@Html.Raw(fullDescription)</span>
+                    @if (x.Description.Length > 75)
+                    {
+                        <button class="btn btn-link show-more">Show more</button>
+                    }
+                </td>
+                <td style="text-align:center">@x.Category</td>
+                <td style="text-align:center">@x.Year</td>
+                <td style="text-align:center">@x.NumParts</td>
+                <td style="text-align:center">@x.ImgLink</td>
+                <td style="text-align:center">@x.PrimaryColor</td>
+                <td style="text-align:center">@x.SecondaryColor</td>
+
+                <td style="text-align:center;">
+                    <button class="btn btn-info" asp-controller="Home" asp-action="EditProduct" asp-route-id="@x.ProductId"
+                            style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px; padding: 0 13px;
+                            color: white; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #e8040c; border-color: black;
+                            font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px;">
+                            Edit
+                    </button>
+                </td>
+
+                <td style="text-align:center;">
+                    <button class="btn btn-danger" asp-controller="Home" asp-action="DeleteProduct" asp-route-id="@x.ProductId"
+                            style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px; padding: 0 13px;
+                            color: white; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #e8040c; border-color: black;
+                            font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px;">
+                            Delete
+                    </button>
+                </td>
             </tr>
-        </thead>
-
-        <tbody>
-            @foreach (var x in Model.Products)
-            {
-                <tr>
-                    <td style="text-align:center">@x.ProductId</td>
-                    <td style="text-align:center">@x.Name</td>
-                    <td style="text-align:center">$@x.Price</td>
-                    <td style="text-align:center">
-                        @{
-                            string shortDescription = x.Description.Length > 75 ? $"{x.Description.Substring(0, 75)}..." : x.Description;
-                            string fullDescription = x.Description;
-                        }
-                        <span class="description-short">@Html.Raw(shortDescription)</span>
-                        <span class="description-full" style="display: none;">@Html.Raw(fullDescription)</span>
-                        @if (x.Description.Length > 75)
-                        {
-                            <button class="btn btn-link show-more">Show more</button>
-                        }
-                    </td>
-                    <td style="text-align:center">@x.Category</td>
-                    <td style="text-align:center">@x.Year</td>
-                    <td style="text-align:center">@x.NumParts</td>
-                    <td style="text-align:center">@x.ImgLink</td>
-                    <td style="text-align:center">@x.PrimaryColor</td>
-                    <td style="text-align:center">@x.SecondaryColor</td>
-
-                    <td style="text-align:center;">
-                        <button class="btn btn-info" asp-controller="Home" asp-action="EditProduct" asp-route-id="@x.ProductId"
-                                style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px; padding: 0 13px;
-                                color: #fff; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #92b6f0; border-color: black;
-                                font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px;">
-                                Edit
-                        </button>
-                    </td>
-
-                    <td style="text-align:center;">
-                        <button class="btn btn-danger" asp-controller="Home" asp-action="DeleteProduct" asp-route-id="@x.ProductId"
-                                style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px; padding: 0 13px;
-                                color: #fff; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #92b6f0; border-color: black;
-                                font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px;">
-                                Delete
-                        </button>
-                    </td>
-                </tr>
-            }
-        </tbody>
+        }
+    </tbody>
 
     </table>
 </div>

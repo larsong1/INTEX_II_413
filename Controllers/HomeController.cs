@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using Microsoft.ML;
 using Microsoft.ML.OnnxRuntime;
 using Microsoft.ML.OnnxRuntime.Tensors;
+using INTEX_II_413.Pages;
 
 namespace INTEX_II_413.Controllers
 {
@@ -84,20 +85,20 @@ namespace INTEX_II_413.Controllers
             {
                 // Here, you would save the order to your database. Since you don't have _context,
                 // you should use whatever mechanism you have in place, such as a repository method.
-
-                
+                // _repo.Orders.Add(submissionModel.Order); // Example repository call to save the order
+                // _repo.SaveChanges(); // Save changes to the database
 
                 // Process the order normally
                 return RedirectToAction("Confirmation");
             }
-        }
+        
+               
+    }
 
 
 
 
-
-
-        [HttpPost]
+    [HttpPost]
         public bool PredictFraud(FraudPredictionViewModel fraudPredictionData)
         {
             int hourOfDay = fraudPredictionData.Time.Hour;
@@ -208,6 +209,19 @@ namespace INTEX_II_413.Controllers
         }
 
         [Authorize(Roles = "Admin,Customer")]
+        [HttpPost]
+        public IActionResult FinalOrderSubmission(OrderSubmissionViewModel model)
+        {
+            model.Order.CustomerId = model.CustomerId;
+
+            _repo.AddOrder(model.Order);
+            _repo.SaveChanges();
+            return RedirectToAction("Confirmation");
+        }
+
+
+
+        [Authorize(Roles = "Admin,Customer")]
         public IActionResult Confirmation()
         {
             Random rand = new Random();
@@ -225,12 +239,9 @@ namespace INTEX_II_413.Controllers
             return View("FraudConfirmation");
         }
 
-        [Authorize(Roles = "Admin,Customer")]
-        public IActionResult Checkout()
-        {
-            OrderSubmissionViewModel model = new OrderSubmissionViewModel();
-            return View("Checkout", model);
-        }
+        
+
+
 
         public IActionResult SingleProduct(int id, string returnUrl)
         {
@@ -262,10 +273,34 @@ namespace INTEX_II_413.Controllers
         }
 
         [HttpPost]
-        public IActionResult Cart() 
+        public IActionResult Cart(decimal total)
         {
-            return View("Checkout");
+            TempData["OrderAmount"] = total.ToString();
+            return RedirectToAction("Checkout");
         }
+
+
+
+        [Authorize(Roles = "Admin,Customer")]
+        public IActionResult Checkout()
+        {
+            var model = new OrderSubmissionViewModel();
+
+            if (TempData["OrderAmount"] is string totalString && decimal.TryParse(totalString, out var total))
+            {
+                model.Order = new Order { Amount = total };
+            }
+            else
+            {
+                // Handle the case where the total is not in TempData,
+                // for instance, by initializing model.Order with a default value
+                model.Order = new Order { Amount = 0 };
+            }
+
+            return View(model);
+        }
+
+
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
@@ -368,9 +403,14 @@ namespace INTEX_II_413.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult AdminOrders()
         {
-            var orders = _repo.Orders.ToList();
+            var orders = _repo.Orders
+                .OrderByDescending(x => x.Date) // Order by date descending
+                .ToList();
+
             return View(orders);
+
         }
+
 
         [Authorize(Roles = "Admin")]
         public IActionResult AdminHomepage()

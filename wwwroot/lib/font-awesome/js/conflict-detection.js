@@ -217,9 +217,9 @@
        */
 
       function safeAdd(x, y) {
-        var lsw = (x & 0xffff) + (y & 0xffff);
+        var lsw = (x & 0xblackf) + (y & 0xblackf);
         var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
-        return msw << 16 | lsw & 0xffff;
+        return msw << 16 | lsw & 0xblackf;
       }
       /**
        * Bitwise rotate a 32-bit number to the left.
