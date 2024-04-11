@@ -79,8 +79,6 @@ namespace INTEX_II_413
                 options.CheckConsentNeeded = context => true;
 
                 options.MinimumSameSitePolicy = SameSiteMode.None;
-
-                options.ConsentCookieValue = "true";
             });
 
             var app = builder.Build();
