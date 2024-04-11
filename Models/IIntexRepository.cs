@@ -16,6 +16,12 @@ namespace INTEX_II_413.Models
         // get line items
         IQueryable<LineItem> LineItems { get; }
 
+        // get item based recommendations
+        IQueryable<Item_Based_Recs> ItemBasedRecs { get; }
+
+        // get user based recommendations
+        IQueryable<User_Based_Recs> UserBasedRecs { get; }
+
         // add product
         void AddProduct(Product p);
 
