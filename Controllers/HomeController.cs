@@ -30,7 +30,7 @@ namespace INTEX_II_413.Controllers
         {
             _repo = temp;
 
-            _sessionFraud = new InferenceSession("C:/Users/Hammo/source/repos/INTEX_II_413/Fraud_Identification_model_2.onnx");
+            _sessionFraud = new InferenceSession("Fraud_Identification_model_2.onnx");
 
         }
 
@@ -158,8 +158,8 @@ namespace INTEX_II_413.Controllers
         public IActionResult Products(int pageNum = 1, string productCategory = null, string primaryColor = null, int pageSize = 5)
         {
             var query = _repo.Products
-                .Where(x => (productCategory == null || x.Category == productCategory) &&
-                            (primaryColor == null || x.PrimaryColor == primaryColor))
+                .Where(x => productCategory == null || x.Category == productCategory)
+                .Where(x => primaryColor == null || x.PrimaryColor == primaryColor)
                 .OrderBy(x => x.Name);
 
             var totalItems = query.Count();
