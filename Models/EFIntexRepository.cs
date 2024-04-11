@@ -54,6 +54,13 @@ public class EFIntexRepository : IIntexRepository
 
     }
 
+    public void AddOrder(Order o)
+    {
+        _context.Orders.Add(o);
+        _context.SaveChanges();
+
+    }
+
     public void SaveChanges()
     {
         _context.SaveChanges();

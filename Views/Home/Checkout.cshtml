@@ -7,11 +7,10 @@
 
 
 <h1 style="margin-bottom: 16px;">Enter Payment Information</h1>
-<form asp-controller="Home" asp-action="PlaceOrder" method="post" style="width: 100%;">
+<form asp-controller="Home" asp-action="FinalOrderSubmission" method="post" style="width: 100%;">
 
     <!-- I need the CustomerId somehow. I will either bring it in this way, or through the session/cookies-->
     <input type="hidden" asp-for="CustomerId" value="5"> 
-
 
 
     <label for="bank" style="margin-bottom: 16px; display: block;">Bank:</label>
@@ -26,21 +25,24 @@
         <option value="Metro">Metro</option>
     </select>
 
-    <label style="margin-bottom: 16px; display: block;">Card Type:</label>
-    <div style="margin-bottom: 16px;">
-        <input asp-for="Order.CardType" type="radio" id="visa" name="cardType" value="Visa" required checked>
-        <label for="visa" style="margin-right: 16px;">Visa</label>
-        <input asp-for="Order.CardType" type="radio" id="mastercard" name="cardType" value="Mastercard" required>
-        <label for="mastercard">Mastercard</label>
-    </div>
+    <label for="cardType" style="margin-bottom: 16px; display: block;">Card Type:</label>
+    <select asp-for="Order.CardType" id="cardType" required style="width: calc(100% - 16px); padding: 8px; margin-bottom: 16px; box-sizing: border-box;">
+        <option value="Visa" selected>Visa</option>
+        <option value="Mastercard">Mastercard</option>
+    </select>
+
 
     <input asp-for="Order.EntryMode" type="hidden" value="CVC" required>
-
+    <input asp-for="Order.Date" type="hidden" value="@DateTime.Now" required />
+    <input asp-for="Order.DayOfWeek" type="hidden" value="@DateTime.Now.DayOfWeek.ToString()" required />
+    <input type="hidden" asp-for="Order.Amount" />
     <input asp-for="Order.Type" type="hidden" value="Online" required>
+    <input asp-for="Order.Fraud" type="hidden" value="False" required>
 
-    <label for="address" style="margin-bottom: 16px; display: block;">Shipping Address:</label>
-    <select asp-for="Order.Address" id="address" required style="width: calc(100% - 16px); padding: 8px; margin-bottom: 16px; box-sizing: border-box;">
-        <option value="USA">USA</option>
+
+    <p style="margin-bottom: 16px; display: block;">Shipping Address:</p>
+    <select asp-for="Order.Address" required style="width: calc(100% - 16px); padding: 8px; margin-bottom: 16px; box-sizing: border-box;">
+        <option value="USA" selected>USA</option>
         <option value="Afghanistan">Afghanistan</option>
         <option value="Algeria">Algeria</option>
         <option value="Argentina">Argentina</option>
@@ -93,9 +95,9 @@
         <option value="Vietnam">Vietnam</option>
     </select>
 
-    <label for="country" style="margin-bottom: 16px; display: block;">Country:</label>
+    <p style="margin-bottom: 16px; display: block;">Country:</p>
     <select asp-for="Order.Country" id="country" required style="width: calc(100% - 16px); padding: 8px; margin-bottom: 16px; box-sizing: border-box;">
-        <option value="USA">USA</option>
+        <option value="USA" selected>USA</option>
         <option value="Afghanistan">Afghanistan</option>
         <option value="Algeria">Algeria</option>
         <option value="Argentina">Argentina</option>
@@ -147,12 +149,10 @@
         <option value="Venezuela">Venezuela</option>
         <option value="Vietnam">Vietnam</option>
     </select>
+
+    <button type="submit" class="btn btn-primary mx-auto d-block" style="width:200px; height: 50px; display: flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; padding: 0 13px; color: #fff; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #92b6f0; border-color: black; font-weight: 600; text-transform: uppercase; line-height: 50px; font-size: 24px;">
+        Submit Order
+    </button>
+
 </form>
 
-<a asp-controller="Home" asp-action="Confirmation"
-   class="btn btn-primary mx-auto d-block"
-   style="width:200px; display: flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 50px;
-        padding: 0 13px; color: #fff; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #92b6f0;
-        border-color: black; font-weight: 600; text-transform: uppercase; line-height: 50px; font-size: 24px;">
-        Place Order
-</a>

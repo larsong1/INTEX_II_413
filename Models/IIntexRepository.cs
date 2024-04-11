@@ -37,6 +37,9 @@ namespace INTEX_II_413.Models
         // delete customer
         void DeleteCustomer(Customer customer);
 
+        // add order
+        void AddOrder(Order o);
+
         // save changes
         void SaveChanges();
     }
