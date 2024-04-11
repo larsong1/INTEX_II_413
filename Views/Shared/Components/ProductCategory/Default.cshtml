@@ -4,14 +4,14 @@
 @{
 }
 
-@model IQueryable<string>
+@model IEnumerable<string>
 
 <div class="d-grid gap-2">
-    <a class="btn btn-outline-secondary" asp-action="Index" asp-controller="Home" asp-route-productCategory="" asp-route-pageNum="">Home</a>
+    <a class="btn btn-outline-secondary" asp-action="Product" asp-controller="Home" asp-route-productCategory="" asp-route-pageNum="">Reset Filters</a>
 
     @foreach (string pt in Model ?? Enumerable.Empty<string>())
     {
-        <a class="btn @(pt == ViewBag.SelectedProductCategory ? "btn-primary" : "btn-outline-secondary")" asp-controller="Home" asp-action="Index" asp-route-productCategory="@pt" asp-route-pageNum="1">
+        <a class="btn @(pt == ViewBag.SelectedProductCategory ? "btn-primary" : "btn-outline-secondary")" asp-controller="Home" asp-action="Product" asp-route-productCategory="@pt" asp-route-pageNum="1">
             @pt
         </a>
     }

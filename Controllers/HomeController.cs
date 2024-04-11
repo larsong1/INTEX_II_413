@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NuGet.ProjectModel;
 using System.Diagnostics;
 using System.Drawing.Printing;
 using System.Formats.Tar;
@@ -25,44 +26,35 @@ namespace INTEX_II_413.Controllers
             return View("Index");
         }
 
-        public IActionResult Products(int pageNum = 1, string? productCategory = null, int pageSize = 1)
+        public IActionResult Products(int pageNum = 1, string productCategory = null, string primaryColor = null, int pageSize = 5)
         {
-            int pgSize = pageSize;
-            int defaultPageSize = 6;
+            var query = _repo.Products
+                .Where(x => (productCategory == null || x.Category == productCategory) &&
+                            (primaryColor == null || x.PrimaryColor == primaryColor))
+                .OrderBy(x => x.Name);
 
-            if(pgSize == 1)
+            var totalItems = query.Count();
+
+            var products = new ProductsListViewModel
             {
-                pgSize = defaultPageSize;
+                Products = query.Skip((pageNum - 1) * pageSize)
+                               .Take(pageSize),
 
-                if (HttpContext.Session.GetInt32("pageSize") != null)
-                {
-                    pgSize = (int)HttpContext.Session.GetInt32("pageSize");
-                }
-            }
-
-            if(HttpContext.Session.GetInt32("pageSize") != pgSize)
-            {
-                HttpContext.Session.SetInt32("pageSize", pgSize);
-            }
-
-            var productList = _repo.Products
-                .Where(x => x.Category == productCategory || productCategory == null)
-                .OrderBy(x => x.Category);
-
-
-            ProductsListViewModel plvm = new ProductsListViewModel
-            {
-                Products = productList.Skip((pageNum - 1) * pgSize).Take(pgSize),
                 PaginationInfo = new PaginationInfo
                 {
                     CurrentPage = pageNum,
-                    ItemsPerPage = pgSize,
-                    TotalItems = productList.Count()
-                }
+                    ItemsPerPage = pageSize,
+                    TotalItems = totalItems
+                },
+
+                CurrentProductCategory = productCategory,
+                CurrentProductColor = primaryColor
             };
 
-            return View(plvm);
+            return View(products);
         }
+
+
         public IActionResult AboutUs()
         {
             return View("AboutUs");
