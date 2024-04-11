@@ -22,5 +22,7 @@ namespace INTEX_II_413.Models
         public string ImgLink { get; set; }
         public string PrimaryColor { get; set; }
         public string SecondaryColor { get; set; }
+
+        public string CatalogCategory { get; set; }
     }
 }
