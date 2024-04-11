@@ -22,6 +22,9 @@ namespace INTEX_II_413.Models
         // get user based recommendations
         IQueryable<User_Based_Recs> UserBasedRecs { get; }
 
+        // add customer
+        void AddCustomer(Customer customer);
+
         // add product
         void AddProduct(Product p);
 

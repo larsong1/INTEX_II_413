@@ -19,6 +19,14 @@ public class EFIntexRepository : IIntexRepository
 
     public IQueryable<User_Based_Recs> UserBasedRecs => _context.UserBasedRecs;
 
+
+    public void AddCustomer(Customer customer)
+    {
+        _context.Customers.Add(customer);
+        _context.SaveChanges();
+
+    }
+
     public void AddProduct(Product p)
     {
         _context.Products.Add(p);

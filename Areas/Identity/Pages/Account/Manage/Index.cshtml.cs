@@ -6,6 +6,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using INTEX_II_413.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -16,20 +17,31 @@ namespace AuthLab2.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly IIntexRepository _repo; // Injecting the repository
 
         public IndexModel(
             UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            SignInManager<IdentityUser> signInManager,
+            IIntexRepository repo) // Adding repository to the constructor
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _repo = repo;
         }
+
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         public string Username { get; set; }
+
+        //Testing to see if this is needed
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public DateTime BirthDate { get; set; }
+        public string Country { get; set; }
+        public char Gender { get; set; }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -51,14 +63,32 @@ namespace AuthLab2.Areas.Identity.Pages.Account.Manage
         /// </summary>
         public class InputModel
         {
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
-            [Phone]
-            [Display(Name = "Phone number")]
-            public string PhoneNumber { get; set; }
+            //[Phone]
+            //[Display(Name = "Phone number")]
+            //public string PhoneNumber { get; set; }
+
+            [Required]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+
+            [Required]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
+
+            [Required]
+            [DataType(DataType.Date)]
+            [Display(Name = "Birth Date")]
+            public DateTime BirthDate { get; set; }
+
+            [Required]
+            [Display(Name = "Country")]
+            public string Country { get; set; }
+
+            [Required]
+            [Display(Name = "Gender")]
+            public string Gender { get; set; }
         }
+
 
         private async Task LoadAsync(IdentityUser user)
         {
@@ -69,9 +99,16 @@ namespace AuthLab2.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                //PhoneNumber = phoneNumber,
+                // Load additional properties from your database or user manager
+                FirstName = "Loaded First Name", // Replace with actual data retrieval
+                LastName = "Loaded Last Name",   // Replace with actual data retrieval
+                BirthDate = DateTime.Now,       // Replace with actual data retrieval
+                Country = "Loaded Country",     // Replace with actual data retrieval
+                Gender = "Loaded Gender"        // Replace with actual data retrieval
             };
         }
+
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -99,20 +136,26 @@ namespace AuthLab2.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            if (Input.PhoneNumber != phoneNumber)
+            // Create a new Customer instance and populate it with data from the form
+            var customer = new Customer
             {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-                if (!setPhoneResult.Succeeded)
-                {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
-                    return RedirectToPage();
-                }
-            }
+                FirstName = Input.FirstName,
+                LastName = Input.LastName,
+                BirthDate = Input.BirthDate,
+                Country = Input.Country,
+                Gender = Input.Gender[0], // Assuming Gender is stored as a char
+                Age = DateTime.Today.Year - Input.BirthDate.Year - (DateTime.Today < Input.BirthDate.AddYears(DateTime.Today.Year - Input.BirthDate.Year) ? 1 : 0)
+                //id = _userManager.GetUserId(User)
+            };
 
-            await _signInManager.RefreshSignInAsync(user);
+            // Using the repository to add the new customer
+            _repo.AddCustomer(customer); // Assuming you have an AddCustomer method or similar
+            _repo.SaveChanges(); // Commit the transaction
+
             StatusMessage = "Your profile has been updated";
+            await _signInManager.RefreshSignInAsync(user);
             return RedirectToPage();
         }
+
     }
 }
