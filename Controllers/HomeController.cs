@@ -83,7 +83,7 @@ namespace INTEX_II_413.Controllers
                 // Here, you would save the order to your database. Since you don't have _context,
                 // you should use whatever mechanism you have in place, such as a repository method.
 
-        
+                
 
                 // Process the order normally
                 return RedirectToAction("Confirmation");

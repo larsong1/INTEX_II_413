@@ -93,21 +93,39 @@ namespace AuthLab2.Areas.Identity.Pages.Account.Manage
         private async Task LoadAsync(IdentityUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-
             Username = userName;
 
-            Input = new InputModel
+            var userId = _userManager.GetUserId(User); // Get the user's ASP.NET Identity ID
+
+            // Try to load the customer associated with this user ID
+            var customer = _repo.Customers.FirstOrDefault(c => c.AspNetUserId == userId);
+
+            if (customer != null)
             {
-                //PhoneNumber = phoneNumber,
-                // Load additional properties from your database or user manager
-                FirstName = "Loaded First Name", // Replace with actual data retrieval
-                LastName = "Loaded Last Name",   // Replace with actual data retrieval
-                BirthDate = DateTime.Now,       // Replace with actual data retrieval
-                Country = "Loaded Country",     // Replace with actual data retrieval
-                Gender = "Loaded Gender"        // Replace with actual data retrieval
-            };
+                // If a customer record exists, pre-fill the input model with the customer's data
+                Input = new InputModel
+                {
+                    FirstName = customer.FirstName,
+                    LastName = customer.LastName,
+                    BirthDate = customer.BirthDate,
+                    Country = customer.Country,
+                    Gender = customer.Gender.ToString() // Assuming Gender is stored as a char in the database
+                };
+            }
+            else
+            {
+                // If no customer record exists, initialize Input with default values
+                Input = new InputModel
+                {
+                    FirstName = "",
+                    LastName = "",
+                    BirthDate = DateTime.Now, // Or some sensible default
+                    Country = "",
+                    Gender = ""
+                };
+            }
         }
+
 
 
         public async Task<IActionResult> OnGetAsync()
@@ -122,6 +140,7 @@ namespace AuthLab2.Areas.Identity.Pages.Account.Manage
             return Page();
         }
 
+
         public async Task<IActionResult> OnPostAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -130,32 +149,51 @@ namespace AuthLab2.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
+            var userId = _userManager.GetUserId(User);
+            var existingCustomer = _repo.Customers.FirstOrDefault(c => c.AspNetUserId == userId);
+
             if (!ModelState.IsValid)
             {
                 await LoadAsync(user);
                 return Page();
             }
 
-            // Create a new Customer instance and populate it with data from the form
-            var customer = new Customer
+            if (existingCustomer != null)
             {
-                FirstName = Input.FirstName,
-                LastName = Input.LastName,
-                BirthDate = Input.BirthDate,
-                Country = Input.Country,
-                Gender = Input.Gender[0], // Assuming Gender is stored as a char
-                Age = DateTime.Today.Year - Input.BirthDate.Year - (DateTime.Today < Input.BirthDate.AddYears(DateTime.Today.Year - Input.BirthDate.Year) ? 1 : 0)
-                //id = _userManager.GetUserId(User)
-            };
+                // Update existing customer
+                existingCustomer.FirstName = Input.FirstName;
+                existingCustomer.LastName = Input.LastName;
+                existingCustomer.BirthDate = Input.BirthDate;
+                existingCustomer.Country = Input.Country;
+                existingCustomer.Gender = Input.Gender[0]; // Assuming Gender is stored as a char
+                existingCustomer.Age = DateTime.Today.Year - Input.BirthDate.Year - (DateTime.Today < Input.BirthDate.AddYears(DateTime.Today.Year - Input.BirthDate.Year) ? 1 : 0);
 
-            // Using the repository to add the new customer
-            _repo.AddCustomer(customer); // Assuming you have an AddCustomer method or similar
+                _repo.EditCustomer(existingCustomer);
+            }
+            else
+            {
+                // Create a new Customer instance and populate it with data from the form
+                var newCustomer = new Customer
+                {
+                    FirstName = Input.FirstName,
+                    LastName = Input.LastName,
+                    BirthDate = Input.BirthDate,
+                    Country = Input.Country,
+                    Gender = Input.Gender[0], // Assuming Gender is stored as a char
+                    Age = DateTime.Today.Year - Input.BirthDate.Year - (DateTime.Today < Input.BirthDate.AddYears(DateTime.Today.Year - Input.BirthDate.Year) ? 1 : 0),
+                    AspNetUserId = userId
+                };
+
+                _repo.AddCustomer(newCustomer);
+            }
+
             _repo.SaveChanges(); // Commit the transaction
 
             StatusMessage = "Your profile has been updated";
             await _signInManager.RefreshSignInAsync(user);
             return RedirectToPage();
         }
+
 
     }
 }

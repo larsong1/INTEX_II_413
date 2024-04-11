@@ -8,8 +8,8 @@ namespace INTEX_II_413.Models
         [Key]
         public int CustomerId { get; set; }
 
-        [ForeignKey("id")]
-        public int id { get; set; }
+        [ForeignKey("AspNetUser")]
+        public string AspNetUserId { get; set; }
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
