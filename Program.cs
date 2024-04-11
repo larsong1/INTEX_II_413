@@ -85,17 +85,18 @@ namespace INTEX_II_413
 
             var app = builder.Build();
 
-            // Generate a nonce value
-            var nonce = Guid.NewGuid().ToString();
-
-            // Set CSP policy including nonce
+            // Set CSP policy with nonce
             app.Use(async (context, next) =>
             {
-                context.Response.Headers.Add("Content-Security-Policy", $"default-src 'self'; script-src 'self' 'nonce-{nonce}'; style-src 'self' 'unsafe-inline'; img-src 'self' https://www.thesun.co.uk https://www.lego.com https://images.brickset.com data: https://m.media-amazon.com https://www.brickeconomy.com; font-src 'self'; connect-src 'self' http://localhost:23148 https://localhost:44337 ws: wss:; frame-src 'self';");
-                context.Response.Headers.Add("X-Content-Security-Policy", $"default-src 'self'; script-src 'self' 'nonce-{nonce}'; style-src 'self' 'unsafe-inline'; img-src 'self' https://www.thesun.co.uk https://www.lego.com https://images.brickset.com data: https://m.media-amazon.com https://www.brickeconomy.com; font-src 'self'; connect-src 'self' http://localhost:23148 https://localhost:44337 ws: wss:; frame-src 'self';");
-                context.Response.Headers.Add("X-WebKit-CSP", $"default-src 'self'; script-src 'self' 'nonce-{nonce}'; style-src 'self' 'unsafe-inline'; img-src 'self' https://www.thesun.co.uk https://www.lego.com https://images.brickset.com data: https://m.media-amazon.com https://www.brickeconomy.com; font-src 'self'; connect-src 'self' http://localhost:23148 https://localhost:44337 ws: wss:; frame-src 'self';");
+                // Generate a nonce
+                string nonce = Guid.NewGuid().ToString("N");
 
-                // Pass the request to the next middleware
+                // Add nonce to CSP header
+                context.Response.Headers.Add("Content-Security-Policy", $"default-src 'self'; script-src 'self' 'nonce-{nonce}'; style-src 'self' 'unsafe-inline'; img-src 'self' https://www.thesun.co.uk https://www.lego.com https://images.brickset.com data: https://m.media-amazon.com https://www.brickeconomy.com; font-src 'self'; connect-src 'self' https://localhost:44337 ws: wss:; frame-src 'self';");
+
+                // Pass the nonce value to your view
+                context.Items["CspNonce"] = nonce;
+
                 await next();
             });
 

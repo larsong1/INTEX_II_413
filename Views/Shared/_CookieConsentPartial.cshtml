@@ -1,6 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Http.Features
 
 @{
+    // Retrieve the nonce value passed from middleware
+    var nonce = Context.Items["CspNonce"] as string;
     var consentFeature = Context.Features.Get<ITrackingConsentFeature>();
     var showBanner = !consentFeature?.CanTrack ?? false;
     var cookieString = consentFeature?.CreateConsentCookie();
@@ -14,7 +16,7 @@
             <span aria-hidden="true">Accept</span>
         </button>
     </div>
-    <script>
+    <script nonce="@nonce">
         (function () {
             var button = document.querySelector("#cookieConsent button[data-cookie-string]");
             button.addEventListener("click", function (event) {
