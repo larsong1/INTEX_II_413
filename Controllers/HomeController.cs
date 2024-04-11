@@ -4,6 +4,7 @@ using INTEX_II_413.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using System.Drawing.Printing;
 using System.Formats.Tar;
 
 namespace INTEX_II_413.Controllers
@@ -22,8 +23,22 @@ namespace INTEX_II_413.Controllers
             return View("Index");
         }
 
-        public IActionResult Products(int pageNum = 1, string? productCategory = null, int pageSize = 6)
+        public IActionResult Products(int pageNum = 1, string? productCategory = null, int pageSize = )
         {
+            string pgSize = pageSize;
+
+            if(pgSize == "default")
+            {
+                if (HttpContext.Session.TryGetValue("pageSize", out byte[] pageSizeBytes))
+                {
+                    pgSize = BitConverter.ToInt32(pageSizeBytes, 0);
+                }
+            }
+
+            if(HttpContext.Session.GetInt32("pageSize") != pgSize)
+            {
+                HttpContext.Session.SetInt32("pageSize", pgSize);
+            }
 
             var productList = _repo.Products
                 .Where(x => x.Category == productCategory || productCategory == null)
@@ -32,11 +47,11 @@ namespace INTEX_II_413.Controllers
 
             ProductsListViewModel plvm = new ProductsListViewModel
             {
-                Products = productList.Skip((pageNum - 1) * pageSize).Take(pageSize),
+                Products = productList.Skip((pageNum - 1) * pgSize).Take(pgSize),
                 PaginationInfo = new PaginationInfo
                 {
                     CurrentPage = pageNum,
-                    ItemsPerPage = pageSize,
+                    ItemsPerPage = pgSize,
                     TotalItems = productList.Count()
                 }
             };
