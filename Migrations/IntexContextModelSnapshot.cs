@@ -60,6 +60,49 @@ namespace INTEX_II_413.Migrations
                     b.ToTable("Customers");
                 });
 
+            modelBuilder.Entity("INTEX_II_413.Models.Item_Based_Recs", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
+
+                    b.Property<int>("Recommendation1")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Recommendation10")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Recommendation2")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Recommendation3")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Recommendation4")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Recommendation5")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Recommendation6")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Recommendation7")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Recommendation8")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Recommendation9")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductId");
+
+                    b.ToTable("ItemBasedRecs");
+                });
+
             modelBuilder.Entity("INTEX_II_413.Models.LineItem", b =>
                 {
                     b.Property<int>("TransactionId")
@@ -150,7 +193,6 @@ namespace INTEX_II_413.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImgLink")
@@ -181,6 +223,31 @@ namespace INTEX_II_413.Migrations
                     b.HasKey("ProductId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("INTEX_II_413.Models.User_Based_Recs", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
+
+                    b.Property<int>("Recommendation1")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Recommendation2")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Recommendation3")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Recommendation4")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductId");
+
+                    b.ToTable("UserBasedRecs");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
