@@ -18,6 +18,7 @@ using Microsoft.ML.OnnxRuntime;
 using Microsoft.ML.OnnxRuntime.Tensors;
 using INTEX_II_413.Pages;
 using Microsoft.AspNetCore.Identity;
+using System.Drawing;
 
 namespace INTEX_II_413.Controllers
 {
@@ -39,8 +40,6 @@ namespace INTEX_II_413.Controllers
 
             _userManager = userManager;
         }
-
-
 
         public IActionResult Index()
         {
@@ -105,9 +104,6 @@ namespace INTEX_II_413.Controllers
             return View("Index", viewModel); // Pass the view model to the view
         }
 
-
-
-
         [Authorize(Roles = "Admin,Customer")]
         [HttpPost]
         public IActionResult PlaceOrder(OrderSubmissionViewModel submissionModel)
@@ -148,10 +144,7 @@ namespace INTEX_II_413.Controllers
                 FinalOrderSubmission(submissionModel);
                 return RedirectToAction("Confirmation");
             }
-        
-               
         }
-
 
         [Authorize(Roles = "Admin,Customer")]
         [HttpPost]
@@ -169,8 +162,6 @@ namespace INTEX_II_413.Controllers
             return RedirectToAction("Confirmation");
         }
 
-
-
         [HttpPost]
         public bool PredictFraud(FraudPredictionViewModel fraudPredictionData)
         {
@@ -183,35 +174,35 @@ namespace INTEX_II_413.Controllers
 
             // Create a dictionary that matches the exact input names expected by the ONNX model
             var inputFeatures = new Dictionary<string, float>
-    {
-        {"float_input", hourOfDay},
-        {"amount", (float)fraudPredictionData.Amount},
-        {"age", fraudPredictionData.Age},
-        {"year", fraudPredictionData.Time.Year},
-        {"month", fraudPredictionData.Time.Month},
-        {"day", fraudPredictionData.Time.Day},
-        {"day_of_week_numeric", dayOfWeekNumeric},
-        {"country_of_transaction_India", fraudPredictionData.CountryOfTransaction == "India" ? 1f : 0f},
-        {"country_of_transaction_Russia", fraudPredictionData.CountryOfTransaction == "Russia" ? 1f : 0f},
-        {"country_of_transaction_USA", fraudPredictionData.CountryOfTransaction == "USA" ? 1f : 0f},
-        {"country_of_transaction_United Kingdom", fraudPredictionData.CountryOfTransaction == "United Kingdom" ? 1f : 0f},
-        {"shipping_address_India", fraudPredictionData.ShippingAddress == "India" ? 1f : 0f},
-        {"shipping_address_Russia", fraudPredictionData.ShippingAddress == "Russia" ? 1f : 0f},
-        {"shipping_address_USA", fraudPredictionData.ShippingAddress == "USA" ? 1f : 0f},
-        {"shipping_address_United Kingdom", fraudPredictionData.ShippingAddress == "United Kingdom" ? 1f : 0f},
-        {"bank_HSBC", fraudPredictionData.Bank == "HSBC" ? 1f : 0f},
-        {"bank_Halifax", fraudPredictionData.Bank == "Halifax" ? 1f : 0f},
-        {"bank_Lloyds", fraudPredictionData.Bank == "Lloyds" ? 1f : 0f},
-        {"bank_Metro", fraudPredictionData.Bank == "Metro" ? 1f : 0f},
-        {"bank_Monzo", fraudPredictionData.Bank == "Monzo" ? 1f : 0f},
-        {"bank_RBS", fraudPredictionData.Bank == "RBS" ? 1f : 0f},
-        {"type_of_card_Visa", fraudPredictionData.TypeOfCard == "Visa" ? 1f : 0f},
-        {"country_of_residence_India", fraudPredictionData.CountryOfResidence == "India" ? 1f : 0f},
-        {"country_of_residence_Russia", fraudPredictionData.CountryOfResidence == "Russia" ? 1f : 0f},
-        {"country_of_residence_USA", fraudPredictionData.CountryOfResidence == "USA" ? 1f : 0f},
-        {"country_of_residence_United Kingdom", fraudPredictionData.CountryOfResidence == "United Kingdom" ? 1f : 0f},
-        {"gender_M", fraudPredictionData.Gender == 'M' ? 1f : 0f}
-    };
+            {
+                {"float_input", hourOfDay},
+                {"amount", (float)fraudPredictionData.Amount},
+                {"age", fraudPredictionData.Age},
+                {"year", fraudPredictionData.Time.Year},
+                {"month", fraudPredictionData.Time.Month},
+                {"day", fraudPredictionData.Time.Day},
+                {"day_of_week_numeric", dayOfWeekNumeric},
+                {"country_of_transaction_India", fraudPredictionData.CountryOfTransaction == "India" ? 1f : 0f},
+                {"country_of_transaction_Russia", fraudPredictionData.CountryOfTransaction == "Russia" ? 1f : 0f},
+                {"country_of_transaction_USA", fraudPredictionData.CountryOfTransaction == "USA" ? 1f : 0f},
+                {"country_of_transaction_United Kingdom", fraudPredictionData.CountryOfTransaction == "United Kingdom" ? 1f : 0f},
+                {"shipping_address_India", fraudPredictionData.ShippingAddress == "India" ? 1f : 0f},
+                {"shipping_address_Russia", fraudPredictionData.ShippingAddress == "Russia" ? 1f : 0f},
+                {"shipping_address_USA", fraudPredictionData.ShippingAddress == "USA" ? 1f : 0f},
+                {"shipping_address_United Kingdom", fraudPredictionData.ShippingAddress == "United Kingdom" ? 1f : 0f},
+                {"bank_HSBC", fraudPredictionData.Bank == "HSBC" ? 1f : 0f},
+                {"bank_Halifax", fraudPredictionData.Bank == "Halifax" ? 1f : 0f},
+                {"bank_Lloyds", fraudPredictionData.Bank == "Lloyds" ? 1f : 0f},
+                {"bank_Metro", fraudPredictionData.Bank == "Metro" ? 1f : 0f},
+                {"bank_Monzo", fraudPredictionData.Bank == "Monzo" ? 1f : 0f},
+                {"bank_RBS", fraudPredictionData.Bank == "RBS" ? 1f : 0f},
+                {"type_of_card_Visa", fraudPredictionData.TypeOfCard == "Visa" ? 1f : 0f},
+                {"country_of_residence_India", fraudPredictionData.CountryOfResidence == "India" ? 1f : 0f},
+                {"country_of_residence_Russia", fraudPredictionData.CountryOfResidence == "Russia" ? 1f : 0f},
+                {"country_of_residence_USA", fraudPredictionData.CountryOfResidence == "USA" ? 1f : 0f},
+                {"country_of_residence_United Kingdom", fraudPredictionData.CountryOfResidence == "United Kingdom" ? 1f : 0f},
+                {"gender_M", fraudPredictionData.Gender == 'M' ? 1f : 0f}
+            };
 
             // Convert the dictionary into a tensor for the model input
             var inputTensor = new DenseTensor<float>(inputFeatures.Values.ToArray(), new[] { 1, inputFeatures.Count });
@@ -219,16 +210,16 @@ namespace INTEX_II_413.Controllers
             // Prepare input for the ONNX model
             var inputs = new List<NamedOnnxValue>
             {
-        NamedOnnxValue.CreateFromTensor("float_input", inputTensor)
+                NamedOnnxValue.CreateFromTensor("float_input", inputTensor)
             };
 
             // Run the model
             using (var results = session.Run(inputs))
             {
                 var prediction = results.FirstOrDefault(item => item.Name == "output_label")?.AsTensor<long>().ToArray();
-                
+
                 var predictionValue = prediction[0];
-               
+
                 var returnValue = false;
 
                 if (predictionValue == 1)
@@ -237,17 +228,14 @@ namespace INTEX_II_413.Controllers
                 }
                 else
                 {
-                    returnValue =  false;
+                    returnValue = false;
                 }
 
                 return returnValue;
             }
-
         }
 
-
         public IActionResult Products(int pageNum = 1, string productCategory = null, string productColor = null, int pageSize = 5)
-        
         {
             var query = _repo.Products
                 .Where(x => productCategory == null || x.CatalogCategory == productCategory)
@@ -274,7 +262,6 @@ namespace INTEX_II_413.Controllers
 
             return View(products);
         }
-
 
         public IActionResult AboutUs()
         {
@@ -315,7 +302,6 @@ namespace INTEX_II_413.Controllers
             return View("FraudConfirmation");
         }
 
-
         public IActionResult SingleProduct(int id, string returnUrl)
         {
             ViewBag.returnUrl = returnUrl;
@@ -345,39 +331,33 @@ namespace INTEX_II_413.Controllers
             return View(viewModel); // Pass the view model to the view
         }
 
+        [Authorize(Roles = "Admin,Customer")]
+        [HttpPost]
+        public async Task<IActionResult> Cart(decimal total)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            //if (user == null)
+            //{
+            //    // Handle the case where the user is not found
+            //    return View("Login"); // Or redirect to a login page
+            //}
 
+            var userId = _userManager.GetUserId(User); // This gets the user's identity ID, not the CustomerId
 
-    [Authorize(Roles = "Admin,Customer")]
-    [HttpPost]
-    public async Task<IActionResult> Cart(decimal total)
-    {
-        var user = await _userManager.GetUserAsync(User);
-        //if (user == null)
-        //{
-        //    // Handle the case where the user is not found
-        //    return View("Login"); // Or redirect to a login page
-        //}
+            var customer = _repo.Customers.FirstOrDefault(c => c.AspNetUserId == userId);
+            //if (customer == null)
+            //{
+            //    // Handle the case where no customer is found for the user
+            //    return View("Login"); // Or an appropriate error handling
+            //}
 
-        var userId = _userManager.GetUserId(User); // This gets the user's identity ID, not the CustomerId
+            TempData["CustomerId"] = customer.CustomerId.ToString(); // Make sure you are accessing the CustomerId property
+            TempData["OrderAmount"] = total.ToString();
 
-        var customer = _repo.Customers.FirstOrDefault(c => c.AspNetUserId == userId);
-        //if (customer == null)
-        //{
-        //    // Handle the case where no customer is found for the user
-        //    return View("Login"); // Or an appropriate error handling
-        //}
+            return RedirectToAction("Checkout");
+        }
 
-        TempData["CustomerId"] = customer.CustomerId.ToString(); // Make sure you are accessing the CustomerId property
-        TempData["OrderAmount"] = total.ToString();
-
-        return RedirectToAction("Checkout");
-    }
-
-
-
-
-
-public IActionResult Checkout()
+        public IActionResult Checkout()
         {
             OrderSubmissionViewModel model = new OrderSubmissionViewModel();
 
@@ -400,20 +380,14 @@ public IActionResult Checkout()
             return View("Checkout", model);
         }
 
-
-
-
-
-        
-
-            [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult DeleteProduct(int id)
         {
             var recordToDelete = _repo.Products
                 .Single(x => x.ProductId == id);
 
-            return View("DeleteProduct",recordToDelete);
+            return View("DeleteProduct", recordToDelete);
         }
 
         [Authorize(Roles = "Admin")]
@@ -422,7 +396,7 @@ public IActionResult Checkout()
         {
             _repo.DeleteProduct(record);
 
-            return RedirectToAction("AdminProduct");
+            return View("AdminHomepage");
         }
 
         [Authorize(Roles = "Admin")]
@@ -432,7 +406,6 @@ public IActionResult Checkout()
                 .Single(x => x.ProductId == id);
 
             return View("EditProduct", recordToEdit);
-
         }
 
         [Authorize(Roles = "Admin")]
@@ -442,7 +415,7 @@ public IActionResult Checkout()
             _repo.EditProduct(updatedInfo);
             _repo.SaveChanges();
 
-            return RedirectToAction("AdminProduct");
+            return View("AdminHomepage");
         }
 
         [Authorize(Roles = "Admin")]
@@ -481,21 +454,65 @@ public IActionResult Checkout()
         }
 
         [Authorize(Roles = "Admin")]
-        public IActionResult AdminCustomers()
+        public IActionResult AdminCustomers(int pageNum = 1)
         {
-            var customers = _repo.Customers.ToList();
-            return View(customers);
+            int pgSize = 100;
+
+            var customers = _repo.Customers.OrderByDescending(x => x.CustomerId);
+
+            CustomerListViewModel clvm = new CustomerListViewModel
+            {
+                Customers = customers.Skip((pageNum - 1) * pgSize).Take(pgSize),
+                PaginationInfo = new PaginationInfo
+                {
+                    CurrentPage = pageNum,
+                    ItemsPerPage = pgSize,
+                    TotalItems = customers.Count()
+                }
+            };
+
+            return View(clvm);
         }
 
         [Authorize(Roles = "Admin")]
-        public IActionResult AdminOrders()
+        public IActionResult AdminOrders(int pageNum = 1, string fraudFilter = "true", int pageSize = 100)
         {
-            var orders = _repo.Orders
-                .OrderByDescending(x => x.Date) // Order by date descending
-                .ToList();
+            var query = _repo.Orders.AsQueryable();
+
+            // Apply fraud filter if provided
+            if (!string.IsNullOrEmpty(fraudFilter))
+            {
+                bool isFraud = bool.Parse(fraudFilter); // Assuming fraudFilter is a string representation of a boolean
+                query = query.Where(x => x.FraudPredicted == isFraud);
+            }
+            else
+            {
+                // If fraudFilter is null or empty, include all orders (both fraud and non-fraud)
+            }
+
+            // Order by Date
+            query = query.OrderBy(x => x.Date);
+
+            // Count total items
+            var totalItems = query.Count();
+
+            // Paginate the query
+            var orders = new OrdersListViewModel
+            {
+                Orders = query.Skip((pageNum - 1) * pageSize)
+                              .Take(pageSize),
+
+                PaginationInfo = new PaginationInfo
+                {
+                    CurrentPage = pageNum,
+                    ItemsPerPage = pageSize,
+                    TotalItems = totalItems
+                },
+
+                CurrentOrderFilter = fraudFilter
+            };
 
             return View(orders);
-
         }
 
 
@@ -510,6 +527,54 @@ public IActionResult Checkout()
         public IActionResult AdminAddProduct()
         {
             return View("AddProduct");
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult EditCustomer(int id)
+        {
+            var recordToEdit = _repo.Customers
+                .Single(x => x.CustomerId == id);
+
+            return View("EditCustomer", recordToEdit);
+
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public IActionResult EditCustomer(Customer updatedInfo)
+        {
+            _repo.EditCustomer(updatedInfo);
+            _repo.SaveChanges();
+
+            return View("AdminHomepage");
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult DeleteCustomer(int id)
+        {
+            var recordToDelete = _repo.Customers
+                .Single(x => x.CustomerId == id);
+
+            return View("DeleteCustomer", recordToDelete);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+
+        public IActionResult DeleteCustomer(Customer customer)
+        {
+            _repo.DeleteCustomer(customer);
+
+            return View("AdminHomepage");
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public IActionResult AddProduct(Product response)
+        {
+            _repo.AddProduct(response);
+            _repo.SaveChanges();
+            return View("AdminHomepage");
         }
     }
 }

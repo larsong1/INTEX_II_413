@@ -17,23 +17,23 @@
         </ul>
         <div style="display: flex; justify-content: center;">
             <div style="margin-right: 10px;">
-                <a class="btn btn-primary"
-                   href="@ViewBag.returnUrl"
+                <a class="btn btn-primary"asp-controller="Home"asp-action="Products"
                    style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px; padding: 0 13px;
-                  color: white; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #e8040c; border-color: black;
-                  font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px;">
-                    <b>Continue Shopping</b>
+                      color: white; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #e8040c; border-color: black;
+                      font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px;">
+                      <b>Continue Shopping</b>
                 </a>
             </div>
 
+
             <div style="margin-left: 10px;">
                 <form id="@Model.Product.ProductId" method="post" asp-page="/Cart">
-                    <input type="hidden" asp-for="Product.ProductId" value="@Model.Product.ProductId" />
-                    <input type="hidden" name="returnUrl" value="@ViewBag.returnUrl" />
-                    <button type="submit" class="btn-outline-success btn-sm"
+                    <input type="hidden" asp-for="ProductId" value="@Model.Product.ProductId" />
+                    <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+                    <button type="submit" class="btn-outline-success btn-sm float-end"
                             style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px;
-                    padding: 0 13px; color: white; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #e8040c;
-                    border-color: black; font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px;">
+                            padding: 0 13px; color: white; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #e8040c;
+                            border-color: black; font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px; margin-right: 10px;">
                         <b>Add to Cart</b>
                     </button>
                 </form>

@@ -40,4 +40,8 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Shared\Components\NewFolder\" />
+  </ItemGroup>
+
 </Project>

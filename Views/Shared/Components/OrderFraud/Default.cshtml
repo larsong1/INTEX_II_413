@@ -1,0 +1,31 @@
+﻿@model IEnumerable<string>
+
+<div class="d-grid gap-2" style="width: 100%">
+    <div class="dropdown" style="width: 100%">
+        <button class="btn btn-outline-secondary dropdown-toggle" style="width: 100%" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+            Filter by Category
+        </button>
+        <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <li>
+                <a class="dropdown-item @(string.IsNullOrEmpty(ViewBag.SelectedFraudFilter) ? "active" : "")" asp-action="AdminOrders" asp-controller="Home" asp-route-fraudFilter="" asp-route-pageNum="1">
+                    All Categories
+                </a>
+            </li>
+            @foreach (string pt in Model ?? Enumerable.Empty<string>())
+            {
+                <li>
+                    <a class="dropdown-item @(pt == ViewBag.SelectedFraudFilter ? "active" : "")" asp-action="AdminOrders" asp-controller="Home" asp-route-fraudFilter="@pt" asp-route-pageNum="1">
+                        @pt
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+
+<style>
+    .custom-dropdown-menu {
+        background-color: #ffffff; /* Solid white background */
+    }
+</style>
+
