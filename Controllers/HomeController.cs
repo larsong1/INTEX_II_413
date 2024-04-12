@@ -339,16 +339,10 @@ public IActionResult Checkout()
 
 
 
-        [Authorize(Roles = "Admin")]
-        [HttpPost]
-        public IActionResult AddProduct(Product response)
-        {
-            _repo.AddProduct(response);
-            _repo.SaveChanges();
-            return RedirectToAction("AdminProducts"); 
-        }
 
-        [Authorize(Roles = "Admin")]
+        
+
+            [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult DeleteProduct(int id)
         {
