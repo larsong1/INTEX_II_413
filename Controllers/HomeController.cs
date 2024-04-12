@@ -369,30 +369,23 @@ namespace INTEX_II_413.Controllers
         {
             //var products = _repo.Products.ToList();
             //return View(products);
-
             int pgSize = pageSize;
             int defaultPageSize = 6;
-
             if (pgSize == 1)
             {
                 pgSize = defaultPageSize;
-
                 if (HttpContext.Session.GetInt32("pageSize") != null)
                 {
                     pgSize = (int)HttpContext.Session.GetInt32("pageSize");
                 }
             }
-
             if (HttpContext.Session.GetInt32("pageSize") != pgSize)
             {
                 HttpContext.Session.SetInt32("pageSize", pgSize);
             }
-
             var productList = _repo.Products
                 .Where(x => x.Category == productCategory || productCategory == null)
                 .OrderBy(x => x.Category);
-
-
             ProductsListViewModel plvm = new ProductsListViewModel
             {
                 Products = productList.Skip((pageNum - 1) * pgSize).Take(pgSize),
@@ -403,7 +396,6 @@ namespace INTEX_II_413.Controllers
                     TotalItems = productList.Count()
                 }
             };
-
             return View(plvm);
         }
 
