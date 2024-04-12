@@ -18,6 +18,7 @@ using Microsoft.ML.OnnxRuntime;
 using Microsoft.ML.OnnxRuntime.Tensors;
 using INTEX_II_413.Pages;
 using Microsoft.AspNetCore.Identity;
+using System.Drawing;
 
 namespace INTEX_II_413.Controllers
 {
@@ -152,6 +153,11 @@ namespace INTEX_II_413.Controllers
 
             _repo.AddOrder(model.Order);
             _repo.SaveChanges();
+
+            // Clear the cart
+            var cart = SessionCart.GetCart(HttpContext.RequestServices);
+            cart.Clear();
+
             return RedirectToAction("Confirmation");
         }
 
@@ -447,21 +453,67 @@ namespace INTEX_II_413.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public IActionResult AdminCustomers()
+        public IActionResult AdminCustomers(int pageNum = 1)
         {
-            var customers = _repo.Customers.OrderByDescending(c => c.CustomerId).ToList();
-            return View(customers);
+            int pgSize = 100;
+
+            var customers = _repo.Customers.OrderByDescending(x => x.CustomerId);
+
+            CustomerListViewModel clvm = new CustomerListViewModel
+            {
+                Customers = customers.Skip((pageNum - 1) * pgSize).Take(pgSize),
+                PaginationInfo = new PaginationInfo
+                {
+                    CurrentPage = pageNum,
+                    ItemsPerPage = pgSize,
+                    TotalItems = customers.Count()
+                }
+            };
+
+            return View(clvm);
         }
 
         [Authorize(Roles = "Admin")]
-        public IActionResult AdminOrders()
+        public IActionResult AdminOrders(int pageNum = 1, string fraudFilter = "true", int pageSize = 100)
         {
-            var orders = _repo.Orders
-                .OrderByDescending(x => x.Date) // Order by date descending
-                .ToList();
+            var query = _repo.Orders.AsQueryable();
+
+            // Apply fraud filter if provided
+            if (!string.IsNullOrEmpty(fraudFilter))
+            {
+                bool isFraud = bool.Parse(fraudFilter); // Assuming fraudFilter is a string representation of a boolean
+                query = query.Where(x => x.FraudPredicted == isFraud);
+            }
+            else
+            {
+                // If fraudFilter is null or empty, include all orders (both fraud and non-fraud)
+            }
+
+            // Order by Date
+            query = query.OrderBy(x => x.Date);
+
+            // Count total items
+            var totalItems = query.Count();
+
+            // Paginate the query
+            var orders = new OrdersListViewModel
+            {
+                Orders = query.Skip((pageNum - 1) * pageSize)
+                              .Take(pageSize),
+
+                PaginationInfo = new PaginationInfo
+                {
+                    CurrentPage = pageNum,
+                    ItemsPerPage = pageSize,
+                    TotalItems = totalItems
+                },
+
+                CurrentOrderFilter = fraudFilter
+            };
 
             return View(orders);
         }
+
 
         [Authorize(Roles = "Admin")]
         public IActionResult AdminHomepage()
