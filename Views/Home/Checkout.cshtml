@@ -33,6 +33,7 @@
     <input asp-for="Order.EntryMode" type="hidden" value="CVC" required />
     <input asp-for="Order.Date" type="hidden" value="@DateTime.Now" required />
     <input asp-for="Order.DayOfWeek" type="hidden" value="@DateTime.Now.DayOfWeek.ToString()" required />
+    <input asp-for="Order.Time" type="hidden" value="@DateTime.Now.ToString("h:mm tt")" required />
     <input asp-for="Order.Amount" type="hidden" value="@TempData["OrderAmount"]" />
     <input asp-for="Order.Type" type="hidden" value="Online" required />
     <input asp-for="Order.Fraud" type="hidden" value="False" required />
