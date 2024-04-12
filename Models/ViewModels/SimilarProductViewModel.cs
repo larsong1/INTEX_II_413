@@ -8,5 +8,7 @@
         public Product Recommendation1Product { get; set; }
         public Product Recommendation2Product { get; set; }
         public Product Recommendation3Product { get; set; }
+
+        public int? ProductId { get; set; } 
     }
 }

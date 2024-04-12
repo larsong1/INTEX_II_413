@@ -40,8 +40,6 @@ namespace INTEX_II_413.Controllers
             _userManager = userManager;
         }
 
-
-
         public IActionResult Index()
         {
             // This will display the public index page to everyone
@@ -105,9 +103,6 @@ namespace INTEX_II_413.Controllers
             return View("Index", viewModel); // Pass the view model to the view
         }
 
-
-
-
         [Authorize(Roles = "Admin,Customer")]
         [HttpPost]
         public IActionResult PlaceOrder(OrderSubmissionViewModel submissionModel)
@@ -148,10 +143,7 @@ namespace INTEX_II_413.Controllers
                 FinalOrderSubmission(submissionModel);
                 return RedirectToAction("Confirmation");
             }
-        
-               
         }
-
 
         [Authorize(Roles = "Admin,Customer")]
         [HttpPost]
@@ -169,8 +161,6 @@ namespace INTEX_II_413.Controllers
             return RedirectToAction("Confirmation");
         }
 
-
-
         [HttpPost]
         public bool PredictFraud(FraudPredictionViewModel fraudPredictionData)
         {
@@ -183,35 +173,35 @@ namespace INTEX_II_413.Controllers
 
             // Create a dictionary that matches the exact input names expected by the ONNX model
             var inputFeatures = new Dictionary<string, float>
-    {
-        {"float_input", hourOfDay},
-        {"amount", (float)fraudPredictionData.Amount},
-        {"age", fraudPredictionData.Age},
-        {"year", fraudPredictionData.Time.Year},
-        {"month", fraudPredictionData.Time.Month},
-        {"day", fraudPredictionData.Time.Day},
-        {"day_of_week_numeric", dayOfWeekNumeric},
-        {"country_of_transaction_India", fraudPredictionData.CountryOfTransaction == "India" ? 1f : 0f},
-        {"country_of_transaction_Russia", fraudPredictionData.CountryOfTransaction == "Russia" ? 1f : 0f},
-        {"country_of_transaction_USA", fraudPredictionData.CountryOfTransaction == "USA" ? 1f : 0f},
-        {"country_of_transaction_United Kingdom", fraudPredictionData.CountryOfTransaction == "United Kingdom" ? 1f : 0f},
-        {"shipping_address_India", fraudPredictionData.ShippingAddress == "India" ? 1f : 0f},
-        {"shipping_address_Russia", fraudPredictionData.ShippingAddress == "Russia" ? 1f : 0f},
-        {"shipping_address_USA", fraudPredictionData.ShippingAddress == "USA" ? 1f : 0f},
-        {"shipping_address_United Kingdom", fraudPredictionData.ShippingAddress == "United Kingdom" ? 1f : 0f},
-        {"bank_HSBC", fraudPredictionData.Bank == "HSBC" ? 1f : 0f},
-        {"bank_Halifax", fraudPredictionData.Bank == "Halifax" ? 1f : 0f},
-        {"bank_Lloyds", fraudPredictionData.Bank == "Lloyds" ? 1f : 0f},
-        {"bank_Metro", fraudPredictionData.Bank == "Metro" ? 1f : 0f},
-        {"bank_Monzo", fraudPredictionData.Bank == "Monzo" ? 1f : 0f},
-        {"bank_RBS", fraudPredictionData.Bank == "RBS" ? 1f : 0f},
-        {"type_of_card_Visa", fraudPredictionData.TypeOfCard == "Visa" ? 1f : 0f},
-        {"country_of_residence_India", fraudPredictionData.CountryOfResidence == "India" ? 1f : 0f},
-        {"country_of_residence_Russia", fraudPredictionData.CountryOfResidence == "Russia" ? 1f : 0f},
-        {"country_of_residence_USA", fraudPredictionData.CountryOfResidence == "USA" ? 1f : 0f},
-        {"country_of_residence_United Kingdom", fraudPredictionData.CountryOfResidence == "United Kingdom" ? 1f : 0f},
-        {"gender_M", fraudPredictionData.Gender == 'M' ? 1f : 0f}
-    };
+            {
+                {"float_input", hourOfDay},
+                {"amount", (float)fraudPredictionData.Amount},
+                {"age", fraudPredictionData.Age},
+                {"year", fraudPredictionData.Time.Year},
+                {"month", fraudPredictionData.Time.Month},
+                {"day", fraudPredictionData.Time.Day},
+                {"day_of_week_numeric", dayOfWeekNumeric},
+                {"country_of_transaction_India", fraudPredictionData.CountryOfTransaction == "India" ? 1f : 0f},
+                {"country_of_transaction_Russia", fraudPredictionData.CountryOfTransaction == "Russia" ? 1f : 0f},
+                {"country_of_transaction_USA", fraudPredictionData.CountryOfTransaction == "USA" ? 1f : 0f},
+                {"country_of_transaction_United Kingdom", fraudPredictionData.CountryOfTransaction == "United Kingdom" ? 1f : 0f},
+                {"shipping_address_India", fraudPredictionData.ShippingAddress == "India" ? 1f : 0f},
+                {"shipping_address_Russia", fraudPredictionData.ShippingAddress == "Russia" ? 1f : 0f},
+                {"shipping_address_USA", fraudPredictionData.ShippingAddress == "USA" ? 1f : 0f},
+                {"shipping_address_United Kingdom", fraudPredictionData.ShippingAddress == "United Kingdom" ? 1f : 0f},
+                {"bank_HSBC", fraudPredictionData.Bank == "HSBC" ? 1f : 0f},
+                {"bank_Halifax", fraudPredictionData.Bank == "Halifax" ? 1f : 0f},
+                {"bank_Lloyds", fraudPredictionData.Bank == "Lloyds" ? 1f : 0f},
+                {"bank_Metro", fraudPredictionData.Bank == "Metro" ? 1f : 0f},
+                {"bank_Monzo", fraudPredictionData.Bank == "Monzo" ? 1f : 0f},
+                {"bank_RBS", fraudPredictionData.Bank == "RBS" ? 1f : 0f},
+                {"type_of_card_Visa", fraudPredictionData.TypeOfCard == "Visa" ? 1f : 0f},
+                {"country_of_residence_India", fraudPredictionData.CountryOfResidence == "India" ? 1f : 0f},
+                {"country_of_residence_Russia", fraudPredictionData.CountryOfResidence == "Russia" ? 1f : 0f},
+                {"country_of_residence_USA", fraudPredictionData.CountryOfResidence == "USA" ? 1f : 0f},
+                {"country_of_residence_United Kingdom", fraudPredictionData.CountryOfResidence == "United Kingdom" ? 1f : 0f},
+                {"gender_M", fraudPredictionData.Gender == 'M' ? 1f : 0f}
+            };
 
             // Convert the dictionary into a tensor for the model input
             var inputTensor = new DenseTensor<float>(inputFeatures.Values.ToArray(), new[] { 1, inputFeatures.Count });
@@ -219,16 +209,16 @@ namespace INTEX_II_413.Controllers
             // Prepare input for the ONNX model
             var inputs = new List<NamedOnnxValue>
             {
-        NamedOnnxValue.CreateFromTensor("float_input", inputTensor)
+                NamedOnnxValue.CreateFromTensor("float_input", inputTensor)
             };
 
             // Run the model
             using (var results = session.Run(inputs))
             {
                 var prediction = results.FirstOrDefault(item => item.Name == "output_label")?.AsTensor<long>().ToArray();
-                
+
                 var predictionValue = prediction[0];
-               
+
                 var returnValue = false;
 
                 if (predictionValue == 1)
@@ -237,17 +227,14 @@ namespace INTEX_II_413.Controllers
                 }
                 else
                 {
-                    returnValue =  false;
+                    returnValue = false;
                 }
 
                 return returnValue;
             }
-
         }
 
-
         public IActionResult Products(int pageNum = 1, string productCategory = null, string productColor = null, int pageSize = 5)
-        
         {
             var query = _repo.Products
                 .Where(x => productCategory == null || x.CatalogCategory == productCategory)
@@ -314,7 +301,6 @@ namespace INTEX_II_413.Controllers
             return View("FraudConfirmation");
         }
 
-
         public IActionResult SingleProduct(int id, string returnUrl)
         {
             ViewBag.returnUrl = returnUrl;
@@ -344,33 +330,31 @@ namespace INTEX_II_413.Controllers
             return View(viewModel); // Pass the view model to the view
         }
 
+        [Authorize(Roles = "Admin,Customer")]
+        [HttpPost]
+        public async Task<IActionResult> Cart(decimal total)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            //if (user == null)
+            //{
+            //    // Handle the case where the user is not found
+            //    return View("Login"); // Or redirect to a login page
+            //}
 
+            var userId = _userManager.GetUserId(User); // This gets the user's identity ID, not the CustomerId
 
-    [Authorize(Roles = "Admin,Customer")]
-    [HttpPost]
-    public async Task<IActionResult> Cart(decimal total)
-    {
-        var user = await _userManager.GetUserAsync(User);
-        //if (user == null)
-        //{
-        //    // Handle the case where the user is not found
-        //    return View("Login"); // Or redirect to a login page
-        //}
+            var customer = _repo.Customers.FirstOrDefault(c => c.AspNetUserId == userId);
+            //if (customer == null)
+            //{
+            //    // Handle the case where no customer is found for the user
+            //    return View("Login"); // Or an appropriate error handling
+            //}
 
-        var userId = _userManager.GetUserId(User); // This gets the user's identity ID, not the CustomerId
+            TempData["CustomerId"] = customer.CustomerId.ToString(); // Make sure you are accessing the CustomerId property
+            TempData["OrderAmount"] = total.ToString();
 
-        var customer = _repo.Customers.FirstOrDefault(c => c.AspNetUserId == userId);
-        //if (customer == null)
-        //{
-        //    // Handle the case where no customer is found for the user
-        //    return View("Login"); // Or an appropriate error handling
-        //}
-
-        TempData["CustomerId"] = customer.CustomerId.ToString(); // Make sure you are accessing the CustomerId property
-        TempData["OrderAmount"] = total.ToString();
-
-        return RedirectToAction("Checkout");
-    }
+            return RedirectToAction("Checkout");
+        }
 
 
 
@@ -400,20 +384,14 @@ namespace INTEX_II_413.Controllers
             return View("Checkout", model);
         }
 
-
-
-
-
-        
-
-            [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult DeleteProduct(int id)
         {
             var recordToDelete = _repo.Products
                 .Single(x => x.ProductId == id);
 
-            return View("DeleteProduct",recordToDelete);
+            return View("DeleteProduct", recordToDelete);
         }
 
         [Authorize(Roles = "Admin")]
@@ -422,7 +400,7 @@ namespace INTEX_II_413.Controllers
         {
             _repo.DeleteProduct(record);
 
-            return RedirectToAction("AdminProduct");
+            return View("AdminHomepage");
         }
 
         [Authorize(Roles = "Admin")]
@@ -432,7 +410,6 @@ namespace INTEX_II_413.Controllers
                 .Single(x => x.ProductId == id);
 
             return View("EditProduct", recordToEdit);
-
         }
 
         [Authorize(Roles = "Admin")]
@@ -442,7 +419,7 @@ namespace INTEX_II_413.Controllers
             _repo.EditProduct(updatedInfo);
             _repo.SaveChanges();
 
-            return RedirectToAction("AdminProduct");
+            return View("AdminHomepage");
         }
 
         [Authorize(Roles = "Admin")]
@@ -485,7 +462,7 @@ namespace INTEX_II_413.Controllers
         {
             int pgSize = 100;
 
-            var customers = _repo.Customers.OrderBy(x => x.CustomerId);
+            var customers = _repo.Customers.OrderByDescending(x => x.CustomerId);
 
             CustomerListViewModel clvm = new CustomerListViewModel
             {
@@ -555,6 +532,54 @@ namespace INTEX_II_413.Controllers
         public IActionResult AdminAddProduct()
         {
             return View("AddProduct");
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult EditCustomer(int id)
+        {
+            var recordToEdit = _repo.Customers
+                .Single(x => x.CustomerId == id);
+
+            return View("EditCustomer", recordToEdit);
+
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public IActionResult EditCustomer(Customer updatedInfo)
+        {
+            _repo.EditCustomer(updatedInfo);
+            _repo.SaveChanges();
+
+            return View("AdminHomepage");
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult DeleteCustomer(int id)
+        {
+            var recordToDelete = _repo.Customers
+                .Single(x => x.CustomerId == id);
+
+            return View("DeleteCustomer", recordToDelete);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+
+        public IActionResult DeleteCustomer(Customer customer)
+        {
+            _repo.DeleteCustomer(customer);
+
+            return View("AdminHomepage");
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public IActionResult AddProduct(Product response)
+        {
+            _repo.AddProduct(response);
+            _repo.SaveChanges();
+            return View("AdminHomepage");
         }
     }
 }

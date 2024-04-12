@@ -9,7 +9,7 @@ namespace INTEX_II_413.Models
         public int CustomerId { get; set; }
 
         [ForeignKey("AspNetUser")]
-        public string AspNetUserId { get; set; }
+        public string? AspNetUserId { get; set; }
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
