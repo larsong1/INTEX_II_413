@@ -1,4 +1,5 @@
-﻿
+﻿@model INTEX_II_413.Models.ViewModels.IndexViewModel
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,11 +27,34 @@
         <p>Join us in celebrating the magic of Lego – start your adventure at Aurora's Bricks today!</p>
     </div>
 
-    <section id="products" style="padding: 50px 0;">
+   
+
+    <section id="recommendations" style="padding: 50px 0;">
         <div class="container" style="width: 80%; margin: 0 auto; text-align: center;">
-            <h2 style="color: black;">Our Products</h2>
-            <p style="font-size: 18px;">Explore our wide range of Lego sets, including popular favorites and Aurora's unique designs.</p>
-            <h1>Product cards or grid can be added here</h1>
+            <h2 style="color: black;">Recommended for You</h2>
+            @if (Model.RecommendedProducts.Any())
+            {
+                <div class="row">
+                    @foreach (var product in Model.RecommendedProducts)
+                    {
+                        <div class="col-md-4">
+                            <div class="card h-100">
+                                <div class="card-header text-center">
+                                    <h5>@product.Name</h5>
+                                </div>
+                                <a asp-action="SingleProduct" asp-route-id="@product.ProductId" class="stretched-link">
+                                    <div class="card-body d-flex justify-content-center align-items-center" style="height: 300px; background-image: url('@product.ImgLink'); background-size: contain; background-position: center; background-repeat: no-repeat;">
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p>No recommendations available at the moment.</p>
+            }
         </div>
     </section>
 

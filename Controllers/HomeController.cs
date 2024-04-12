@@ -34,7 +34,7 @@ namespace INTEX_II_413.Controllers
         {
             _repo = temp;
 
-            _sessionFraud = new InferenceSession("C:\\Users\\Hammo\\source\\repos\\INTEX_II_413\\Fraud_Identification_model_3.onnx");
+            _sessionFraud = new InferenceSession("Fraud_Identification_model_3.onnx");
 
             _userManager = userManager;
         }
@@ -43,8 +43,68 @@ namespace INTEX_II_413.Controllers
 
         public IActionResult Index()
         {
-            return View("Index");
+            // This will display the public index page to everyone
+            var userId = _userManager.GetUserId(User); // This will be null if the user is not logged in
+
+            List<int> recommendedProductIds = new List<int>();
+
+            if (userId != null)
+            {
+                // Retrieve CustomerId for the logged-in user from the Customer table
+                var customer = _repo.Customers.FirstOrDefault(c => c.AspNetUserId == userId);
+                if (customer != null)
+                {
+                    // Fetch high-rated products by joining LineItems and Orders where CustomerId matches
+                    var highRatedProducts = _repo.LineItems
+                                                 .Join(_repo.Orders,
+                                                       li => li.TransactionId,
+                                                       o => o.TransactionId,
+                                                       (li, o) => new { LineItem = li, Order = o })
+                                                 .Where(x => x.Order.CustomerId == customer.CustomerId && x.LineItem.Rating == 5)
+                                                 .Select(x => x.LineItem)
+                                                 .ToList();
+
+                    if (highRatedProducts.Any())
+                    {
+                        var random = new Random();
+                        // Pick a random high-rated product
+                        var highRatedProduct = highRatedProducts[random.Next(highRatedProducts.Count)];
+
+                        // Fetch recommendations for this product
+                        var recommendations = _repo.UserBasedRecs
+                                                   .FirstOrDefault(r => r.ProductId == highRatedProduct.ProductId);
+
+                        if (recommendations != null)
+                        {
+                            recommendedProductIds.Add(recommendations.Recommendation1);
+                            recommendedProductIds.Add(recommendations.Recommendation2);
+                            recommendedProductIds.Add(recommendations.Recommendation3);
+                        }
+                    }
+                }
+            }
+
+            // Default product if no user is logged in or no ratings found
+            if (!recommendedProductIds.Any())
+            {
+                recommendedProductIds.Add(24);
+                recommendedProductIds.Add(28); // Assuming product 23 is your default
+                recommendedProductIds.Add(31);
+            }
+
+            var recommendedProducts = _repo.Products
+                                           .Where(p => recommendedProductIds.Contains(p.ProductId))
+                                           .ToList();
+
+            var viewModel = new IndexViewModel
+            {
+                RecommendedProducts = recommendedProducts
+            };
+
+            return View("Index", viewModel); // Pass the view model to the view
         }
+
+
 
 
         [Authorize(Roles = "Admin,Customer")]
