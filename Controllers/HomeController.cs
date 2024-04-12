@@ -25,7 +25,8 @@ namespace INTEX_II_413.Controllers
     {
         private IIntexRepository _repo;
 
-        private readonly UserManager<IdentityUser> _userManager;
+        
+        private readonly UserManager<IdentityUser> _userManager; 
 
         //This is the pipeline that will be used to make predictions
         private readonly InferenceSession _sessionFraud;
