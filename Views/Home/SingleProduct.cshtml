@@ -5,7 +5,7 @@
     <div class="card m-1 p-1">
         <h4 class="text-center">
             @Model.Name
-            <span class="badge rounded-pill text-white float-end" style="background-color: #92b6f0;border-color:black;"><small>$@Model.Price</small></span>
+            <span class="badge rounded-pill text-white float-end" style="background-color: #e8040c;border-color:black;"><small>$@Model.Price</small></span>
         </h4>
         <a class="text-center" href="@Model.ImgLink">
             <img src="@Model.ImgLink" style="max-width: 400px; height: auto;">
@@ -21,9 +21,9 @@
                 <a class="btn btn-primary"
                    href="@ViewBag.returnUrl"
                    style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px; padding: 0 13px;
-                  color: #fff; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #92b6f0; border-color: black;
+                  color: white; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #e8040c; border-color: black;
                   font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px;">
-                    Continue Shopping
+                    <b>Continue Shopping</b>
                 </a>
             </div>
 
@@ -33,9 +33,9 @@
                     <input type="hidden" name="returnUrl" value="@ViewBag.returnUrl" />
                     <button type="submit" class="btn-outline-success btn-sm"
                             style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px;
-                    padding: 0 13px; color: #fff; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #92b6f0;
+                    padding: 0 13px; color: white; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #e8040c;
                     border-color: black; font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px;">
-                        Add to Cart
+                        <b>Add to Cart</b>
                     </button>
                 </form>
             </div>

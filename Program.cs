@@ -85,22 +85,11 @@ namespace INTEX_II_413
 
             var app = builder.Build();
 
-            // Set CSP policy with nonce
-            app.Use(async (context, next) =>
-            {
-                // Generate a nonce
-                string cookieNonce = Guid.NewGuid().ToString("N");
-                string filterNonce = Guid.NewGuid().ToString("N");
 
-                // Add nonce to CSP header
-                context.Response.Headers.Add("Content-Security-Policy", $"default-src 'self'; script-src 'self' 'nonce-{cookieNonce}' 'nonce-{filterNonce}'; style-src 'self' 'unsafe-inline'; img-src 'self' https://www.thesun.co.uk https://www.lego.com https://images.brickset.com data: https://m.media-amazon.com https://www.brickeconomy.com https://localhost:7094; font-src 'self'; connect-src 'self' https://localhost:44337 http://localhost:40904 ws: wss:; frame-src 'self';");
 
-                // Pass the nonce value to your view
-                context.Items["CookieCspNonce"] = cookieNonce;
-                context.Items["FilterCspNonce"] = filterNonce;
 
-                await next();
-            });
+
+
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -124,16 +113,6 @@ namespace INTEX_II_413
 
             app.UseAuthorization();
 
-            //KeyVaultSecret secret = client.GetSecret("secret");
-
-            //string secretValue = secret.Value;
-
-            // Set CSP policy
-            //app.Use(async (context, next) =>
-            //{
-            //    context.Response.Headers.Add("Content-Security-Policy", "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https://www.thesun.co.uk https://www.lego.com https://images.brickset.com data: https://m.media-amazon.com https://www.brickeconomy.com; font-src 'self'; connect-src 'self' http://localhost:23148 https://localhost:44337 ws: wss:; frame-src 'self';");
-            //    await next();
-            //});
 
             app.MapControllerRoute(
                 name: "default",

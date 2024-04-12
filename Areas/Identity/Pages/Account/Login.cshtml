@@ -5,9 +5,18 @@
     ViewData["Title"] = "Log in";
 }
 
-<h1>@ViewData["Title"]</h1>
+<style>
+    .x-icon {
+        height: 1em;
+        width: 1em;
+        top: .125em;
+        position: relative;
+    }
+</style>
+
+<br />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <section>
             <form id="account" method="post">
                 <h2>Use a local account to log in.</h2>
@@ -34,7 +43,7 @@
                 </div>
                 <div>
                     <p>
-                        <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+                        <a classid="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
                     </p>
                     <p>
                         <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
@@ -48,7 +57,7 @@
     </div>
     <div class="col-md-6 col-md-offset-2">
         <section>
-            <h3>Use another service to log in.</h3>
+            <h2>Or, log in with</h2>
             <hr />
             @{
                 if ((Model.ExternalLogins?.Count ?? 0) == 0)
@@ -67,7 +76,11 @@
                             <p>
                                 @foreach (var provider in Model.ExternalLogins!)
                                 {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                    //<button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                    <button type="submit" class="btn btn-secondary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
+                                        <object type="image/svg+xml" data="https://s3-eu-west-1.amazonaws.com/cdn-testing.web.bas.ac.uk/scratch/bas-style-kit/ms-pictogram/ms-pictogram.svg" class="x-icon"></object>
+                                        @provider.DisplayName
+                                    </button>
                                 }
                             </p>
                         </div>

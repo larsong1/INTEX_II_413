@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using Microsoft.ML;
 using Microsoft.ML.OnnxRuntime;
 using Microsoft.ML.OnnxRuntime.Tensors;
+using INTEX_II_413.Pages;
 using Microsoft.AspNetCore.Identity;
 
 namespace INTEX_II_413.Controllers
@@ -45,6 +46,8 @@ namespace INTEX_II_413.Controllers
             return View("Index");
         }
 
+
+        [Authorize(Roles = "Admin,Customer")]
         [HttpPost]
         public IActionResult PlaceOrder(OrderSubmissionViewModel submissionModel)
         {
@@ -175,10 +178,14 @@ namespace INTEX_II_413.Controllers
 
 
         public IActionResult Products(int pageNum = 1, string productCategory = null, string primaryColor = null, int pageSize = 5)
+        public IActionResult Products(int pageNum = 1, string productCategory = null, string primaryColor = null, int pageSize = 5)
+>>>>>>>>> Temporary merge branch 2
+        public IActionResult Products(int pageNum = 1, string productCategory = null, string primaryColor = null, int pageSize = 5)
+>>>>>>>>> Temporary merge branch 2
         {
             var query = _repo.Products
-                .Where(x => (productCategory == null || x.Category == productCategory) &&
-                            (primaryColor == null || x.PrimaryColor == primaryColor))
+                .Where(x => productCategory == null || x.CatalogCategory == productCategory)
+                .Where(x => productColor == null || x.PrimaryColor == productColor)
                 .OrderBy(x => x.Name);
 
             var totalItems = query.Count();
@@ -196,7 +203,7 @@ namespace INTEX_II_413.Controllers
                 },
 
                 CurrentProductCategory = productCategory,
-                CurrentProductColor = primaryColor
+                CurrentProductColor = productColor
             };
 
             return View(products);
@@ -227,6 +234,7 @@ namespace INTEX_II_413.Controllers
         
 
 
+
         [Authorize(Roles = "Admin,Customer")]
         public IActionResult Confirmation()
         {
@@ -240,10 +248,10 @@ namespace INTEX_II_413.Controllers
         }
 
         [Authorize(Roles = "Admin,Customer")]
-        public IActionResult FraudConfirmation()
-        {
-            return View("FraudConfirmation");
+            OrderSubmissionViewModel model = new OrderSubmissionViewModel();
+            return View("Checkout", model);
         }
+>>>>>>>>> Temporary merge branch 2
 
         public IActionResult SingleProduct(int id, string returnUrl)
         {
@@ -264,11 +272,12 @@ namespace INTEX_II_413.Controllers
 
         [HttpPost]
         public IActionResult CreateAccount()
-        {
+
+
+
+        [Authorize(Roles = "Admin,Customer")]
             return View("NewUser");
         }
-
-
 
         [Authorize(Roles = "Admin,Customer")]
         [HttpPost]
@@ -432,6 +441,7 @@ namespace INTEX_II_413.Controllers
                 .ToList();
 
             return View(orders);
+
         }
 
 

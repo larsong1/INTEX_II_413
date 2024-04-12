@@ -35,4 +35,13 @@
     <PackageReference Include="Microsoft.ML.OnnxTransformer" Version="1.5.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Fraud_Identification_model.onnx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Fraud_Identification_model_2.onnx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

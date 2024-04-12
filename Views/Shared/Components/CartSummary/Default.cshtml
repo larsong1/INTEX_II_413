@@ -15,7 +15,7 @@
             @Model.CalculateTotal().ToString("c")
         </small>
     }
-    <a class="btn btn-sm btn-secondary navbar-btn" asp-page="/Cart" asp-route-returnUrl="@ViewContext.HttpContext.Request.PathAndQuery()">
-        <i class="fa fa-shopping-cart"></i>
+    <a class="btn btn-sm btn-secondary navbar-btn" style="background-color:black" asp-page="/Cart" asp-route-returnUrl="@ViewContext.HttpContext.Request.PathAndQuery()">
+        <i class="fa fa-shopping-cart" style="color: white;"></i>
     </a>
 </div>

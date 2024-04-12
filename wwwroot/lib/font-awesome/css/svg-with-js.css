@@ -84,7 +84,7 @@ svg:not(:root).svg-inline--fa, svg:not(:host).svg-inline--fa {
   background-color: var(--fa-counter-background-color, #ff253a);
   border-radius: var(--fa-counter-border-radius, 1em);
   box-sizing: border-box;
-  color: var(--fa-inverse, #fff);
+  color: var(--fa-inverse, #black);
   line-height: var(--fa-counter-line-height, 1);
   max-width: var(--fa-counter-max-width, 5em);
   min-width: var(--fa-counter-min-width, 1.5em);
@@ -591,7 +591,7 @@ svg:not(:root).svg-inline--fa, svg:not(:host).svg-inline--fa {
   width: 2.5em; }
 
 .fa-inverse {
-  color: var(--fa-inverse, #fff); }
+  color: var(--fa-inverse, #black); }
 
 .sr-only,
 .fa-sr-only {
@@ -637,4 +637,4 @@ svg:not(:root).svg-inline--fa, svg:not(:host).svg-inline--fa {
 
 .fad.fa-inverse,
 .fa-duotone.fa-inverse {
-  color: var(--fa-inverse, #fff); }
+  color: var(--fa-inverse, #black); }
