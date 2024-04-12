@@ -18,6 +18,7 @@ using Microsoft.ML.OnnxRuntime;
 using Microsoft.ML.OnnxRuntime.Tensors;
 using INTEX_II_413.Pages;
 using Microsoft.AspNetCore.Identity;
+using System.Drawing;
 
 namespace INTEX_II_413.Controllers
 {
@@ -474,10 +475,24 @@ public IActionResult Checkout()
         }
 
         [Authorize(Roles = "Admin")]
-        public IActionResult AdminCustomers()
+        public IActionResult AdminCustomers(int pageNum = 1)
         {
-            var customers = _repo.Customers.ToList();
-            return View(customers);
+            int pgSize = 100;
+
+            var customers = _repo.Customers.OrderBy(x => x.CustomerId);
+
+            CustomerListViewModel clvm = new CustomerListViewModel
+            {
+                Customers = customers.Skip((pageNum - 1) * pgSize).Take(pgSize),
+                PaginationInfo = new PaginationInfo
+                {
+                    CurrentPage = pageNum,
+                    ItemsPerPage = pgSize,
+                    TotalItems = customers.Count()
+                }
+            };
+
+            return View(clvm);
         }
 
         [Authorize(Roles = "Admin")]
