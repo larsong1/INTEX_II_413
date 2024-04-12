@@ -1,0 +1,24 @@
+﻿@model IEnumerable<bool?>
+
+<div class="dropdown">
+    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="fraudFilterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        Filter by Predicted Fraud
+    </button>
+    <ul class="dropdown-menu custom-dropdown" aria-labelledby="fraudFilterDropdown">
+        <li><a class="dropdown-item" asp-action="AdminOrders" asp-route-fraudFilter="">All Categories</a></li>
+        @foreach (var item in Model)
+        {
+            <li>
+                    <a class="dropdown-item" asp-action="AdminOrders" asp-route-fraudFilter="true">@item</a>
+            </li>
+        }
+    </ul>
+</div>
+
+<style>
+    .custom-dropdown {
+        background-color: #f0f0f0; /* Solid background color */
+    }
+</style>
+
+

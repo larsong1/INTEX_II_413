@@ -6,7 +6,7 @@
         public PaginationInfo PaginationInfo { get; set; } = new PaginationInfo();
 
         // string for current product category
-        public string? CurrentOrderFilter { get; set; }
+        public string? CurrentFraudFilter { get; set; }
 
 
 

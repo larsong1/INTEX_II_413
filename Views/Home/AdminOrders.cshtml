@@ -1,8 +1,7 @@
-﻿@using INTEX_II_413.Models.ViewModels
-@model OrdersListViewModel
+﻿@model INTEX_II_413.Models.ViewModels.OrdersListViewModel
 
 <h1>List of Orders that have been placed</h1>
-<vc:fraud-filter/>
+<vc:fraud-filter />
 
 <table class="table table-bordered table-striped">
     <thead class="thead-dark" style="background-color: #e8040c;">
@@ -54,11 +53,44 @@
             <ul class="pagination">
                 @for (int i = 1; i <= Model.PaginationInfo.TotalPages; i++)
                 {
-                    <li class="page-item @(i == Model.PaginationInfo.CurrentPage ? "active" : "")">
-                        <a class="page-link" href="@Url.Action("AdminOrders", "Home", new { pageNum = i, pageSize = Model.PaginationInfo.ItemsPerPage})">@i</a>
-                    </li>
+                    // Show the first five tabs
+                    if (i <= 5)
+                    {
+                        <li class="page-item @(i == Model.PaginationInfo.CurrentPage ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("AdminOrders", "Home", new { pageNum = i, pageSize = Model.PaginationInfo.ItemsPerPage})">@i</a>
+                        </li>
+                    }
+                    // Show dots after the fifth tab
+                    else if (i == 6)
+                    {
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                    }
+                    // Show tabs with incremented values after the dots
+                    else if (i > Model.PaginationInfo.CurrentPage - 2 && i < Model.PaginationInfo.CurrentPage + 2)
+                    {
+                        <li class="page-item @(i == Model.PaginationInfo.CurrentPage ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("AdminOrders", "Home", new { pageNum = i, pageSize = Model.PaginationInfo.ItemsPerPage})">@i</a>
+                        </li>
+                    }
+                    // Show dots before the last tab
+                    else if (i == Model.PaginationInfo.TotalPages - 1)
+                    {
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                    }
+                    // Show the last tab
+                    else if (i == Model.PaginationInfo.TotalPages)
+                    {
+                        <li class="page-item @(i == Model.PaginationInfo.CurrentPage ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("AdminOrders", "Home", new { pageNum = i, pageSize = Model.PaginationInfo.ItemsPerPage})">@i</a>
+                        </li>
+                    }
                 }
             </ul>
         </nav>
     </div>
 </div>
+

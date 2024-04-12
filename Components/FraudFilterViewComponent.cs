@@ -3,10 +3,10 @@ using INTEX_II_413.Models;
 
 namespace INTEX_II_413.Components
 {
-    public class OrderFraudViewComponent : ViewComponent
+    public class FraudFilterViewComponent : ViewComponent
     {
         private IIntexRepository _repo;
-        public OrderFraudViewComponent(IIntexRepository temp) {
+        public FraudFilterViewComponent(IIntexRepository temp) {
             _repo = temp;
         }
 

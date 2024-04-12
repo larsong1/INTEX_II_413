@@ -376,7 +376,8 @@ namespace INTEX_II_413.Controllers
 
 
 
-public IActionResult Checkout()
+        [Authorize(Roles = "Admin,Customer")]
+        public IActionResult Checkout()
         {
             OrderSubmissionViewModel model = new OrderSubmissionViewModel();
 
@@ -500,21 +501,18 @@ public IActionResult Checkout()
             return View(clvm);
         }
 
+
         [Authorize(Roles = "Admin")]
-        public IActionResult AdminOrders(int pageNum = 1, string fraudFilter = "true", int pageSize = 100)
+        public IActionResult AdminOrders(int pageNum = 1, string fraudFilter = "", int pageSize = 100)
         {
             var query = _repo.Orders.AsQueryable();
 
             // Apply fraud filter if provided
-            if (!string.IsNullOrEmpty(fraudFilter))
+            if (fraudFilter == "true")
             {
-                bool isFraud = bool.Parse(fraudFilter); // Assuming fraudFilter is a string representation of a boolean
-                query = query.Where(x => x.FraudPredicted == isFraud);
+                query = query.Where(x => x.FraudPredicted == true);
             }
-            else
-            {
-                // If fraudFilter is null or empty, include all orders (both fraud and non-fraud)
-            }
+            // Include all orders (both fraud and non-fraud) if fraudFilter is null or an empty string
 
             // Order by Date
             query = query.OrderBy(x => x.Date);
@@ -535,11 +533,14 @@ public IActionResult Checkout()
                     TotalItems = totalItems
                 },
 
-                CurrentOrderFilter = fraudFilter
+                CurrentFraudFilter = fraudFilter
             };
 
             return View(orders);
         }
+
+
+
 
 
 
