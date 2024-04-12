@@ -9,7 +9,7 @@
         @foreach (var item in Model)
         {
             <li>
-                    <a class="dropdown-item" asp-action="AdminOrders" asp-route-fraudFilter="true">@item</a>
+                <a class="dropdown-item" asp-action="AdminOrders" asp-route-fraudFilter="@item.ToString().ToLower()">@item</a>
             </li>
         }
     </ul>
@@ -20,5 +20,3 @@
         background-color: #f0f0f0; /* Solid background color */
     }
 </style>
-
-

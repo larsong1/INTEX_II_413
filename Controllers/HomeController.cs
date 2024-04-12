@@ -496,7 +496,15 @@ namespace INTEX_II_413.Controllers
             {
                 query = query.Where(x => x.FraudPredicted == true);
             }
+            else if (fraudFilter == "false")
+            {
+                query = query.Where(x => x.FraudPredicted == false);
+            }
             // Include all orders (both fraud and non-fraud) if fraudFilter is null or an empty string
+            else if (string.IsNullOrEmpty(fraudFilter))
+            {
+                // Include all orders
+            }
 
             // Order by Date
             query = query.OrderBy(x => x.Date);
@@ -522,8 +530,6 @@ namespace INTEX_II_413.Controllers
 
             return View(orders);
         }
-
-
 
 
 
