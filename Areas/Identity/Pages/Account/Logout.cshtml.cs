@@ -4,6 +4,7 @@
 
 using System;
 using System.Threading.Tasks;
+using INTEX_II_413.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,11 @@ namespace INTEX_II_413.Areas.Identity.Pages.Account
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
+
+            // Clear the cart
+            var cart = SessionCart.GetCart(HttpContext.RequestServices);
+            cart.Clear();
+
             if (returnUrl != null)
             {
                 return LocalRedirect(returnUrl);
