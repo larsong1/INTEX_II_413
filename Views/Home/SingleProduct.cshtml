@@ -1,19 +1,20 @@
-﻿@model INTEX_II_413.Models.ViewModels.SimilarProductViewModel
+﻿
+@model Product
 
 <div class="col-md-12">
     <div class="card m-1 p-1">
         <h4 class="text-center">
-            @Model.Product.Name
-            <span class="badge rounded-pill text-white float-end" style="background-color: #e8040c;border-color:black;"><small>$@Model.Product.Price</small></span>
+            @Model.Name
+            <span class="badge rounded-pill text-white float-end" style="background-color: #e8040c;border-color:black;"><small>$@Model.Price</small></span>
         </h4>
-        <a class="text-center" href="@Model.Product.ImgLink">
-            <img src="@Model.Product.ImgLink" style="max-width: 400px; height: auto;">
+        <a class="text-center" href="@Model.ImgLink">
+            <img src="@Model.ImgLink" style="max-width: 400px; height: auto;">
         </a>
         <ul>
-            <li>Number of Parts: @Model.Product.NumParts</li>
-            <li>Made in @Model.Product.Year</li>
-            <li>@Model.Product.Category</li>
-            <li>@Model.Product.Description</li>
+            <li>Number of Parts: @Model.NumParts</li>
+            <li>Made in @Model.Year</li>
+            <li>@Model.Category</li>
+            <li>@Model.Description</li>
         </ul>
         <div style="display: flex; justify-content: center;">
             <div style="margin-right: 10px;">
@@ -27,8 +28,8 @@
             </div>
 
             <div style="margin-left: 10px;">
-                <form id="@Model.Product.ProductId" method="post" asp-page="/Cart">
-                    <input type="hidden" asp-for="Product.ProductId" value="@Model.Product.ProductId" />
+                <form id="@Model.ProductId" method="post" asp-page="/Cart">
+                    <input type="hidden" asp-for="ProductId" value="@Model.ProductId" />
                     <input type="hidden" name="returnUrl" value="@ViewBag.returnUrl" />
                     <button type="submit" class="btn-outline-success btn-sm"
                             style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px;
@@ -37,46 +38,6 @@
                         <b>Add to Cart</b>
                     </button>
                 </form>
-            </div>
-        </div>
-        <br><br>
-        <div>
-            <h4 class="text-center">If you are interested in this product, here's a couple more you might be interested in!</h4>
-            <input type="hidden" asp-for="Product.ProductId" value="@Model.Item_Based_Recs.ProductId" />
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <div class="card-header text-center">
-                            <h5>@Model.Recommendation1Product.Name</h5>
-                        </div>
-                        <a asp-action="SingleProduct" asp-route-id="@Model.Recommendation1Product.ProductId" class="stretched-link">
-                            <div class="card-body d-flex justify-content-center align-items-center" style="height: 300px; background-image: url('@Model.Recommendation1Product.ImgLink'); background-size: contain; background-position: center; background-repeat: no-repeat;">
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <div class="card-header text-center">
-                            <h5>@Model.Recommendation2Product.Name</h5>
-                        </div>
-                        <a asp-action="SingleProduct" asp-route-id="@Model.Recommendation2Product.ProductId" class="stretched-link">
-                            <div class="card-body d-flex justify-content-center align-items-center" style="height: 300px; background-image: url('@Model.Recommendation2Product.ImgLink'); background-size: contain; background-position: center; background-repeat: no-repeat;">
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <div class="card-header text-center">
-                            <h5>@Model.Recommendation3Product.Name</h5>
-                        </div>
-                        <a asp-action="SingleProduct" asp-route-id="@Model.Recommendation3Product.ProductId" class="stretched-link">
-                            <div class="card-body d-flex justify-content-center align-items-center" style="height: 300px; background-image: url('@Model.Recommendation3Product.ImgLink'); background-size: contain; background-position: center; background-repeat: no-repeat;">
-                            </div>
-                        </a>
-                    </div>
-                </div>
             </div>
         </div>
 

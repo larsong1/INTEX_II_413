@@ -1,24 +1,9 @@
 ﻿window.addEventListener("load", () => {
-    const qrElement = document.getElementById("qrCode");
     const uri = document.getElementById("qrCodeData").getAttribute('data-url');
-
-    if (!uri) {
-        console.error('No URI found for QR code generation.');
-        qrElement.textContent = 'Error: QR code cannot be generated because the URI data is missing.';
-        return;
-    }
-
-    try {
-        new QRCode(qrElement, {
+    new QRCode(document.getElementById("qrCode"),
+        {
             text: uri,
             width: 150,
-            height: 150,
-            colorDark: "#000000",
-            colorLight: "#ffffff",
-            correctLevel: QRCode.CorrectLevel.H
+            height: 150
         });
-    } catch (error) {
-        console.error('Error generating QR code:', error);
-        qrElement.textContent = 'Error: QR code cannot be generated due to an error.';
-    }
 });
