@@ -34,7 +34,7 @@ namespace INTEX_II_413.Controllers
         {
             _repo = temp;
 
-            _sessionFraud = new InferenceSession("C:\\Users\\Hammo\\source\\repos\\INTEX_II_413\\Fraud_Identification_model_3.onnx");
+            _sessionFraud = new InferenceSession("Fraud_Identification_model_3.onnx");
 
             _userManager = userManager;
         }
