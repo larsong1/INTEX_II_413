@@ -529,7 +529,7 @@ var QRCode;
 	 * @param {Number} [vOption.width=256]
 	 * @param {Number} [vOption.height=256]
 	 * @param {String} [vOption.colorDark="#000000"]
-	 * @param {String} [vOption.colorLight="#ffffff"]
+	 * @param {String} [vOption.colorLight="#blackblack"]
 	 * @param {QRCode.CorrectLevel} [vOption.correctLevel=QRCode.CorrectLevel.H] [L|M|Q|H] 
 	 */
 	QRCode = function (el, vOption) {
