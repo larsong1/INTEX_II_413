@@ -93,18 +93,18 @@ namespace INTEX_II_413.Controllers
             }
         
                
-    }
+        }
 
 
 
 
-    [HttpPost]
+        [HttpPost]
         public bool PredictFraud(FraudPredictionViewModel fraudPredictionData)
         {
             int hourOfDay = fraudPredictionData.Time.Hour;
 
             List<float> inputList = new List<float>
-                {
+             {
                     hourOfDay,
                     fraudPredictionData.Age,
                     fraudPredictionData.Year,
@@ -138,7 +138,7 @@ namespace INTEX_II_413.Controllers
                     // One-hot encoding for 'gender'
                     fraudPredictionData.Gender == 'M' ? 1f : 0f,
 
-                };
+             };
 
                         // Convert inputList to Tensor
                         var inputTensor = new DenseTensor<float>(inputList.ToArray(), new[] { 1, inputList.Count });
@@ -239,9 +239,6 @@ namespace INTEX_II_413.Controllers
             return View("FraudConfirmation");
         }
 
-        
-
-
 
         public IActionResult SingleProduct(int id, string returnUrl)
         {
@@ -258,18 +255,6 @@ namespace INTEX_II_413.Controllers
             }
 
             return View();
-        }
-
-        [Authorize(Roles = "Admin,Customer")]
-        public IActionResult NewUser()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult CreateAccount()
-        {
-            return View("NewUser");
         }
 
 
