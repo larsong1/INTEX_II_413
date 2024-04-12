@@ -1,8 +1,21 @@
 ﻿@using INTEX_II_413.Models.ViewModels
 @model OrdersListViewModel
 
-<h1>List of Orders that have been placed</h1>
-<vc:fraud-filter/>
+﻿<br />
+<div style="display: flex; align-items: center;">
+    <div>
+        <form asp-controller="Home" asp-action="AdminHomepage" method="get">
+            <button type="submit" class="btn" style="outline: 0; cursor: pointer; height: 34px; padding: 0 13px;
+                   color: white; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #e8040c; border-color: black;
+                   font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px;">
+                <b>Return to Admin Portal</b>
+            </button>
+        </form>
+    </div>
+    <div style="flex-grow: 1; text-align: center;">
+        <h1 style="color: black; padding: 20px; text-align: center; font-size: 48px; font-family: 'Arial Black' , sans-serif;" class="text-center">Orders</h1>
+    </div>
+</div>
 
 <table class="table table-bordered table-striped">
     <thead class="thead-dark" style="background-color: #e8040c;">
@@ -32,7 +45,7 @@
                     <td style="text-align:center">@x.CustomerId</td>
                     <td style="text-align:center">@x.Date.Date.ToString("MM/dd/yyyy")</td>
                     <td style="text-align:center">@x.DayOfWeek</td>
-                    <td style="text-align:center">@x.Time.ToShortTimeString()</td>
+                    <td style="text-align:center">@x.Time.ToString("h:mm tt")</td>
                     <td style="text-align:center">@x.CardType</td>
                     <td style="text-align:center">@x.EntryMode</td>
                     <td style="text-align:center">$@x.Amount</td>

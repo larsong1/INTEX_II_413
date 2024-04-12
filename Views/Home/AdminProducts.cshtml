@@ -9,15 +9,31 @@
     }
 </style>
 <br />
-<div style="text-align:right">
-    <form asp-controller="Home" asp-action="AdminAddProduct" method="post">
-        <button type="submit" class="btn" style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px; padding: 0 13px;
-           color: white; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #e8040c; border-color: black;
-           font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px; width: 150px;">
-           <b>Add Product</b>
-        </button>
-    </form>
-</div><br />
+<div style="display: flex; justify-content: space-between; align-items: center; text-align: center;">
+    <div style="text-align: left;">
+        <form asp-controller="Home" asp-action="AdminHomepage" method="get">
+            <button type="submit" class="btn" style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px; padding: 0 13px;
+               color: white; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #e8040c; border-color: black;
+               font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px; width: 200px;">
+                <b>Return to Admin Portal</b>
+            </button>
+        </form>
+    </div>
+    <h1 style="color: black; padding: 20px; text-align: center; font-size: 48px; font-family: 'Arial Black' , sans-serif;">Products</h1>
+    <div style="text-align: right;">
+        <form asp-controller="Home" asp-action="AdminAddProduct" method="post">
+            <button type="submit" class="btn" style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px; padding: 0 13px;
+               color: white; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #e8040c; border-color: black;
+               font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px; width: 150px;">
+                <b>Add Product</b>
+            </button>
+        </form>
+    </div>
+</div>
+
+
+<br />
+
 
 <div class="row" width="100%">
     <table class="table table-bordered table-striped" style="table-layout: auto;">
@@ -52,20 +68,28 @@
                     <td style="text-align:center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">@x.PrimaryColor</td>
                     <td style="text-align:center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">@x.SecondaryColor</td>
                     <td style="text-align:center;">
-                        <button class="btn btn-info" asp-controller="Home" asp-action="EditProduct" asp-route-id="@x.ProductId"
-                            style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px; padding: 0 13px;
-                            color: white; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #e8040c; border-color: black;
-                            font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px;">
-                            Edit
-                        </button>
+                        <form asp-controller="Home" asp-action="EditProduct" asp-route-id="@x.ProductId" method="get" style="display: inline;">
+                            <button class="btn btn-info"
+                                    style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px; padding: 0 13px;
+                                       color: white; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #e8040c; border-color: black;
+                                       font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px;"
+                                    type="submit">
+                                <b>Edit</b>
+                            </button>
+                        </form>
                     </td>
+
                     <td style="text-align:center;">
-                        <button class="btn btn-danger" asp-controller="Home" asp-action="DeleteProduct" asp-route-id="@x.ProductId"
-                            style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px; padding: 0 13px;
-                            color: white; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #e8040c; border-color: black;
-                            font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px;">
-                            Delete
-                        </button>
+                        <form method="get" asp-controller="Home" asp-action="DeleteProduct" asp-route-id="@x.ProductId" style="display: inline;">
+                            <button class="btn btn-danger"
+                                    style="display: inline-flex; justify-content: center; align-items: center; outline: 0; cursor: pointer; height: 34px; padding: 0 13px;
+                                        color: white; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #e8040c; border-color: black;
+                                        font-weight: 600; text-transform: uppercase; line-height: 16px; font-size: 14px;"
+                                    type="submit">
+                                Delete
+                            </button>
+                        </form>
+
                     </td>
 
                 </tr>
