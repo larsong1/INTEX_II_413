@@ -161,8 +161,14 @@ namespace INTEX_II_413.Controllers
 
             _repo.AddOrder(model.Order);
             _repo.SaveChanges();
+
+            // Clear the cart
+            var cart = SessionCart.GetCart(HttpContext.RequestServices);
+            cart.Clear();
+
             return RedirectToAction("Confirmation");
         }
+
 
 
         [HttpPost]
@@ -268,7 +274,6 @@ namespace INTEX_II_413.Controllers
 
             return View(products);
         }
-
 
         public IActionResult AboutUs()
         {
@@ -496,15 +501,46 @@ public IActionResult Checkout()
         }
 
         [Authorize(Roles = "Admin")]
-        public IActionResult AdminOrders()
+        public IActionResult AdminOrders(int pageNum = 1, string fraudFilter = "true", int pageSize = 100)
         {
-            var orders = _repo.Orders
-                .OrderByDescending(x => x.Date) // Order by date descending
-                .ToList();
+            var query = _repo.Orders.AsQueryable();
+
+            // Apply fraud filter if provided
+            if (!string.IsNullOrEmpty(fraudFilter))
+            {
+                bool isFraud = bool.Parse(fraudFilter); // Assuming fraudFilter is a string representation of a boolean
+                query = query.Where(x => x.FraudPredicted == isFraud);
+            }
+            else
+            {
+                // If fraudFilter is null or empty, include all orders (both fraud and non-fraud)
+            }
+
+            // Order by Date
+            query = query.OrderBy(x => x.Date);
+
+            // Count total items
+            var totalItems = query.Count();
+
+            // Paginate the query
+            var orders = new OrdersListViewModel
+            {
+                Orders = query.Skip((pageNum - 1) * pageSize)
+                              .Take(pageSize),
+
+                PaginationInfo = new PaginationInfo
+                {
+                    CurrentPage = pageNum,
+                    ItemsPerPage = pageSize,
+                    TotalItems = totalItems
+                },
+
+                CurrentOrderFilter = fraudFilter
+            };
 
             return View(orders);
-
         }
+
 
 
         [Authorize(Roles = "Admin")]
