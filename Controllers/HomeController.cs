@@ -26,18 +26,25 @@ namespace INTEX_II_413.Controllers
     {
         private IIntexRepository _repo;
 
-        private readonly UserManager<IdentityUser> _userManager;
+        
+        private readonly UserManager<IdentityUser> _userManager; 
+
+        private readonly RoleManager<IdentityRole> _roleManager;
+
 
         //This is the pipeline that will be used to make predictions
         private readonly InferenceSession _sessionFraud;
 
-        public HomeController(IIntexRepository temp, UserManager<IdentityUser> userManager)
+
+        public HomeController(IIntexRepository temp, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _repo = temp;
 
             _sessionFraud = new InferenceSession("Fraud_Identification_model_3.onnx");
 
             _userManager = userManager;
+
+            _roleManager = roleManager;
         }
 
         public IActionResult Index()
@@ -534,15 +541,71 @@ namespace INTEX_II_413.Controllers
             return View("AddProduct");
         }
 
+        
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> EditCustomerRoles(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                return NotFound();
+
+            var userRoles = await _userManager.GetRolesAsync(user);
+            var availableRoles = _roleManager.Roles.Select(r => r.Name).ToList();
+
+            var model = new EditCustomerRolesViewModel
+            {
+                UserId = userId,
+                Email = user.Email,
+                Roles = userRoles.ToList(),
+                AvailableRoles = availableRoles
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> EditCustomerRoles(EditCustomerRolesViewModel model, List<string> selectedRoles)
+        {
+            var user = await _userManager.FindByIdAsync(model.UserId);
+            if (user == null)
+                return NotFound();
+
+            var currentRoles = await _userManager.GetRolesAsync(user);
+            var result = await _userManager.RemoveFromRolesAsync(user, currentRoles);
+
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("", "Failed to remove user roles");
+                return View(model);
+            }
+
+            result = await _userManager.AddToRolesAsync(user, selectedRoles);
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("", "Failed to add user roles");
+                return View(model);
+            }
+
+            return RedirectToAction("AdminCustomers");
+        }
+
+
+
         [Authorize(Roles = "Admin")]
         public IActionResult EditCustomer(int id)
         {
-            var recordToEdit = _repo.Customers
-                .Single(x => x.CustomerId == id);
+            var customer = _repo.Customers
+                .FirstOrDefault(c => c.CustomerId == id);
+            if (customer == null)
+            {
+                return NotFound();
+            }
 
-            return View("EditCustomer", recordToEdit);
-
+            return View("EditCustomer", customer);
         }
+
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
