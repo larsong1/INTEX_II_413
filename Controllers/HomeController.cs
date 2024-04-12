@@ -177,11 +177,8 @@ namespace INTEX_II_413.Controllers
         }
 
 
-        public IActionResult Products(int pageNum = 1, string productCategory = null, string primaryColor = null, int pageSize = 5)
-        public IActionResult Products(int pageNum = 1, string productCategory = null, string primaryColor = null, int pageSize = 5)
->>>>>>>>> Temporary merge branch 2
-        public IActionResult Products(int pageNum = 1, string productCategory = null, string primaryColor = null, int pageSize = 5)
->>>>>>>>> Temporary merge branch 2
+        public IActionResult Products(int pageNum = 1, string productCategory = null, string productColor = null, int pageSize = 5)
+        
         {
             var query = _repo.Products
                 .Where(x => productCategory == null || x.CatalogCategory == productCategory)
@@ -231,10 +228,6 @@ namespace INTEX_II_413.Controllers
             return View("Login");
         }
 
-        
-
-
-
         [Authorize(Roles = "Admin,Customer")]
         public IActionResult Confirmation()
         {
@@ -248,68 +241,60 @@ namespace INTEX_II_413.Controllers
         }
 
         [Authorize(Roles = "Admin,Customer")]
-            OrderSubmissionViewModel model = new OrderSubmissionViewModel();
-            return View("Checkout", model);
+        public IActionResult FraudConfirmation()
+        {
+            return View("FraudConfirmation");
         }
->>>>>>>>> Temporary merge branch 2
 
         public IActionResult SingleProduct(int id, string returnUrl)
-        {
-            ViewBag.returnUrl = returnUrl;
+    {
+        ViewBag.returnUrl = returnUrl;
 
-            var product = _repo.Products.Where(p => p.ProductId == id).FirstOrDefault();
+        var product = _repo.Products.Where(p => p.ProductId == id).FirstOrDefault();
 
-            return View(product);
+        return View(product);
 
-            //Fixed, brought back what I accidentally deleted  -Cam
-        }
-
-        [Authorize(Roles = "Admin,Customer")]
-        public IActionResult NewUser()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult CreateAccount()
+        //Fixed, brought back what I accidentally deleted  -Cam
+    }
 
 
+    [HttpPost]
+    public IActionResult CreateAccount()
+    {
+        return View("NewUser");
+    }
 
-        [Authorize(Roles = "Admin,Customer")]
-            return View("NewUser");
-        }
+    [Authorize(Roles = "Admin,Customer")]
+[HttpPost]
+public async Task<IActionResult> Cart(decimal total)
+{
+    var user = await _userManager.GetUserAsync(User);
+    if (user == null)
+    {
+        // Handle the case where the user is not found
+        return View("Error"); // Or redirect to a login page
+    }
 
-        [Authorize(Roles = "Admin,Customer")]
-        [HttpPost]
-        public async Task<IActionResult> Cart(decimal total)
-        {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                // Handle the case where the user is not found
-                return View("Error"); // Or redirect to a login page
-            }
+    var userId = _userManager.GetUserId(User); // This gets the user's identity ID, not the CustomerId
 
-            var userId = _userManager.GetUserId(User); // This gets the user's identity ID, not the CustomerId
+    var customer = _repo.Customers.FirstOrDefault(c => c.AspNetUserId == userId);
+    if (customer == null)
+    {
+        // Handle the case where no customer is found for the user
+        return View("Error"); // Or an appropriate error handling
+    }
 
-            var customer = _repo.Customers.FirstOrDefault(c => c.AspNetUserId == userId);
-            if (customer == null)
-            {
-                // Handle the case where no customer is found for the user
-                return View("Error"); // Or an appropriate error handling
-            }
+    TempData["CustomerId"] = customer.CustomerId.ToString(); // Make sure you are accessing the CustomerId property
+    TempData["OrderAmount"] = total.ToString();
 
-            TempData["CustomerId"] = customer.CustomerId.ToString(); // Make sure you are accessing the CustomerId property
-            TempData["OrderAmount"] = total.ToString();
-
-            return RedirectToAction("Checkout");
-        }
+    return RedirectToAction("Checkout");
+}
 
 
 
 
 
-        public IActionResult Checkout()
+public IActionResult Checkout()
         {
             OrderSubmissionViewModel model = new OrderSubmissionViewModel();
 
