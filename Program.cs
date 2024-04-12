@@ -23,6 +23,7 @@ namespace INTEX_II_413
             // Retrieve client ID and secret from Azure Key Vault
             var clientIdSecret = await secretClient.GetSecretAsync("client-id");
             var clientSecretSecret = await secretClient.GetSecretAsync("secret");
+            var db_connection_string = await secretClient.GetSecretAsync("db-connection-string");
 
             // Add authentication using retrieved client ID and secret
             services.AddAuthentication().AddMicrosoftAccount(microsoftOptions =>
@@ -34,7 +35,7 @@ namespace INTEX_II_413
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-            builder.Services.AddDbContext<IntexContext>(options => options.UseSqlServer(builder.Configuration["ConnectionStrings:WaterConnection"]));
+            builder.Services.AddDbContext<IntexContext>(options => options.UseSqlServer(db_connection_string.Value.Value));
 
             builder.Services.AddScoped<IIntexRepository, EFIntexRepository>();
 
