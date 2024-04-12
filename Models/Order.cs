@@ -22,6 +22,7 @@ namespace INTEX_II_413.Models
         public string? Address { get; set; }
         public string Bank { get; set; }
         public bool Fraud { get; set; }
+        public bool? FraudPredicted { get; set; }
 
         public virtual ICollection<LineItem> LineItems { get; set; } = new List<LineItem>();
 

@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using Microsoft.ML;
 using Microsoft.ML.OnnxRuntime;
 using Microsoft.ML.OnnxRuntime.Tensors;
+using Microsoft.AspNetCore.Identity;
 
 namespace INTEX_II_413.Controllers
 {
@@ -23,15 +24,18 @@ namespace INTEX_II_413.Controllers
     {
         private IIntexRepository _repo;
 
+        private readonly UserManager<IdentityUser> _userManager;
+
         //This is the pipeline that will be used to make predictions
         private readonly InferenceSession _sessionFraud;
 
-        public HomeController(IIntexRepository temp)
+        public HomeController(IIntexRepository temp, UserManager<IdentityUser> userManager)
         {
             _repo = temp;
 
-            _sessionFraud = new InferenceSession("C:\\Users\\Hammo\\source\\repos\\INTEX_II_413\\Fraud_Identification_model_2.onnx");
+            _sessionFraud = new InferenceSession("C:\\Users\\Hammo\\source\\repos\\INTEX_II_413\\Fraud_Identification_model_3.onnx");
 
+            _userManager = userManager;
         }
 
 
@@ -44,19 +48,15 @@ namespace INTEX_II_413.Controllers
         [HttpPost]
         public IActionResult PlaceOrder(OrderSubmissionViewModel submissionModel)
         {
-            var blah = 5;
             var customer = _repo.Customers.FirstOrDefault(c => c.CustomerId == submissionModel.CustomerId);
             if (customer == null)
             {
-                // Handle the case where the customer is not found
                 return NotFound();
             }
 
-            // Calculate the customer's age based on their birthdate
             int age = DateTime.Now.Year - customer.BirthDate.Year;
             if (DateTime.Now < customer.BirthDate.AddYears(age)) age--;
 
-            // Prepare the fraud prediction data
             FraudPredictionViewModel fraudPredictionData = new FraudPredictionViewModel
             {
                 Time = submissionModel.Order.Time,
@@ -66,29 +66,26 @@ namespace INTEX_II_413.Controllers
                 ShippingAddress = submissionModel.Order.Address,
                 Bank = submissionModel.Order.Bank,
                 TypeOfCard = submissionModel.Order.CardType,
-                CountryOfResidence = customer.Country, // Assuming this is where you store the customer's residence country
+                CountryOfResidence = customer.Country,
                 Gender = customer.Gender
             };
 
-            // Assuming PredictFraud now properly expects a FraudPredictionViewModel and returns a boolean
             bool isFraudulent = PredictFraud(fraudPredictionData);
 
             if (isFraudulent)
             {
-                // Redirect to a fraud confirmation page or handle accordingly
+                submissionModel.Order.FraudPredicted = true;
+                FinalOrderSubmission(submissionModel);
                 return RedirectToAction("FraudConfirmation");
             }
             else
             {
-                //Need to make what is passed to it what we need.
-                //FinalOrderSubmission(submissionModel); 
-
-                // Process the order normally
+                submissionModel.Order.FraudPredicted = false;
+                FinalOrderSubmission(submissionModel);
                 return RedirectToAction("Confirmation");
             }
-        
-               
-    }
+        }
+
 
         [Authorize(Roles = "Admin,Customer")]
         [HttpPost]
@@ -105,62 +102,77 @@ namespace INTEX_II_413.Controllers
         [HttpPost]
         public bool PredictFraud(FraudPredictionViewModel fraudPredictionData)
         {
+            // Load the ONNX model
+            InferenceSession session = new InferenceSession("C:\\Users\\Hammo\\source\\repos\\INTEX_II_413\\Fraud_Identification_model_3.onnx");
+
+            // Extract necessary values from the fraudPredictionData
             int hourOfDay = fraudPredictionData.Time.Hour;
+            int dayOfWeekNumeric = (int)fraudPredictionData.Time.DayOfWeek; // Assuming this maps directly to a numeric day of the week
 
-            List<float> inputList = new List<float>
-                {
-                    hourOfDay,
-                    fraudPredictionData.Age,
-                    fraudPredictionData.Year,
-                    fraudPredictionData.Month,
-                    fraudPredictionData.Day,
-                    fraudPredictionData.DayOfWeekNumeric,
-                    // One-hot encoding for 'country_of_transaction'
-                    fraudPredictionData.CountryOfTransaction == "India" ? 1f : 0f,
-                    fraudPredictionData.CountryOfTransaction == "Russia" ? 1f : 0f,
-                    fraudPredictionData.CountryOfTransaction == "USA" ? 1f : 0f,
-                    fraudPredictionData.CountryOfTransaction == "United Kingdom" ? 1f : 0f,
-                    // One-hot encoding for 'shipping_address'
-                    fraudPredictionData.ShippingAddress == "India" ? 1f : 0f, // Assumes contains is an acceptable check
-                    fraudPredictionData.ShippingAddress == "Russia" ? 1f : 0f,
-                    fraudPredictionData.ShippingAddress == "USA" ? 1f : 0f,
-                    fraudPredictionData.ShippingAddress == "United Kingdom" ? 1f : 0f,
-                    // One-hot encoding for 'bank'
-                    fraudPredictionData.Bank == "HSBC" ? 1f : 0f,
-                    fraudPredictionData.Bank == "Halifax" ? 1f : 0f,
-                    fraudPredictionData.Bank == "Lloyds" ? 1f : 0f,
-                    fraudPredictionData.Bank == "Metro" ? 1f : 0f,
-                    fraudPredictionData.Bank == "Monzo" ? 1f : 0f,
-                    fraudPredictionData.Bank == "RBS" ? 1f : 0f,
-                    // One-hot encoding for 'type_of_card'
-                    fraudPredictionData.TypeOfCard == "Visa" ? 1f : 0f,
-                    // One-hot encoding for 'country_of_residence'
-                    fraudPredictionData.CountryOfResidence == "India" ? 1f : 0f,
-                    fraudPredictionData.CountryOfResidence == "Russia" ? 1f : 0f,
-                    fraudPredictionData.CountryOfResidence == "USA" ? 1f : 0f,
-                    fraudPredictionData.CountryOfResidence == "United Kingdom" ? 1f : 0f,
-                    // One-hot encoding for 'gender'
-                    fraudPredictionData.Gender == 'M' ? 1f : 0f,
+            // Create a dictionary that matches the exact input names expected by the ONNX model
+            var inputFeatures = new Dictionary<string, float>
+    {
+        {"float_input", hourOfDay},
+        {"amount", (float)fraudPredictionData.Amount},
+        {"age", fraudPredictionData.Age},
+        {"year", fraudPredictionData.Time.Year},
+        {"month", fraudPredictionData.Time.Month},
+        {"day", fraudPredictionData.Time.Day},
+        {"day_of_week_numeric", dayOfWeekNumeric},
+        {"country_of_transaction_India", fraudPredictionData.CountryOfTransaction == "India" ? 1f : 0f},
+        {"country_of_transaction_Russia", fraudPredictionData.CountryOfTransaction == "Russia" ? 1f : 0f},
+        {"country_of_transaction_USA", fraudPredictionData.CountryOfTransaction == "USA" ? 1f : 0f},
+        {"country_of_transaction_United Kingdom", fraudPredictionData.CountryOfTransaction == "United Kingdom" ? 1f : 0f},
+        {"shipping_address_India", fraudPredictionData.ShippingAddress == "India" ? 1f : 0f},
+        {"shipping_address_Russia", fraudPredictionData.ShippingAddress == "Russia" ? 1f : 0f},
+        {"shipping_address_USA", fraudPredictionData.ShippingAddress == "USA" ? 1f : 0f},
+        {"shipping_address_United Kingdom", fraudPredictionData.ShippingAddress == "United Kingdom" ? 1f : 0f},
+        {"bank_HSBC", fraudPredictionData.Bank == "HSBC" ? 1f : 0f},
+        {"bank_Halifax", fraudPredictionData.Bank == "Halifax" ? 1f : 0f},
+        {"bank_Lloyds", fraudPredictionData.Bank == "Lloyds" ? 1f : 0f},
+        {"bank_Metro", fraudPredictionData.Bank == "Metro" ? 1f : 0f},
+        {"bank_Monzo", fraudPredictionData.Bank == "Monzo" ? 1f : 0f},
+        {"bank_RBS", fraudPredictionData.Bank == "RBS" ? 1f : 0f},
+        {"type_of_card_Visa", fraudPredictionData.TypeOfCard == "Visa" ? 1f : 0f},
+        {"country_of_residence_India", fraudPredictionData.CountryOfResidence == "India" ? 1f : 0f},
+        {"country_of_residence_Russia", fraudPredictionData.CountryOfResidence == "Russia" ? 1f : 0f},
+        {"country_of_residence_USA", fraudPredictionData.CountryOfResidence == "USA" ? 1f : 0f},
+        {"country_of_residence_United Kingdom", fraudPredictionData.CountryOfResidence == "United Kingdom" ? 1f : 0f},
+        {"gender_M", fraudPredictionData.Gender == 'M' ? 1f : 0f}
+    };
 
-                };
+            // Convert the dictionary into a tensor for the model input
+            var inputTensor = new DenseTensor<float>(inputFeatures.Values.ToArray(), new[] { 1, inputFeatures.Count });
 
-                        // Convert inputList to Tensor
-                        var inputTensor = new DenseTensor<float>(inputList.ToArray(), new[] { 1, inputList.Count });
-
-                        // Prepare input for ONNX model
-                        var inputs = new List<NamedOnnxValue>
-                {
-                    NamedOnnxValue.CreateFromTensor("input", inputTensor)
-                };
+            // Prepare input for the ONNX model
+            var inputs = new List<NamedOnnxValue>
+            {
+        NamedOnnxValue.CreateFromTensor("float_input", inputTensor)
+            };
 
             // Run the model
-            using (var results = _sessionFraud.Run(inputs))
+            using (var results = session.Run(inputs))
             {
-                // Extract and return the prediction result
-                var output = results.First().AsTensor<bool>().ToArray();
-                return output[0];
+                var prediction = results.FirstOrDefault(item => item.Name == "output_label")?.AsTensor<long>().ToArray();
+                
+                var predictionValue = prediction[0];
+               
+                var returnValue = false;
+
+                if (predictionValue == 1)
+                {
+                    returnValue = true;
+                }
+                else
+                {
+                    returnValue =  false;
+                }
+
+                return returnValue;
             }
+
         }
+
 
         public IActionResult Products(int pageNum = 1, string productCategory = null, string primaryColor = null, int pageSize = 5)
         {
@@ -235,19 +247,13 @@ namespace INTEX_II_413.Controllers
 
         public IActionResult SingleProduct(int id, string returnUrl)
         {
-            // This is where the admin will see all the orders that have been placed
-            // Specifically they will see orders that have been flagged as fraudulent
+            ViewBag.returnUrl = returnUrl;
 
-            // I will need to get the orders from the database
-            // var orders = _repo.Orders.Where(o => o.FraudulentFlag == true).ToList();
+            var product = _repo.Products.Where(p => p.ProductId == id).FirstOrDefault();
 
-            //foreach (var order in orders)
-            {
-                // I will need to display the order number, the customer's name, the date the order was placed, and the total amount of the order
-                // I will also need to display the products that were ordered
-            }
+            return View(product);
 
-            return View();
+            //Fixed, brought back what I accidentally deleted  -Cam
         }
 
         [Authorize(Roles = "Admin,Customer")]
@@ -262,34 +268,61 @@ namespace INTEX_II_413.Controllers
             return View("NewUser");
         }
 
+
+
         [Authorize(Roles = "Admin,Customer")]
         [HttpPost]
-        public IActionResult Cart(decimal total)
+        public async Task<IActionResult> Cart(decimal total)
         {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                // Handle the case where the user is not found
+                return View("Error"); // Or redirect to a login page
+            }
+
+            var userId = _userManager.GetUserId(User); // This gets the user's identity ID, not the CustomerId
+
+            var customer = _repo.Customers.FirstOrDefault(c => c.AspNetUserId == userId);
+            if (customer == null)
+            {
+                // Handle the case where no customer is found for the user
+                return View("Error"); // Or an appropriate error handling
+            }
+
+            TempData["CustomerId"] = customer.CustomerId.ToString(); // Make sure you are accessing the CustomerId property
             TempData["OrderAmount"] = total.ToString();
+
             return RedirectToAction("Checkout");
         }
 
 
 
-        [Authorize(Roles = "Admin,Customer")]
+
+
         public IActionResult Checkout()
         {
-            var model = new OrderSubmissionViewModel();
+            OrderSubmissionViewModel model = new OrderSubmissionViewModel();
 
-            if (TempData["OrderAmount"] is string totalString && decimal.TryParse(totalString, out var total))
+            if (TempData["CustomerId"] is string customerIdString && int.TryParse(customerIdString, out int customerId))
             {
-                model.Order = new Order { Amount = total };
+                model.CustomerId = customerId;
             }
             else
             {
-                // Handle the case where the total is not in TempData,
-                // for instance, by initializing model.Order with a default value
-                model.Order = new Order { Amount = 0 };
+                // Handle the case where CustomerId is not available
+                return RedirectToAction("Error"); // Redirect to an error page or handle appropriately
             }
 
-            return View(model);
+            // Optionally set other order details if needed
+            if (TempData["OrderAmount"] is string orderAmountString && decimal.TryParse(orderAmountString, out decimal orderAmount))
+            {
+                model.Order = new Order { Amount = orderAmount };
+            }
+
+            return View("Checkout", model);
         }
+
 
 
 
