@@ -30,7 +30,7 @@ namespace INTEX_II_413.Controllers
         {
             _repo = temp;
 
-            _sessionFraud = new InferenceSession("C:/Users/Alex/source/repos/INTEX_II_413/Fraud_Identification_model_2.onnx");
+            _sessionFraud = new InferenceSession("Fraud_Identification_model_2.onnx");
 
         }
 
