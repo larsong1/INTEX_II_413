@@ -4,7 +4,8 @@
 
 ﻿<br />
 <div style="display: flex; align-items: center;">
-    <div>
+    <div style="flex-grow: 1; text-align: center;">
+        <h1 style="color: black; padding: 20px; text-align: center; font-size: 48px; font-family: 'Arial Black' , sans-serif;" class="text-center">Customers</h1>
         <form asp-controller="Home" asp-action="AdminHomepage" method="get">
             <button type="submit" class="btn" style="outline: 0; cursor: pointer; height: 34px; padding: 0 13px;
                    color: white; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #e8040c; border-color: black;
@@ -13,25 +14,24 @@
             </button>
         </form>
     </div>
-    <div style="flex-grow: 1; text-align: center;">
-        <h1 style="color: black; padding: 20px; text-align: center; font-size: 48px; font-family: 'Arial Black' , sans-serif;" class="text-center">Customers</h1color:>
-    </div>
 </div>
+<br/>
+
 
 <table class="table table-bordered table-striped">
 
     <thead class="thead-dark">
         <tr>
-            <th style="text-align:center; background-color: #e8040c; font-weight: bold; color: white;">CustomerId</th>
-            <th style="text-align:center; background-color: #e8040c; font-weight: bold; color: white;">FirstName</th>
-            <th style="text-align:center; background-color: #e8040c; font-weight: bold; color: white;">LastName</th>
-            <th style="text-align:center; background-color: #e8040c; font-weight: bold; color: white;">BirthDate</th>
+            <th style="text-align:center; background-color: #e8040c; font-weight: bold; color: white;">Customer ID</th>
+            <th style="text-align:center; background-color: #e8040c; font-weight: bold; color: white;">First Name</th>
+            <th style="text-align:center; background-color: #e8040c; font-weight: bold; color: white;">Last Name</th>
+            <th style="text-align:center; background-color: #e8040c; font-weight: bold; color: white;">Birth Date</th>
             <th style="text-align:center; background-color: #e8040c; font-weight: bold; color: white;">Country</th>
             <th style="text-align:center; background-color: #e8040c; font-weight: bold; color: white;">Gender</th>
             <th style="text-align:center; background-color: #e8040c; font-weight: bold; color: white;">Age</th>
 
-            <th style="text-align:center; background-color: #e8040c; font-weight: bold; color: white;"></th>
-            <th style="text-align:center; background-color: #e8040c; font-weight: bold; color: white;"></th>
+            <th style="text-align:center; background-color: #e8040c; font-weight: bold; color: white;">Edit</th>
+            <th style="text-align:center; background-color: #e8040c; font-weight: bold; color: white;">Delete</th>
         </tr>
     </thead>
 
