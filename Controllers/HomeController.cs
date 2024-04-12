@@ -239,26 +239,39 @@ namespace INTEX_II_413.Controllers
             return View("FraudConfirmation");
         }
 
-        
-
-
 
         public IActionResult SingleProduct(int id, string returnUrl)
         {
-            // This is where the admin will see all the orders that have been placed
-            // Specifically they will see orders that have been flagged as fraudulent
+            ViewBag.returnUrl = returnUrl;
 
-            // I will need to get the orders from the database
-            // var orders = _repo.Orders.Where(o => o.FraudulentFlag == true).ToList();
+            var viewModel = new SimilarProductViewModel();
 
-            //foreach (var order in orders)
+            // Set ProductId for Item_Based_Recs
+            viewModel.Item_Based_Recs = new Item_Based_Recs
             {
-                // I will need to display the order number, the customer's name, the date the order was placed, and the total amount of the order
-                // I will also need to display the products that were ordered
-            }
+                ProductId = id
+            };
 
-            return View();
+            // Retrieve product based on id
+            viewModel.Product = _repo.Products.FirstOrDefault(p => p.ProductId == id);
+
+            // Retrieve recommendations based on ProductId
+            viewModel.Item_Based_Recs.Recommendation1 = (_repo.ItemBasedRecs.FirstOrDefault(p => p.ProductId == id)?.Recommendation1 ?? 0) == 0 ? 1 : (int)(_repo.ItemBasedRecs.FirstOrDefault(p => p.ProductId == id)?.Recommendation1);
+            viewModel.Item_Based_Recs.Recommendation2 = (_repo.ItemBasedRecs.FirstOrDefault(p => p.ProductId == id)?.Recommendation2 ?? 0) == 0 ? 1 : (int)(_repo.ItemBasedRecs.FirstOrDefault(p => p.ProductId == id)?.Recommendation2);
+            viewModel.Item_Based_Recs.Recommendation3 = (_repo.ItemBasedRecs.FirstOrDefault(p => p.ProductId == id)?.Recommendation3 ?? 0) == 0 ? 1 : (int)(_repo.ItemBasedRecs.FirstOrDefault(p => p.ProductId == id)?.Recommendation3);
+
+
+            // Fetch details of recommended products
+            viewModel.Recommendation1Product = _repo.Products.FirstOrDefault(p => p.ProductId == viewModel.Item_Based_Recs.Recommendation1);
+            viewModel.Recommendation2Product = _repo.Products.FirstOrDefault(p => p.ProductId == viewModel.Item_Based_Recs.Recommendation2);
+            viewModel.Recommendation3Product = _repo.Products.FirstOrDefault(p => p.ProductId == viewModel.Item_Based_Recs.Recommendation3);
+
+            return View(viewModel); // Pass the view model to the view
         }
+
+
+
+
 
         [Authorize(Roles = "Admin,Customer")]
         public IActionResult NewUser()
