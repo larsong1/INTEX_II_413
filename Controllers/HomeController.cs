@@ -108,7 +108,7 @@ namespace INTEX_II_413.Controllers
         public bool PredictFraud(FraudPredictionViewModel fraudPredictionData)
         {
             // Load the ONNX model
-            InferenceSession session = new InferenceSession("C:\\Users\\Hammo\\source\\repos\\INTEX_II_413\\Fraud_Identification_model_3.onnx");
+            InferenceSession session = new InferenceSession("Fraud_Identification_model_3.onnx");
 
             // Extract necessary values from the fraudPredictionData
             int hourOfDay = fraudPredictionData.Time.Hour;
@@ -281,30 +281,30 @@ namespace INTEX_II_413.Controllers
 
 
     [Authorize(Roles = "Admin,Customer")]
-[HttpPost]
-public async Task<IActionResult> Cart(decimal total)
-{
-    var user = await _userManager.GetUserAsync(User);
-    if (user == null)
+    [HttpPost]
+    public async Task<IActionResult> Cart(decimal total)
     {
-        // Handle the case where the user is not found
-        return View("Error"); // Or redirect to a login page
+        var user = await _userManager.GetUserAsync(User);
+        //if (user == null)
+        //{
+        //    // Handle the case where the user is not found
+        //    return View("Login"); // Or redirect to a login page
+        //}
+
+        var userId = _userManager.GetUserId(User); // This gets the user's identity ID, not the CustomerId
+
+        var customer = _repo.Customers.FirstOrDefault(c => c.AspNetUserId == userId);
+        //if (customer == null)
+        //{
+        //    // Handle the case where no customer is found for the user
+        //    return View("Login"); // Or an appropriate error handling
+        //}
+
+        TempData["CustomerId"] = customer.CustomerId.ToString(); // Make sure you are accessing the CustomerId property
+        TempData["OrderAmount"] = total.ToString();
+
+        return RedirectToAction("Checkout");
     }
-
-    var userId = _userManager.GetUserId(User); // This gets the user's identity ID, not the CustomerId
-
-    var customer = _repo.Customers.FirstOrDefault(c => c.AspNetUserId == userId);
-    if (customer == null)
-    {
-        // Handle the case where no customer is found for the user
-        return View("Error"); // Or an appropriate error handling
-    }
-
-    TempData["CustomerId"] = customer.CustomerId.ToString(); // Make sure you are accessing the CustomerId property
-    TempData["OrderAmount"] = total.ToString();
-
-    return RedirectToAction("Checkout");
-}
 
 
 
