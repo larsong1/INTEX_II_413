@@ -160,8 +160,14 @@ namespace INTEX_II_413.Controllers
 
             _repo.AddOrder(model.Order);
             _repo.SaveChanges();
+
+            // Clear the cart
+            var cart = SessionCart.GetCart(HttpContext.RequestServices);
+            cart.Clear();
+
             return RedirectToAction("Confirmation");
         }
+
 
 
         [HttpPost]
