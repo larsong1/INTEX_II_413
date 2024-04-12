@@ -2,10 +2,9 @@
     Layout = "_AdminLayout";
 }
 
-<h1>List of Orders that have been placed</h1>
+<h1>List of Orders that have been flagged for fraud</h1>
 
 <table class="table table-bordered table-striped">
-
     <thead class="thead-dark" style="background-color: #e8040c;">
         <tr>
             <th style="text-align:center; background-color: #e8040c; color: white; font-weight: bold;">TransactionId</th>
@@ -20,30 +19,33 @@
             <th style="text-align:center; background-color: #e8040c; color: white; font-weight: bold;">Country</th>
             <th style="text-align:center; background-color: #e8040c; color: white; font-weight: bold;">Address</th>
             <th style="text-align:center; background-color: #e8040c; color: white; font-weight: bold;">Bank</th>
-            <th style="text-align:center; background-color: #e8040c; color: white; font-weight: bold;">Fraud?</th>
+            <th style="text-align:center; background-color: #e8040c; color: white; font-weight: bold;">Fraud</th>
+            <th style="text-align:center; background-color: #e8040c; color: white; font-weight: bold;">FraudPredicted?</th>
         </tr>
     </thead>
-
 
     <tbody>
         @foreach (var x in Model)
         {
-            <tr>
-                <td style="text-align:center">@x.TransactionId</td>
-                <td style="text-align:center">@x.CustomerId</td>
-                <td style="text-align:center">@x.Date.Date.ToString("MM/dd/yyyy")</td>
-                <td style="text-align:center">@x.DayOfWeek</td>
-                <td style="text-align:center">@x.Time.ToShortTimeString()</td>
-                <td style="text-align:center">@x.CardType</td>
-                <td style="text-align:center">@x.EntryMode</td>
-                <td style="text-align:center">$@x.Amount</td>
-                <td style="text-align:center">@x.Type</td>
-                <td style="text-align:center">@x.Country</td>
-                <td style="text-align:center">@x.Address</td>
-                <td style="text-align:center">@x.Bank</td>
-                <td style="text-align:center">@x.Fraud</td>
-            </tr>
+            @if ((x.FraudPredicted == true)  || x.FraudPredicted != null )
+            {
+                <tr>
+                    <td style="text-align:center">@x.TransactionId</td>
+                    <td style="text-align:center">@x.CustomerId</td>
+                    <td style="text-align:center">@x.Date.Date.ToString("MM/dd/yyyy")</td>
+                    <td style="text-align:center">@x.DayOfWeek</td>
+                    <td style="text-align:center">@x.Time.ToShortTimeString()</td>
+                    <td style="text-align:center">@x.CardType</td>
+                    <td style="text-align:center">@x.EntryMode</td>
+                    <td style="text-align:center">$@x.Amount</td>
+                    <td style="text-align:center">@x.Type</td>
+                    <td style="text-align:center">@x.Country</td>
+                    <td style="text-align:center">@x.Address</td>
+                    <td style="text-align:center">@x.Bank</td>
+                    <td style="text-align:center">@x.Fraud</td>
+                    <td style="text-align:center">@x.FraudPredicted</td>
+                </tr>
+            }
         }
     </tbody>
-
 </table>
