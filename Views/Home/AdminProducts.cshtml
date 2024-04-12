@@ -90,22 +90,20 @@
     </table>
 </div>
 
-<div class="row">
-    <div class="col">
-        <div page-model="@Model.PaginationInfo" page-action="AdminProducts"
-             page-class-enabled="true" page-class="btn" page-class-normal="btn-outline-dark" page-class-selected="btn-primary"
-             class="btn-group pull-right m-1">
-        </div>
-    </div>
-    <div class="col">
-        <form class="float-end" id="psForm1" asp-controller="Home" asp-action="AdminProducts" method="get">
-            <label for="pageSize">Number of records per page</label>
-            <select name='pageSize' id='pageSize' onchange="document.getElementById('psForm1').submit();">
-                <!option value=6 @(ViewContext.HttpContext.Session.GetInt32("pageSize") == 6 ? "selected" : "")>6</!option>
-                <!option value=10 @(ViewContext.HttpContext.Session.GetInt32("pageSize") == 10 ? "selected" : "")>10</!option>
-                <!option value=20 @(ViewContext.HttpContext.Session.GetInt32("pageSize") == 20 ? "selected" : "")>20</!option>
-            </select>
-        </form>
+<div class="row justify-content-between">
+    <!-- Pagination at the bottom of the products list -->
+    <div class="col-auto">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                @for (int i = 1; i <= Model.PaginationInfo.TotalPages; i++)
+                {
+                    <li class="page-item @(i == Model.PaginationInfo.CurrentPage ? "active" : "")">
+                        <a class="page-link" href="@Url.Action("AdminProducts", "Home", new { pageNum = i, pageSize = Model.PaginationInfo.ItemsPerPage, productCategory = Model.CurrentProductCategory, productColor = Model.CurrentProductColor })">@i</a>
+                    </li>
+                }
+            </ul>
+        </nav>
     </div>
 </div>
+
 

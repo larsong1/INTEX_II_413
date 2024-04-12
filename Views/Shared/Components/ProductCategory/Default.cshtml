@@ -5,7 +5,7 @@
         <button class="btn btn-outline-secondary dropdown-toggle" style="width: 100%" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
             Filter by Category
         </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="dropdownMenuButton">
             <li>
                 <a class="dropdown-item @(string.IsNullOrEmpty(ViewBag.SelectedProductCategory) ? "active" : "")" asp-action="Product" asp-controller="Home" asp-route-productCategory="" asp-route-pageNum="1">
                     All Categories
@@ -22,3 +22,10 @@
         </ul>
     </div>
 </div>
+
+<style>
+    .custom-dropdown-menu {
+        background-color: #ffffff; /* Solid white background */
+    }
+</style>
+
