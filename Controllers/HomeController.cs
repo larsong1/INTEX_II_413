@@ -246,16 +246,35 @@ namespace INTEX_II_413.Controllers
             return View("FraudConfirmation");
         }
 
+
         public IActionResult SingleProduct(int id, string returnUrl)
-    {
-        ViewBag.returnUrl = returnUrl;
+        {
+            ViewBag.returnUrl = returnUrl;
 
-        var product = _repo.Products.Where(p => p.ProductId == id).FirstOrDefault();
+            var viewModel = new SimilarProductViewModel();
 
-        return View(product);
+            // Set ProductId for Item_Based_Recs
+            viewModel.Item_Based_Recs = new Item_Based_Recs
+            {
+                ProductId = id
+            };
 
-        //Fixed, brought back what I accidentally deleted  -Cam
-    }
+            // Retrieve product based on id
+            viewModel.Product = _repo.Products.FirstOrDefault(p => p.ProductId == id);
+
+            // Retrieve recommendations based on ProductId
+            viewModel.Item_Based_Recs.Recommendation1 = (_repo.ItemBasedRecs.FirstOrDefault(p => p.ProductId == id)?.Recommendation1 ?? 0) == 0 ? 1 : (int)(_repo.ItemBasedRecs.FirstOrDefault(p => p.ProductId == id)?.Recommendation1);
+            viewModel.Item_Based_Recs.Recommendation2 = (_repo.ItemBasedRecs.FirstOrDefault(p => p.ProductId == id)?.Recommendation2 ?? 0) == 0 ? 1 : (int)(_repo.ItemBasedRecs.FirstOrDefault(p => p.ProductId == id)?.Recommendation2);
+            viewModel.Item_Based_Recs.Recommendation3 = (_repo.ItemBasedRecs.FirstOrDefault(p => p.ProductId == id)?.Recommendation3 ?? 0) == 0 ? 1 : (int)(_repo.ItemBasedRecs.FirstOrDefault(p => p.ProductId == id)?.Recommendation3);
+
+
+            // Fetch details of recommended products
+            viewModel.Recommendation1Product = _repo.Products.FirstOrDefault(p => p.ProductId == viewModel.Item_Based_Recs.Recommendation1);
+            viewModel.Recommendation2Product = _repo.Products.FirstOrDefault(p => p.ProductId == viewModel.Item_Based_Recs.Recommendation2);
+            viewModel.Recommendation3Product = _repo.Products.FirstOrDefault(p => p.ProductId == viewModel.Item_Based_Recs.Recommendation3);
+
+            return View(viewModel); // Pass the view model to the view
+        }
 
 
     [HttpPost]
